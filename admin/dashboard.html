@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - EduTrack</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/admin-style.css">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="admin-logo">
+                <h2><i class="fas fa-graduation-cap me-2"></i>Admin Panel</h2>
+            </div>
+            
+            <ul class="admin-menu">
+                <li>
+                    <a href="dashboard.html" class="active">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="students.html">
+                        <i class="fas fa-users"></i>
+                        <span>Manage Students</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="activities.html">
+                        <i class="fas fa-trophy"></i>
+                        <span>Manage Activities</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="../index.html">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Header -->
+            <div class="admin-header">
+                <div>
+                    <h1>Dashboard</h1>
+                    <p class="text-muted mb-0">Welcome back, Admin!</p>
+                </div>
+                <div class="admin-user">
+                    <div>
+                        <p class="mb-0 fw-bold" id="adminName">Administrator</p>
+                        <p class="text-muted mb-0 small">System Admin</p>
+                    </div>
+                    <img src="https://ui-avatars.com/api/?name=Admin&background=667eea&color=fff" alt="Admin">
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon blue">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalStudents">0</h3>
+                        <p>Total Students</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon green">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalActivities">0</h3>
+                        <p>Total Activities</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon orange">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalCourses">0</h3>
+                        <p>Total Courses</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon purple">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="avgAttendance">0%</h3>
+                        <p>Avg Attendance</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="content-card mb-4">
+                <h3><i class="fas fa-bolt me-2"></i>Quick Actions</h3>
+                <div class="d-flex gap-3">
+                    <button class="btn btn-primary" onclick="window.location.href='students.html?action=add'">
+                        <i class="fas fa-user-plus me-2"></i>Add New Student
+                    </button>
+                    <button class="btn btn-primary" onclick="window.location.href='activities.html?action=add'">
+                        <i class="fas fa-plus me-2"></i>Add Activity
+                    </button>
+                </div>
+            </div>
+
+            <!-- Recent Students -->
+            <div class="content-card">
+                <h3><i class="fas fa-users me-2"></i>Recent Students</h3>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Enrollment ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Semester</th>
+                                <th>Program</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recentStudents">
+                            <tr>
+                                <td colspan="5" class="text-center">Loading...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+    window.addEventListener('DOMContentLoaded', function() {
+        loadDashboardData();
+    });
+
+    function loadDashboardData() {
+        // Load stats
+        fetch('../backend/api/admin/get_dashboard_stats.php')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('totalStudents').textContent = data.data.total_students;
+                    document.getElementById('totalActivities').textContent = data.data.total_activities;
+                    document.getElementById('totalCourses').textContent = data.data.total_courses;
+                    document.getElementById('avgAttendance').textContent = data.data.avg_attendance + '%';
+                    
+                    // Update admin name if available
+                    if (data.data.admin_name) {
+                        document.getElementById('adminName').textContent = data.data.admin_name;
+                    }
+                    
+                    // Load recent students
+                    displayRecentStudents(data.data.recent_students);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    function displayRecentStudents(students) {
+        const tbody = document.getElementById('recentStudents');
+        
+        if (students.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5" class="text-center">No students found</td></tr>';
+            return;
+        }
+        
+        tbody.innerHTML = students.map(s => `
+            <tr>
+                <td>${s.enrollment_id}</td>
+                <td>${s.first_name} ${s.last_name}</td>
+                <td>${s.email}</td>
+                <td>${s.current_semester}</td>
+                <td>${s.program}</td>
+            </tr>
+        `).join('');
+    }
+    </script>
+</body>
+</html>

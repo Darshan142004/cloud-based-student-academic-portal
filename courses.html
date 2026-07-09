@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courses - EduTrack</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/courses.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="logo">
+            <h3><i class="fas fa-graduation-cap me-2"></i>EduTrack</h3>
+        </div>
+        
+        <ul class="nav-menu">
+            <li>
+                <a href="dashboard.html">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="active">
+                <a href="courses.html">
+                    <i class="fas fa-book"></i>
+                    <span>Courses</span>
+                </a>
+            </li>
+            <li>
+                <a href="grades.html">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Grades</span>
+                </a>
+            </li>
+            <li>
+                <a href="attendance.html">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Attendance</span>
+                </a>
+            </li>
+            <li>
+                <a href="assignments.html">
+                    <i class="fas fa-tasks"></i>
+                    <span>Assignments</span>
+                </a>
+            </li>
+              <li>
+                <a href="extracurricular.html">
+                    <i class="fas fa-trophy"></i>
+                    <span>Activities</span>
+                </a>
+            </li>
+            <li>
+                <a href="profile.html">
+                    <i class="fas fa-user"></i>
+                    <span>Profile</span>
+                </a>
+            </li>
+        </ul>
+        
+        <div class="sidebar-footer">
+            <a href="index.html" class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Top Navigation -->
+        <nav class="top-nav">
+            <div class="nav-left">
+                <button class="toggle-btn" id="toggleSidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h4 class="page-title">My Courses</h4>
+            </div>
+            <div class="nav-right">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search courses..." id="searchCourse">
+                </div>
+                <div class="notification">
+                    <i class="fas fa-bell"></i>
+                    <span class="badge">3</span>
+                </div>
+                <div class="profile-dropdown">
+                    <img src="https://ui-avatars.com/api/?name=John+Doe&background=667eea&color=fff" alt="Profile">
+                    <span>John Doe</span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Courses Content -->
+        <div class="dashboard-container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <div>
+                    <h2>Enrolled Courses</h2>
+                    <p>Semester 5 - Academic Year 2024-25</p>
+                </div>
+                <div class="filter-options">
+                    <select class="form-select" id="semesterFilter">
+                        <option value="all">All Semesters</option>
+                        <option value="5" selected>Semester 5</option>
+                        <option value="4">Semester 4</option>
+                        <option value="3">Semester 3</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Course Stats -->
+            <div class="row g-4 mb-4">
+                <div class="col-md-3">
+                    <div class="course-stat-card">
+                        <div class="stat-icon blue">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>6</h3>
+                            <p>Total Courses</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="course-stat-card">
+                        <div class="stat-icon green">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>4</h3>
+                            <p>On Track</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="course-stat-card">
+                        <div class="stat-icon orange">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>2</h3>
+                            <p>Needs Attention</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="course-stat-card">
+                        <div class="stat-icon purple">
+                            <i class="fas fa-award"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>22</h3>
+                            <p>Total Credits</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Course Cards -->
+            <div class="row g-4" id="courseContainer">
+                <!-- Course 1 -->
+                <div class="col-lg-6">
+                    <div class="course-card">
+                        <div class="course-header">
+                            <div class="course-icon purple">
+                                <i class="fas fa-network-wired"></i>
+                            </div>
+                            <div class="course-title-section">
+                                <h5>Computer Networks</h5>
+                                <p class="course-code">CS501</p>
+                            </div>
+                            <span class="course-credits">4 Credits</span>
+                        </div>
+                        <div class="course-body">
+                            <div class="course-info">
+                                <div class="info-item">
+                                    <i class="fas fa-user-tie"></i>
+                                    <span>Dr. Sarah Johnson</span>
+                                </div>
+                                <div class="info-item">
+                                    <i class="fas fa-clock"></i>
+                                    <span>Mon, Wed, Fri - 10:00 AM</span>
+                                </div>
+                                <div class="info-item">
+                                    <i class="fas fa-door-open"></i>
+                                    <span>Room 301</span>
+                                </div>
+                            </div>
+                            <div class="course-progress">
+                                <div class="progress-header">
+                                    <span>Course Progress</span>
+                                    <span class="progress-percent">75%</span>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar bg-success" style="width: 75%"></div>
+                                </div>
+                            </div>
+                            <div class="course-footer">
+                                <button class="btn btn-outline-primary btn-sm">View Details</button>
+                                <button class="btn btn-primary btn-sm">Course Materials</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course 2 -->
+                <div class="col-lg-6">
+                    <div class="course-card">
+                        <div class="course-header">
+                            <div class="course-icon blue">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <div class="course-title-section">
+                                <h5>Database Management Systems</h5>
+                                <p class="course-code">CS502</p>
+                            </div>
+                            <span class="course-credits">4 Credits</span>
+                        </div>
+                        <div class="course-body">
+                            <div class="course-info">
+                                <div class="info-item">
+                                    <i class="fas fa-user-tie"></i>
+                                    <span>Prof. Michael Chen</span>
+                                </div>
+                                <div class="info-item">
+                                    <i class="fas fa-clock"></i>
+                                    <span>Tue, Thu - 2:00 PM</span>
+                                </div>
+                                <div class="info-item">
+                                    <i class="fas fa-door-open"></i>
+                                    <span>Room 205</span>
+                                </div>
+                            </div>
+                            <div class="course-progress">
+                                <div class="progress-header">
+                                    <span>Course Progress</span>
+                                    <span class="progress-percent">60%</span>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar bg-info" style="width: 60%"></div>
+                                </div>
+                            </div>
+                            <div class="course-footer">
+                                <button class="btn btn-outline-primary btn-sm">View Details</button>
+                                <button class="btn btn-primary btn-sm">Course Materials</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course 3 -->
+                <div class="col-lg-6">
+                    <div class="course-card">
+                        <div class="course-header">
+                            <div class="course-icon green">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <div class="course-title-section">
+                                <h5>Web Development</h5>
+                                <p class="course-code">CS503</p>
+                            </div>
+                            <span class="course-credits">3 Credits</span>
+                        </div>
+                        <div class="course-body">
+                            <div class="course-info">
+                                <div class="info-item">
+                                    <i class="fas fa-user-tie"></i>
+                                    <span>Dr. Emily White</span>
+                                </div>
+                                <div class="info-item">
+                                    <i class="fas fa-clock"></i>
+                                    <span>Mon, Wed - 3:00 PM</span>
+                                </div>
+                                <div class="info-item">
+                                    <i class="fas fa-door-open"></i>
+                                    <span>Lab 102</span>
+                                </div>
+                            </div>
+                            <div class="course-progress">
+                                <div class="progress-header">
+                                    <span>Course Progress</span>
+                                    <span class="progress-percent">85%</span>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar bg-success" style="width: 85%"></div>
+                                </div>
+                            </div>
+                            <div class="course-footer">
+                                <button class="btn btn-outline-primary btn-sm">View Details</button>
+                                <button class="btn btn-primary btn-sm">Course Materials</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course 4 -->
+                <div class="col-lg-6">
+                    <div class="course-card">
+                        <div class="course-header">
+                            <div class="course-icon orange">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="course-title-section">
+                                <h5>Artificial Intelligence</h5>
+                                <p class="course-code">CS504</p>
+                            </div>
+                            <span class="course-credits">4 Credits</span>
+                        </div>
+                        <div class="course-body">
+                            <div class="course-info">
+                                <div class="info-item">
+                                    <i class="fas fa-user-tie"></i>
+                                    <span>Dr. Robert Taylor</span>
+                                </div>
+                                <div class="info-item">
+                                    <i class="fas fa-clock"></i>
+                                    <span>Tue, Thu - 11:00 AM</span>
+                                </div>
+                                <div class="info-item">
+                                    <i class="fas fa-door-open"></i>
+                                    <span>Room 401</span>
+                                </div>
+                            </div>
+                            <div class="course-progress">
+                                <div class="progress-header">
+                                    <span>Course Progress</span>
+                                    <span class="progress-percent">45%</span>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar bg-warning" style="width: 45%"></div>
+                                </div>
+                            </div>
+                            <div class="course-footer">
+                                <button class="btn btn-outline-primary btn-sm">View Details</button>
+                                <button class="btn btn-primary btn-sm">Course Materials</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course 5 -->
+                <div class="col-lg-6">
+                    <div class="course-card">
+                        <div class="course-header">
+                            <div class="course-icon red">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="course-title-section">
+                                <h5>Cyber Security</h5>
+                                <p class="course-code">CS505</p>
+                            </div>
+                            <span class="course-credits">3 Credits</span>
+                        </div>
+                        <div class="course-body">
+                            <div class="course-info">
+                                <div class="info-item">
+                                    <i class="fas fa-user-tie"></i>
+                                    <span>Prof. Lisa Anderson</span>
+                                </div>
+                                <div class="info-item">
+                                    <i class="fas fa-clock"></i>
+                                    <span>Wed, Fri - 1:00 PM</span>
+                                </div>
+                                <div class="info-item">
+                                    <i class="fas fa-door-open"></i>
+                                    <span>Room 302</span>
+                                </div>
+                            </div>
+                            <div class="course-progress">
+                                <div class="progress-header">
+                                    <span>Course Progress</span>
+                                    <span class="progress-percent">50%</span>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar bg-warning" style="width: 50%"></div>
+                                </div>
+                            </div>
+                            <div class="course-footer">
+                                <button class="btn btn-outline-primary btn-sm">View Details</button>
+                                <button class="btn btn-primary btn-sm">Course Materials</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course 6 -->
+                <div class="col-lg-6">
+                    <div class="course-card">
+                        <div class="course-header">
+                            <div class="course-icon teal">
+                                <i class="fas fa-project-diagram"></i>
+                            </div>
+                            <div class="course-title-section">
+                                <h5>Software Engineering</h5>
+                                <p class="course-code">CS506</p>
+                            </div>
+                            <span class="course-credits">4 Credits</span>
+                        </div>
+                        <div class="course-body">
+                            <div class="course-info">
+                                <div class="info-item">
+                                    <i class="fas fa-user-tie"></i>
+                                    <span>Dr. James Wilson</span>
+                                </div>
+                                <div class="info-item">
+                                    <i class="fas fa-clock"></i>
+                                    <span>Mon, Thu - 9:00 AM</span>
+                                </div>
+                                <div class="info-item">
+                                    <i class="fas fa-door-open"></i>
+                                    <span>Room 203</span>
+                                </div>
+                            </div>
+                            <div class="course-progress">
+                                <div class="progress-header">
+                                    <span>Course Progress</span>
+                                    <span class="progress-percent">70%</span>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar bg-success" style="width: 70%"></div>
+                                </div>
+                            </div>
+                            <div class="course-footer">
+                                <button class="btn btn-outline-primary btn-sm">View Details</button>
+                                <button class="btn btn-primary btn-sm">Course Materials</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+  <!-- Custom JS -->
+    <script src="js/courses.js"></script>
+    
+    <!-- Courses Data Loader -->
+    <script>
+    let allCoursesData = null;
+    
+    window.addEventListener('DOMContentLoaded', function() {
+        console.log('Loading courses data...');
+        
+        fetch('./backend/api/get_courses.php')
+            .then(response => response.json())
+            .then(data => {
+                console.log('Courses data:', data);
+                
+                if (data.success) {
+                    allCoursesData = data.data;
+                    
+                    // Update profile name
+                    document.querySelector('.profile-dropdown span').textContent = data.data.student_name;
+                    
+                    // Update page header
+                    document.querySelector('.page-header p').textContent = 
+                        `Semester ${data.data.semester} - Academic Year 2024-25`;
+                    
+                    // Update stats cards
+                    document.querySelectorAll('.course-stat-card h3')[0].textContent = data.data.total_courses;
+                    document.querySelectorAll('.course-stat-card h3')[3].textContent = data.data.total_credits;
+                    
+                    // Calculate on track vs needs attention
+                    const onTrack = data.data.courses.filter(c => c.attendance_percentage >= 75).length;
+                    const needsAttention = data.data.total_courses - onTrack;
+                    document.querySelectorAll('.course-stat-card h3')[1].textContent = onTrack;
+                    document.querySelectorAll('.course-stat-card h3')[2].textContent = needsAttention;
+                    
+                    // Load courses
+                    displayCourses(data.data.courses);
+                    
+                    console.log('✅ Courses loaded successfully!');
+                } else {
+                    alert('Failed to load courses data');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error loading courses. Please login again.');
+              
+            });
+    });
+    
+function displayCourses(courses) {
+    const container = document.getElementById('courseContainer');
+    container.innerHTML = '';
+    
+    const icons = ['network-wired', 'database', 'code', 'robot', 'shield-alt', 'project-diagram'];
+    const colors = ['purple', 'blue', 'green', 'orange', 'red', 'teal'];
+    
+    courses.forEach((course, index) => {
+        const icon = icons[index % icons.length];
+        const color = colors[index % colors.length];
+        
+        // FIX: Convert to number properly
+        const attendance = parseFloat(course.attendance_percentage);
+        const progress = isNaN(attendance) ? 0 : attendance;
+        
+        let progressColor = 'bg-success';
+        if (progress < 75) progressColor = 'bg-danger';
+        else if (progress < 85) progressColor = 'bg-warning';
+        
+        const courseCard = `
+            <div class="col-lg-6">
+                <div class="course-card">
+                    <div class="course-header">
+                        <div class="course-icon ${color}">
+                            <i class="fas fa-${icon}"></i>
+                        </div>
+                        <div class="course-title-section">
+                            <h5>${course.course_name}</h5>
+                            <p class="course-code">${course.course_code}</p>
+                        </div>
+                        <span class="course-credits">${course.credits} Credits</span>
+                    </div>
+                    <div class="course-body">
+                        <div class="course-info">
+                            <div class="info-item">
+                                <i class="fas fa-user-tie"></i>
+                                <span>${course.faculty_name || 'TBA'}</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-envelope"></i>
+                                <span>${course.faculty_email || 'N/A'}</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-calendar-check"></i>
+                                <span>Attendance: ${progress.toFixed(1)}%</span>
+                            </div>
+                        </div>
+                        <div class="course-progress">
+                            <div class="progress-header">
+                                <span>Attendance Progress</span>
+                                <span class="progress-percent">${progress.toFixed(0)}%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar ${progressColor}" style="width: ${progress}%"></div>
+                            </div>
+                        </div>
+                        <div class="course-footer">
+                            <button class="btn btn-outline-primary btn-sm" onclick="viewDetails(${course.course_id})">
+                                View Details
+                            </button>
+                            <button class="btn btn-primary btn-sm" onclick="alert('Course materials feature coming soon!')">
+                                Course Materials
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        container.innerHTML += courseCard;
+    });
+}
+    
+    function viewDetails(courseId) {
+        const course = allCoursesData.courses.find(c => c.course_id === courseId);
+        
+        if (course) {
+            const details = `
+Course: ${course.course_name} (${course.course_code})
+Credits: ${course.credits}
+Faculty: ${course.faculty_name}
+Email: ${course.faculty_email}
+
+Description:
+${course.description || 'No description available'}
+
+Attendance: ${course.classes_attended}/${course.total_classes} (${course.attendance_percentage?.toFixed(1)}%)
+            `;
+            
+            alert(details);
+            // Later you can create a modal instead of alert
+        }
+    }
+    
+    // Search functionality
+    document.getElementById('searchCourse').addEventListener('input', function(e) {
+        if (!allCoursesData) return;
+        
+        const searchTerm = e.target.value.toLowerCase();
+        const filtered = allCoursesData.courses.filter(course => 
+            course.course_name.toLowerCase().includes(searchTerm) ||
+            course.course_code.toLowerCase().includes(searchTerm) ||
+            course.faculty_name.toLowerCase().includes(searchTerm)
+        );
+        
+        displayCourses(filtered);
+    });
+    </script>
+</body>
+</html>

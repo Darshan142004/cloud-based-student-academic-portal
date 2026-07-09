@@ -1,0 +1,10 @@
+# Local database credentials
+backend/config/local.env.php
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE settings
+.vscode/
+.idea/

@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Activities - Admin Panel</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/admin-style.css">
+    
+    <style>
+        .activity-badge {
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .badge-sports { background: #e3f2fd; color: #1976d2; }
+        .badge-cultural { background: #f3e5f5; color: #7b1fa2; }
+        .badge-club { background: #e8f5e9; color: #388e3c; }
+        .badge-competition { background: #fff3e0; color: #f57c00; }
+        .badge-certification { background: #fce4ec; color: #c2185b; }
+        .badge-volunteer { background: #e0f2f1; color: #00796b; }
+        .badge-achievement { background: #fff9c4; color: #f57f17; }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="admin-logo">
+                <h2><i class="fas fa-graduation-cap me-2"></i>Admin Panel</h2>
+            </div>
+            
+            <ul class="admin-menu">
+                <li>
+                    <a href="dashboard.html">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="students.html">
+                        <i class="fas fa-users"></i>
+                        <span>Manage Students</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="activities.html" class="active">
+                        <i class="fas fa-trophy"></i>
+                        <span>Manage Activities</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="../index.html">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Header -->
+            <div class="admin-header">
+                <div>
+                    <h1>Manage Activities</h1>
+                    <p class="text-muted mb-0">View, add, edit, and delete extracurricular activities</p>
+                </div>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addActivityModal">
+                    <i class="fas fa-plus me-2"></i>Add New Activity
+                </button>
+            </div>
+
+            <!-- Search and Filter -->
+            <div class="content-card mb-4">
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                    <div class="search-box">
+                        <input type="text" class="form-control" id="searchActivity" placeholder="Search activities...">
+                    </div>
+                    <div class="d-flex gap-2">
+                        <select class="form-select" id="filterType" style="width: 200px;">
+                            <option value="">All Types</option>
+                            <option value="Sports">Sports</option>
+                            <option value="Cultural">Cultural</option>
+                            <option value="Club">Club</option>
+                            <option value="Competition">Competition</option>
+                            <option value="Certification">Certification</option>
+                            <option value="Volunteer">Volunteer</option>
+                            <option value="Achievement">Achievement</option>
+                        </select>
+                        <select class="form-select" id="filterStatus" style="width: 150px;">
+                            <option value="">All Status</option>
+                            <option value="Ongoing">Ongoing</option>
+                            <option value="Completed">Completed</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activities Table -->
+            <div class="content-card">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Activity Name</th>
+                                <th>Type</th>
+                                <th>Organization</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Points</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="activitiesTableBody">
+                            <tr>
+                                <td colspan="8" class="text-center">Loading...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Activity Modal -->
+    <div class="modal fade" id="addActivityModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Activity</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addActivityForm">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Select Student *</label>
+                                <select class="form-select" name="student_id" id="studentSelect" required>
+                                    <option value="">-- Select Student --</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Activity Type *</label>
+                                <select class="form-select" name="activity_type" required>
+                                    <option value="Sports">Sports</option>
+                                    <option value="Cultural">Cultural</option>
+                                    <option value="Club">Club</option>
+                                    <option value="Competition">Competition</option>
+                                    <option value="Certification">Certification</option>
+                                    <option value="Volunteer">Volunteer</option>
+                                    <option value="Achievement">Achievement</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Activity Name *</label>
+                                <input type="text" class="form-control" name="activity_name" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Description</label>
+                                <textarea class="form-control" name="description" rows="3"></textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Organization</label>
+                                <input type="text" class="form-control" name="organization">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Achievement/Award</label>
+                                <input type="text" class="form-control" name="achievement">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Start Date</label>
+                                <input type="date" class="form-control" name="start_date">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">End Date</label>
+                                <input type="date" class="form-control" name="end_date">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Status</label>
+                                <select class="form-select" name="status">
+                                    <option value="Ongoing">Ongoing</option>
+                                    <option value="Completed" selected>Completed</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Activity Points</label>
+                                <input type="number" class="form-control" name="points" value="50" min="0">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="addActivity()">Add Activity</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Activity Modal -->
+    <div class="modal fade" id="editActivityModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Activity</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editActivityForm">
+                        <input type="hidden" name="activity_id" id="edit_activity_id">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Student</label>
+                                <input type="text" class="form-control" id="edit_student_name" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Activity Type *</label>
+                                <select class="form-select" name="activity_type" id="edit_activity_type" required>
+                                    <option value="Sports">Sports</option>
+                                    <option value="Cultural">Cultural</option>
+                                    <option value="Club">Club</option>
+                                    <option value="Competition">Competition</option>
+                                    <option value="Certification">Certification</option>
+                                    <option value="Volunteer">Volunteer</option>
+                                    <option value="Achievement">Achievement</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Activity Name *</label>
+                                <input type="text" class="form-control" name="activity_name" id="edit_activity_name" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Description</label>
+                                <textarea class="form-control" name="description" id="edit_description" rows="3"></textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Organization</label>
+                                <input type="text" class="form-control" name="organization" id="edit_organization">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Achievement/Award</label>
+                                <input type="text" class="form-control" name="achievement" id="edit_achievement">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Start Date</label>
+                                <input type="date" class="form-control" name="start_date" id="edit_start_date">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">End Date</label>
+                                <input type="date" class="form-control" name="end_date" id="edit_end_date">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Status</label>
+                                <select class="form-select" name="status" id="edit_status">
+                                    <option value="Ongoing">Ongoing</option>
+                                    <option value="Completed">Completed</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Activity Points</label>
+                                <input type="number" class="form-control" name="points" id="edit_points" min="0">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="updateActivity()">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+    let allActivities = [];
+    let allStudents = [];
+
+    window.addEventListener('DOMContentLoaded', function() {
+        loadActivities();
+        loadStudentsList();
+        setupFilters();
+    });
+
+    function loadActivities() {
+        fetch('../backend/api/admin/get_all_activities.php')
+            .then(response => response.json())
+            .then(data => {
+                console.log('Activities:', data);
+                
+                if (data.success) {
+                    allActivities = data.data;
+                    displayActivities(allActivities);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function loadStudentsList() {
+        fetch('../backend/api/admin/get_students.php')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    allStudents = data.data;
+                    const select = document.getElementById('studentSelect');
+                    select.innerHTML = '<option value="">-- Select Student --</option>' +
+                        allStudents.map(s => 
+                            `<option value="${s.student_id}">${s.enrollment_id} - ${s.first_name} ${s.last_name}</option>`
+                        ).join('');
+                }
+            });
+    }
+
+    function displayActivities(activities) {
+        const tbody = document.getElementById('activitiesTableBody');
+        
+        if (activities.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="8" class="text-center">No activities found</td></tr>';
+            return;
+        }
+        
+        tbody.innerHTML = activities.map(a => {
+            const typeClass = `activity-badge badge-${a.activity_type.toLowerCase()}`;
+            return `
+                <tr>
+                    <td><strong>${a.student_name}</strong><br><small class="text-muted">${a.enrollment_id}</small></td>
+                    <td>${a.activity_name}</td>
+                    <td><span class="${typeClass}">${a.activity_type}</span></td>
+                    <td>${a.organization || 'N/A'}</td>
+                    <td><small>${formatDate(a.start_date)}</small></td>
+                    <td><span class="badge ${a.status === 'Ongoing' ? 'bg-success' : 'bg-secondary'}">${a.status}</span></td>
+                    <td><strong>${a.points}</strong></td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-sm btn-primary" onclick="editActivity(${a.activity_id})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteActivity(${a.activity_id}, '${a.activity_name}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    function setupFilters() {
+        document.getElementById('searchActivity').addEventListener('input', filterActivities);
+        document.getElementById('filterType').addEventListener('change', filterActivities);
+        document.getElementById('filterStatus').addEventListener('change', filterActivities);
+    }
+
+    function filterActivities() {
+        const search = document.getElementById('searchActivity').value.toLowerCase();
+        const type = document.getElementById('filterType').value;
+        const status = document.getElementById('filterStatus').value;
+        
+        let filtered = allActivities;
+        
+        if (search) {
+            filtered = filtered.filter(a => 
+                a.activity_name.toLowerCase().includes(search) ||
+                a.student_name.toLowerCase().includes(search) ||
+                a.enrollment_id.toLowerCase().includes(search)
+            );
+        }
+        
+        if (type) {
+            filtered = filtered.filter(a => a.activity_type === type);
+        }
+        
+        if (status) {
+            filtered = filtered.filter(a => a.status === status);
+        }
+        
+        displayActivities(filtered);
+    }
+
+    function addActivity() {
+        const form = document.getElementById('addActivityForm');
+        const formData = new FormData(form);
+        
+        fetch('../backend/api/admin/add_activity.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('✅ Activity added successfully!');
+                bootstrap.Modal.getInstance(document.getElementById('addActivityModal')).hide();
+                form.reset();
+                loadActivities();
+            } else {
+                alert('❌ ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('❌ Error adding activity');
+        });
+    }
+
+    function editActivity(activityId) {
+        const activity = allActivities.find(a => a.activity_id == activityId);
+        
+        if (activity) {
+            document.getElementById('edit_activity_id').value = activity.activity_id;
+            document.getElementById('edit_student_name').value = activity.student_name;
+            document.getElementById('edit_activity_type').value = activity.activity_type;
+            document.getElementById('edit_activity_name').value = activity.activity_name;
+            document.getElementById('edit_description').value = activity.description || '';
+            document.getElementById('edit_organization').value = activity.organization || '';
+            document.getElementById('edit_achievement').value = activity.achievement || '';
+            document.getElementById('edit_start_date').value = activity.start_date || '';
+            document.getElementById('edit_end_date').value = activity.end_date || '';
+            document.getElementById('edit_status').value = activity.status;
+            document.getElementById('edit_points').value = activity.points;
+            
+            new bootstrap.Modal(document.getElementById('editActivityModal')).show();
+        }
+    }
+
+    function updateActivity() {
+        const form = document.getElementById('editActivityForm');
+        const formData = new FormData(form);
+        
+        fetch('../backend/api/admin/update_activity.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('✅ Activity updated!');
+                bootstrap.Modal.getInstance(document.getElementById('editActivityModal')).hide();
+                loadActivities();
+            } else {
+                alert('❌ ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('❌ Error updating activity');
+        });
+    }
+
+    function deleteActivity(activityId, activityName) {
+        if (confirm(`Delete activity: ${activityName}?`)) {
+            const formData = new FormData();
+            formData.append('activity_id', activityId);
+            
+            fetch('../backend/api/admin/delete_activity.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('✅ Activity deleted!');
+                    loadActivities();
+                } else {
+                    alert('❌ ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('❌ Error deleting activity');
+            });
+        }
+    }
+
+    function formatDate(dateString) {
+        if (!dateString) return 'N/A';
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    }
+    </script>
+</body>
+</html>

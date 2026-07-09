@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - EduTrack</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Chart.js for graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="logo">
+            <h3><i class="fas fa-graduation-cap me-2"></i>EduTrack</h3>
+        </div>
+        
+        <ul class="nav-menu">
+            <li class="active">
+                <a href="dashboard.html">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="courses.html">
+                    <i class="fas fa-book"></i>
+                    <span>Courses</span>
+                </a>
+            </li>
+            <li>
+                <a href="grades.html">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Grades</span>
+                </a>
+            </li>
+            <li>
+                <a href="attendance.html">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Attendance</span>
+                </a>
+            </li>
+            <li>
+                <a href="assignments.html">
+                    <i class="fas fa-tasks"></i>
+                    <span>Assignments</span>
+                </a>
+            </li>
+              <li>
+                <a href="extracurricular.html">
+                    <i class="fas fa-trophy"></i>
+                    <span>Activities</span>
+                </a>
+            </li>
+            <li>
+                <a href="profile.html">
+                    <i class="fas fa-user"></i>
+                    <span>Profile</span>
+                </a>
+            </li>
+        </ul>
+        
+        <div class="sidebar-footer">
+            <a href="index.html" class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Top Navigation -->
+        <nav class="top-nav">
+            <div class="nav-left">
+                <button class="toggle-btn" id="toggleSidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h4 class="page-title">Dashboard</h4>
+            </div>
+            <div class="nav-right">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search...">
+                </div>
+                <div class="notification">
+                    <i class="fas fa-bell"></i>
+                    <span class="badge">3</span>
+                </div>
+                <div class="profile-dropdown">
+                    <img src="https://ui-avatars.com/api/?name=John+Doe&background=667eea&color=fff" alt="Profile">
+                    <span>John Doe</span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-container">
+            <!-- Welcome Section -->
+            <div class="welcome-section">
+                <div>
+                    <h2>Welcome back, John! 👋</h2>
+                    <p>Here's what's happening with your academics today</p>
+                </div>
+                <div class="welcome-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Current Semester</span>
+                        <span class="stat-value">5th Sem</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Academic Year</span>
+                        <span class="stat-value">2024-25</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="row g-4 mb-4">
+                <div class="col-md-3">
+                    <div class="stat-card purple">
+                        <div class="stat-icon">
+                            <i class="fas fa-medal"></i>
+                        </div>
+                        <div class="stat-details">
+                            <h3>8.5</h3>
+                            <p>Current CGPA</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card blue">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-details">
+                            <h3>92%</h3>
+                            <p>Attendance</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card green">
+                        <div class="stat-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <div class="stat-details">
+                            <h3>6</h3>
+                            <p>Active Courses</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card orange">
+                        <div class="stat-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="stat-details">
+                            <h3>3</h3>
+                            <p>Pending Tasks</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Row -->
+            <div class="row g-4 mb-4">
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-chart-line me-2"></i>Academic Progress</h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="progressChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-pie-chart me-2"></i>Grade Distribution</h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="gradeChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity & Upcoming -->
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-clock me-2"></i>Upcoming Deadlines</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="deadline-item">
+                                <div class="deadline-info">
+                                    <h6>Data Structures Assignment</h6>
+                                    <p><i class="fas fa-calendar"></i> Due: Jan 5, 2025</p>
+                                </div>
+                                <span class="badge bg-danger">Urgent</span>
+                            </div>
+                            <div class="deadline-item">
+                                <div class="deadline-info">
+                                    <h6>Web Development Project</h6>
+                                    <p><i class="fas fa-calendar"></i> Due: Jan 10, 2025</p>
+                                </div>
+                                <span class="badge bg-warning">Medium</span>
+                            </div>
+                            <div class="deadline-item">
+                                <div class="deadline-info">
+                                    <h6>Database Lab Report</h6>
+                                    <p><i class="fas fa-calendar"></i> Due: Jan 15, 2025</p>
+                                </div>
+                                <span class="badge bg-success">Low</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-star me-2"></i>Recent Grades</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="grade-item">
+                                <div class="subject-info">
+                                    <h6>Computer Networks</h6>
+                                    <p>Mid-term Exam</p>
+                                </div>
+                                <div class="grade-badge excellent">A+</div>
+                            </div>
+                            <div class="grade-item">
+                                <div class="subject-info">
+                                    <h6>Operating Systems</h6>
+                                    <p>Assignment 2</p>
+                                </div>
+                                <div class="grade-badge good">A</div>
+                            </div>
+                            <div class="grade-item">
+                                <div class="subject-info">
+                                    <h6>Software Engineering</h6>
+                                    <p>Quiz 3</p>
+                                </div>
+                                <div class="grade-badge average">B+</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+   <!-- Custom JS -->
+    <script src="js/dashboard.js"></script>
+    
+    <!-- Dashboard Data Loader -->
+    <script>
+    // Wait for everything to load
+    setTimeout(function() {
+        console.log('Fetching dashboard data...');
+        
+        fetch('./backend/api/get_dashboard.php')
+            .then(response => {
+                console.log('Response received');
+                return response.json();
+            })
+            .then(data => {
+                console.log('Data:', data);
+                
+                if (data.success) {
+                    const student = data.data.student;
+                    const stats = data.data.stats;
+                    
+                    // Update welcome message
+                    const welcomeH2 = document.querySelector('.welcome-section h2');
+                    if (welcomeH2) {
+                        welcomeH2.textContent = `Welcome back, ${student.name.split(' ')[0]}! 👋`;
+                        console.log('Updated welcome message');
+                    }
+                    
+                    // Update profile dropdown
+                    const profileSpan = document.querySelector('.profile-dropdown span');
+                    if (profileSpan) {
+                        profileSpan.textContent = student.name;
+                        console.log('Updated profile name');
+                    }
+                    
+                    // Update profile dropdown image
+                    const profileImg = document.querySelector('.profile-dropdown img');
+                    if (profileImg) {
+                        if (student.profile_photo && student.profile_photo !== 'default-avatar.png') {
+                            profileImg.src = `uploads/profile_photos/${student.profile_photo}`;
+                        } else {
+                            profileImg.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(student.name)}&background=667eea&color=fff`;
+                        }
+                        console.log('Updated profile image');
+                    }
+                    
+                    // Update semester
+                    const semesterValue = document.querySelectorAll('.stat-value')[0];
+                    if (semesterValue) {
+                        semesterValue.textContent = `${student.semester}th Sem`;
+                        console.log('Updated semester');
+                    }
+                    
+                    // Update CGPA
+                    const cgpaH3 = document.querySelectorAll('.stat-card h3')[0];
+                    if (cgpaH3) {
+                        cgpaH3.textContent = stats.cgpa;
+                        console.log('Updated CGPA');
+                    }
+                    
+                    // Update Attendance
+                    const attendanceH3 = document.querySelectorAll('.stat-card h3')[1];
+                    if (attendanceH3) {
+                        attendanceH3.textContent = stats.attendance + '%';
+                        console.log('Updated attendance');
+                    }
+                    
+                    // Update Courses
+                    const coursesH3 = document.querySelectorAll('.stat-card h3')[2];
+                    if (coursesH3) {
+                        coursesH3.textContent = stats.total_courses;
+                        console.log('Updated courses');
+                    }
+                    
+                    console.log('✅ Dashboard loaded successfully!');
+                } else {
+                    console.error('API returned success: false');
+                }
+            })
+            .catch(error => {
+                console.error('Fetch Error:', error);
+            });
+    }, 500); // Wait 500ms for page to fully load
+    </script>
+</body>
+</html>

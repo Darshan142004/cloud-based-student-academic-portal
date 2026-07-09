@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Students - Admin Panel</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/admin-style.css">
+    
+    <style>
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+        
+        .search-box {
+            max-width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="admin-logo">
+                <h2><i class="fas fa-graduation-cap me-2"></i>Admin Panel</h2>
+            </div>
+            
+            <ul class="admin-menu">
+                <li>
+                    <a href="dashboard.html">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="students.html" class="active">
+                        <i class="fas fa-users"></i>
+                        <span>Manage Students</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="activities.html">
+                        <i class="fas fa-trophy"></i>
+                        <span>Manage Activities</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="../index.html">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Header -->
+            <div class="admin-header">
+                <div>
+                    <h1>Manage Students</h1>
+                    <p class="text-muted mb-0">View, add, edit, and delete student records</p>
+                </div>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addStudentModal">
+                    <i class="fas fa-user-plus me-2"></i>Add New Student
+                </button>
+            </div>
+
+            <!-- Search and Filter -->
+            <div class="content-card mb-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="search-box">
+                        <input type="text" class="form-control" id="searchStudent" placeholder="Search students...">
+                    </div>
+                    <div>
+                        <select class="form-select" id="filterSemester">
+                            <option value="">All Semesters</option>
+                            <option value="1">Semester 1</option>
+                            <option value="2">Semester 2</option>
+                            <option value="3">Semester 3</option>
+                            <option value="4">Semester 4</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Students Table -->
+            <div class="content-card">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Enrollment ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Semester</th>
+                                <th>Program</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentsTableBody">
+                            <tr>
+                                <td colspan="7" class="text-center">Loading...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Student Modal -->
+    <div class="modal fade" id="addStudentModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Student</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addStudentForm">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Enrollment ID *</label>
+                                <input type="text" class="form-control" name="enrollment_id" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Password *</label>
+                                <input type="password" class="form-control" name="password" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">First Name *</label>
+                                <input type="text" class="form-control" name="first_name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Last Name *</label>
+                                <input type="text" class="form-control" name="last_name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Email *</label>
+                                <input type="email" class="form-control" name="email" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Phone</label>
+                                <input type="tel" class="form-control" name="phone">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Date of Birth</label>
+                                <input type="date" class="form-control" name="date_of_birth">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Gender</label>
+                                <select class="form-select" name="gender">
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Current Semester *</label>
+                                <select class="form-select" name="current_semester" required>
+                                    <option value="1">Semester 1</option>
+                                    <option value="2">Semester 2</option>
+                                    <option value="3">Semester 3</option>
+                                    <option value="4">Semester 4</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Admission Year *</label>
+                                <input type="number" class="form-control" name="admission_year" value="2023" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Address</label>
+                                <textarea class="form-control" name="address" rows="2"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="addStudent()">Add Student</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Student Modal -->
+    <div class="modal fade" id="editStudentModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Student</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editStudentForm">
+                        <input type="hidden" name="student_id" id="edit_student_id">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Enrollment ID</label>
+                                <input type="text" class="form-control" id="edit_enrollment_id" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">First Name *</label>
+                                <input type="text" class="form-control" name="first_name" id="edit_first_name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Last Name *</label>
+                                <input type="text" class="form-control" name="last_name" id="edit_last_name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Email *</label>
+                                <input type="email" class="form-control" name="email" id="edit_email" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Phone</label>
+                                <input type="tel" class="form-control" name="phone" id="edit_phone">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Current Semester *</label>
+                                <select class="form-select" name="current_semester" id="edit_semester" required>
+                                    <option value="1">Semester 1</option>
+                                    <option value="2">Semester 2</option>
+                                    <option value="3">Semester 3</option>
+                                    <option value="4">Semester 4</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Address</label>
+                                <textarea class="form-control" name="address" id="edit_address" rows="2"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="updateStudent()">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+    let allStudents = [];
+
+    window.addEventListener('DOMContentLoaded', function() {
+        loadStudents();
+        setupSearch();
+    });
+
+    function loadStudents() {
+        fetch('../backend/api/admin/get_students.php')
+            .then(response => response.json())
+            .then(data => {
+                console.log('Students data:', data);
+                
+                if (data.success) {
+                    allStudents = data.data;
+                    displayStudents(allStudents);
+                } else {
+                    alert('Failed to load students');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    function displayStudents(students) {
+        const tbody = document.getElementById('studentsTableBody');
+        
+        if (students.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="7" class="text-center">No students found</td></tr>';
+            return;
+        }
+        
+        tbody.innerHTML = students.map(s => `
+            <tr>
+                <td><strong>${s.enrollment_id}</strong></td>
+                <td>${s.first_name} ${s.last_name}</td>
+                <td>${s.email}</td>
+                <td>${s.phone || 'N/A'}</td>
+                <td>Semester ${s.current_semester}</td>
+                <td>${s.program}</td>
+                <td>
+                    <div class="action-buttons">
+                    <button class="btn btn-sm btn-primary" onclick="editStudent(${s.student_id})">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteStudent(${s.student_id}, '${s.enrollment_id}')">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                    </div>
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    function setupSearch() {
+        document.getElementById('searchStudent').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const filtered = allStudents.filter(s => 
+                s.enrollment_id.toLowerCase().includes(searchTerm) ||
+                s.first_name.toLowerCase().includes(searchTerm) ||
+                s.last_name.toLowerCase().includes(searchTerm) ||
+                s.email.toLowerCase().includes(searchTerm)
+            );
+            displayStudents(filtered);
+        });
+
+        document.getElementById('filterSemester').addEventListener('change', function(e) {
+            const semester = e.target.value;
+            if (semester === '') {
+                displayStudents(allStudents);
+            } else {
+                const filtered = allStudents.filter(s => s.current_semester == semester);
+                displayStudents(filtered);
+            }
+        });
+    }
+
+    function addStudent() {
+        const form = document.getElementById('addStudentForm');
+        const formData = new FormData(form);
+        
+        fetch('../backend/api/admin/add_student.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('✅ Student added successfully!');
+                bootstrap.Modal.getInstance(document.getElementById('addStudentModal')).hide();
+                form.reset();
+                loadStudents();
+            } else {
+                alert('❌ ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('❌ Error adding student');
+        });
+    }
+
+function editStudent(studentId) {
+    console.log('Edit button clicked! Student ID:', studentId);
+    console.log('All students array:', allStudents);
+    console.log('First student ID type:', typeof allStudents[0].student_id);  // NEW
+    console.log('Searching for ID type:', typeof studentId);  // NEW
+    console.log('First student object:', allStudents[0]); 
+    
+   const student = allStudents.find(s => parseInt(s.student_id) === studentId);
+    console.log('Found student:', student);
+    
+    if (student) {
+        console.log('Student found, filling form...');
+        
+        // Fill form fields
+        document.getElementById('edit_student_id').value = student.student_id;
+        document.getElementById('edit_enrollment_id').value = student.enrollment_id;
+        document.getElementById('edit_first_name').value = student.first_name;
+        document.getElementById('edit_last_name').value = student.last_name;
+        document.getElementById('edit_email').value = student.email;
+        document.getElementById('edit_phone').value = student.phone || '';
+        document.getElementById('edit_semester').value = student.current_semester;
+        document.getElementById('edit_address').value = student.address || '';
+        
+        console.log('Form filled, opening modal...');
+        
+        // Open modal
+        const modalElement = document.getElementById('editStudentModal');
+        console.log('Modal element:', modalElement);
+        
+        if (modalElement) {
+            const modal = new bootstrap.Modal(modalElement);
+            modal.show();
+            console.log('Modal.show() called');
+        } else {
+            console.error('ERROR: Modal element not found!');
+        }
+    } else {
+        console.error('ERROR: Student not found in array!');
+    }
+}
+
+    function updateStudent() {
+        const form = document.getElementById('editStudentForm');
+        const formData = new FormData(form);
+        
+        fetch('../backend/api/admin/update_student.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('✅ Student updated successfully!');
+                bootstrap.Modal.getInstance(document.getElementById('editStudentModal')).hide();
+                loadStudents();
+            } else {
+                alert('❌ ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('❌ Error updating student');
+        });
+    }
+
+    function deleteStudent(studentId, enrollmentId) {
+        if (confirm(`Are you sure you want to delete student ${enrollmentId}?`)) {
+            const formData = new FormData();
+            formData.append('student_id', studentId);
+            
+            fetch('../backend/api/admin/delete_student.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('✅ Student deleted successfully!');
+                    loadStudents();
+                } else {
+                    alert('❌ ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('❌ Error deleting student');
+            });
+        }
+    }
+    </script>
+</body>
+</html>
