@@ -300,3 +300,13 @@ body {
         grid-template-columns: 1fr;
     }
 }
+
+/* Chart Card Enhancements */
+.chart-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.chart-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08) !important;
+}

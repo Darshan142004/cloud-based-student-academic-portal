@@ -11,6 +11,9 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/admin-style.css">
 </head>
@@ -123,6 +126,58 @@
                 </div>
             </div>
 
+            <!-- Academic Analytics Section -->
+            <div class="content-card mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h3><i class="fas fa-chart-pie me-2"></i>Academic Analytics</h3>
+                    <div class="badge bg-primary px-3 py-2 fs-6" style="border-radius: 8px;">
+                        System CGPA: <strong id="systemCgpaValue">0.00</strong>
+                    </div>
+                </div>
+
+                <div class="row g-4">
+                    <!-- Attendance Distribution -->
+                    <div class="col-md-6 col-lg-3">
+                        <div class="chart-card p-3 border rounded bg-white shadow-sm h-100">
+                            <h6 class="text-center fw-bold mb-3"><i class="fas fa-user-check me-2"></i>Attendance Distribution</h6>
+                            <div style="height: 200px; position: relative;">
+                                <canvas id="attendanceDistributionChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Semester Distribution -->
+                    <div class="col-md-6 col-lg-3">
+                        <div class="chart-card p-3 border rounded bg-white shadow-sm h-100">
+                            <h6 class="text-center fw-bold mb-3"><i class="fas fa-layer-group me-2"></i>Students per Semester</h6>
+                            <div style="height: 200px; position: relative;">
+                                <canvas id="semesterDistributionChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Course Attendance -->
+                    <div class="col-md-6 col-lg-3">
+                        <div class="chart-card p-3 border rounded bg-white shadow-sm h-100">
+                            <h6 class="text-center fw-bold mb-3"><i class="fas fa-book-open me-2"></i>Course-wise Attendance</h6>
+                            <div style="height: 200px; position: relative;">
+                                <canvas id="courseAttendanceChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Grade Distribution -->
+                    <div class="col-md-6 col-lg-3">
+                        <div class="chart-card p-3 border rounded bg-white shadow-sm h-100">
+                            <h6 class="text-center fw-bold mb-3"><i class="fas fa-medal me-2"></i>Grade Distribution</h6>
+                            <div style="height: 200px; position: relative;">
+                                <canvas id="gradePerformanceChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Recent Students -->
             <div class="content-card">
                 <h3><i class="fas fa-users me-2"></i>Recent Students</h3>
@@ -151,54 +206,7 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
-    <script>
-    window.addEventListener('DOMContentLoaded', function() {
-        loadDashboardData();
-    });
-
-    function loadDashboardData() {
-        // Load stats
-        fetch('../backend/api/admin/get_dashboard_stats.php')
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    document.getElementById('totalStudents').textContent = data.data.total_students;
-                    document.getElementById('totalActivities').textContent = data.data.total_activities;
-                    document.getElementById('totalCourses').textContent = data.data.total_courses;
-                    document.getElementById('avgAttendance').textContent = data.data.avg_attendance + '%';
-                    
-                    // Update admin name if available
-                    if (data.data.admin_name) {
-                        document.getElementById('adminName').textContent = data.data.admin_name;
-                    }
-                    
-                    // Load recent students
-                    displayRecentStudents(data.data.recent_students);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-    }
-
-    function displayRecentStudents(students) {
-        const tbody = document.getElementById('recentStudents');
-        
-        if (students.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="5" class="text-center">No students found</td></tr>';
-            return;
-        }
-        
-        tbody.innerHTML = students.map(s => `
-            <tr>
-                <td>${s.enrollment_id}</td>
-                <td>${s.first_name} ${s.last_name}</td>
-                <td>${s.email}</td>
-                <td>${s.current_semester}</td>
-                <td>${s.program}</td>
-            </tr>
-        `).join('');
-    }
-    </script>
+    <!-- Admin Dashboard JS -->
+    <script src="js/dashboard.js"></script>
 </body>
 </html>
