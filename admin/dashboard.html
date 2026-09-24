@@ -127,50 +127,134 @@
             </div>
 
             <!-- Academic Analytics Section -->
-            <div class="content-card mb-4">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h3><i class="fas fa-chart-pie me-2"></i>Academic Analytics</h3>
-                    <div class="badge bg-primary px-3 py-2 fs-6" style="border-radius: 8px;">
-                        System CGPA: <strong id="systemCgpaValue">0.00</strong>
+            <div class="content-card mb-4 analytics-section">
+                <!-- Section Header -->
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4 pb-3 border-bottom">
+                    <div>
+                        <h3 class="mb-1"><i class="fas fa-chart-pie me-2 text-primary"></i>Academic Analytics</h3>
+                        <p class="text-muted small mb-0">System-wide academic performance & student attendance analytics</p>
+                    </div>
+                    <div class="cgpa-pill d-flex align-items-center px-3 py-2 rounded-3 text-white shadow-sm">
+                        <i class="fas fa-award me-2 fs-5"></i>
+                        <div>
+                            <div class="small opacity-75 leading-tight">System CGPA</div>
+                            <strong id="systemCgpaValue" class="fs-5 leading-none">0.00</strong>
+                        </div>
                     </div>
                 </div>
 
+                <!-- Attendance Risk Summary -->
+                <div class="risk-summary-container mb-4 p-3 rounded-3 border">
+                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+                        <div class="fw-bold text-dark d-flex align-items-center">
+                            <i class="fas fa-shield-halved text-primary me-2 fs-5"></i>
+                            <span>Attendance Risk Summary</span>
+                        </div>
+                        <span class="badge bg-light text-secondary border">Real-time Student Metrics</span>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-12 col-md-4">
+                            <div class="risk-item risk-safe p-3 rounded-3 d-flex justify-content-between align-items-center border-start border-4 border-success bg-white shadow-sm">
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="risk-icon-wrapper rounded-circle bg-success text-white d-flex align-items-center justify-content-center">
+                                        <i class="fas fa-check small"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold text-dark">Safe</div>
+                                        <div class="text-muted small">&ge; 85% Attendance</div>
+                                    </div>
+                                </div>
+                                <div class="risk-count text-success fw-bold fs-4" id="riskSafeCount">0 <span class="fs-6 fw-normal text-muted">students</span></div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <div class="risk-item risk-warning p-3 rounded-3 d-flex justify-content-between align-items-center border-start border-4 border-warning bg-white shadow-sm">
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="risk-icon-wrapper rounded-circle bg-warning text-white d-flex align-items-center justify-content-center">
+                                        <i class="fas fa-exclamation small"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold text-dark">Warning</div>
+                                        <div class="text-muted small">75% - 84.99%</div>
+                                    </div>
+                                </div>
+                                <div class="risk-count text-warning-emphasis fw-bold fs-4" id="riskWarningCount">0 <span class="fs-6 fw-normal text-muted">students</span></div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <div class="risk-item risk-critical p-3 rounded-3 d-flex justify-content-between align-items-center border-start border-4 border-danger bg-white shadow-sm">
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="risk-icon-wrapper rounded-circle bg-danger text-white d-flex align-items-center justify-content-center">
+                                        <i class="fas fa-triangle-exclamation small"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold text-dark">Critical</div>
+                                        <div class="text-muted small">&lt; 75% Attendance</div>
+                                    </div>
+                                </div>
+                                <div class="risk-count text-danger fw-bold fs-4" id="riskCriticalCount">0 <span class="fs-6 fw-normal text-muted">students</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4 Chart Cards Grid -->
                 <div class="row g-4">
                     <!-- Attendance Distribution -->
-                    <div class="col-md-6 col-lg-3">
-                        <div class="chart-card p-3 border rounded bg-white shadow-sm h-100">
-                            <h6 class="text-center fw-bold mb-3"><i class="fas fa-user-check me-2"></i>Attendance Distribution</h6>
-                            <div style="height: 200px; position: relative;">
+                    <div class="col-12 col-md-6 col-xl-3">
+                        <div class="analytics-chart-card p-3 border rounded-3 bg-white shadow-sm h-100 d-flex flex-column">
+                            <div class="chart-card-header d-flex align-items-center gap-2 mb-3 pb-2 border-bottom">
+                                <span class="chart-icon-bg bg-primary-subtle text-primary rounded-2 p-2">
+                                    <i class="fas fa-user-check"></i>
+                                </span>
+                                <h6 class="fw-bold m-0 text-dark">Attendance Distribution</h6>
+                            </div>
+                            <div class="chart-body flex-grow-1" style="height: 200px; position: relative;">
                                 <canvas id="attendanceDistributionChart"></canvas>
                             </div>
                         </div>
                     </div>
 
                     <!-- Semester Distribution -->
-                    <div class="col-md-6 col-lg-3">
-                        <div class="chart-card p-3 border rounded bg-white shadow-sm h-100">
-                            <h6 class="text-center fw-bold mb-3"><i class="fas fa-layer-group me-2"></i>Students per Semester</h6>
-                            <div style="height: 200px; position: relative;">
+                    <div class="col-12 col-md-6 col-xl-3">
+                        <div class="analytics-chart-card p-3 border rounded-3 bg-white shadow-sm h-100 d-flex flex-column">
+                            <div class="chart-card-header d-flex align-items-center gap-2 mb-3 pb-2 border-bottom">
+                                <span class="chart-icon-bg bg-primary-subtle text-primary rounded-2 p-2">
+                                    <i class="fas fa-layer-group"></i>
+                                </span>
+                                <h6 class="fw-bold m-0 text-dark">Students per Semester</h6>
+                            </div>
+                            <div class="chart-body flex-grow-1" style="height: 200px; position: relative;">
                                 <canvas id="semesterDistributionChart"></canvas>
                             </div>
                         </div>
                     </div>
 
                     <!-- Course Attendance -->
-                    <div class="col-md-6 col-lg-3">
-                        <div class="chart-card p-3 border rounded bg-white shadow-sm h-100">
-                            <h6 class="text-center fw-bold mb-3"><i class="fas fa-book-open me-2"></i>Course-wise Attendance</h6>
-                            <div style="height: 200px; position: relative;">
+                    <div class="col-12 col-md-6 col-xl-3">
+                        <div class="analytics-chart-card p-3 border rounded-3 bg-white shadow-sm h-100 d-flex flex-column">
+                            <div class="chart-card-header d-flex align-items-center gap-2 mb-3 pb-2 border-bottom">
+                                <span class="chart-icon-bg bg-primary-subtle text-primary rounded-2 p-2">
+                                    <i class="fas fa-book-open"></i>
+                                </span>
+                                <h6 class="fw-bold m-0 text-dark">Course-wise Attendance</h6>
+                            </div>
+                            <div class="chart-body flex-grow-1" style="height: 200px; position: relative;">
                                 <canvas id="courseAttendanceChart"></canvas>
                             </div>
                         </div>
                     </div>
 
                     <!-- Grade Distribution -->
-                    <div class="col-md-6 col-lg-3">
-                        <div class="chart-card p-3 border rounded bg-white shadow-sm h-100">
-                            <h6 class="text-center fw-bold mb-3"><i class="fas fa-medal me-2"></i>Grade Distribution</h6>
-                            <div style="height: 200px; position: relative;">
+                    <div class="col-12 col-md-6 col-xl-3">
+                        <div class="analytics-chart-card p-3 border rounded-3 bg-white shadow-sm h-100 d-flex flex-column">
+                            <div class="chart-card-header d-flex align-items-center gap-2 mb-3 pb-2 border-bottom">
+                                <span class="chart-icon-bg bg-primary-subtle text-primary rounded-2 p-2">
+                                    <i class="fas fa-medal"></i>
+                                </span>
+                                <h6 class="fw-bold m-0 text-dark">Grade Distribution</h6>
+                            </div>
+                            <div class="chart-body flex-grow-1" style="height: 200px; position: relative;">
                                 <canvas id="gradePerformanceChart"></canvas>
                             </div>
                         </div>

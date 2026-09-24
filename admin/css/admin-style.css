@@ -301,12 +301,49 @@ body {
     }
 }
 
-/* Chart Card Enhancements */
-.chart-card {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+/* Academic Analytics UI Enhancements */
+.cgpa-pill {
+    background: linear-gradient(135deg, #0F52BA 0%, #2575FC 100%);
+    box-shadow: 0 4px 12px rgba(15, 82, 186, 0.25);
 }
 
-.chart-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08) !important;
+.risk-summary-container {
+    background: #f8fafc;
+    border-color: #e2e8f0 !important;
+}
+
+.risk-item {
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.risk-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06) !important;
+}
+
+.risk-icon-wrapper {
+    width: 32px;
+    height: 32px;
+    font-size: 13px;
+}
+
+.analytics-chart-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    border-color: #e2e8f0 !important;
+}
+
+.analytics-chart-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(15, 82, 186, 0.12) !important;
+    border-color: rgba(15, 82, 186, 0.3) !important;
+}
+
+.chart-icon-bg {
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(15, 82, 186, 0.1) !important;
+    color: #0F52BA !important;
 }

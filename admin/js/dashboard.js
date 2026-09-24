@@ -74,11 +74,21 @@ function loadAnalyticsData() {
 let attendanceChartInstance = null;
 function renderAttendanceDistributionChart(ranges) {
     const ctx = document.getElementById('attendanceDistributionChart');
-    if (!ctx) return;
     
     const safe = ranges?.safe || 0;
     const warning = ranges?.warning || 0;
     const critical = ranges?.critical || 0;
+
+    // Dynamically update Attendance Risk Summary counts
+    const safeElem = document.getElementById('riskSafeCount');
+    const warningElem = document.getElementById('riskWarningCount');
+    const criticalElem = document.getElementById('riskCriticalCount');
+
+    if (safeElem) safeElem.innerHTML = `${safe} <span class="fs-6 text-muted fw-normal">students</span>`;
+    if (warningElem) warningElem.innerHTML = `${warning} <span class="fs-6 text-muted fw-normal">students</span>`;
+    if (criticalElem) criticalElem.innerHTML = `${critical} <span class="fs-6 text-muted fw-normal">students</span>`;
+
+    if (!ctx) return;
 
     if (attendanceChartInstance) attendanceChartInstance.destroy();
     
@@ -96,10 +106,11 @@ function renderAttendanceDistributionChart(ranges) {
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            cutout: '65%',
             plugins: {
                 legend: {
                     position: 'bottom',
-                    labels: { padding: 10, font: { size: 11 } }
+                    labels: { padding: 8, font: { size: 10 }, usePointStyle: true }
                 },
                 tooltip: {
                     callbacks: {
