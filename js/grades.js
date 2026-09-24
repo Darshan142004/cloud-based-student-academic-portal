@@ -228,13 +228,20 @@ fetch('./backend/api/get_grades.php')
 
 // GPA Calculator
 function calculateGPA() {
-    const expectedGrade = parseFloat(document.getElementById('expectedGrade').value);
-    const credits = parseFloat(document.getElementById('credits').value);
+    const expectedGradeEl = document.getElementById('expectedGrade');
+    const creditsEl = document.getElementById('credits');
+    if (!expectedGradeEl || !creditsEl) return;
     
-    // Current CGPA calculation (simplified)
-    // In real app, this would fetch from database
-    const currentCGPA = 8.5;
-    const totalCredits = 80; // Completed credits
+    const expectedGrade = parseFloat(expectedGradeEl.value);
+    const credits = parseFloat(creditsEl.value);
+    
+    let currentCGPA = 8.5;
+    let totalCredits = 80;
+
+    if (window.allGradesData && window.allGradesData.cgpa) {
+        currentCGPA = parseFloat(window.allGradesData.cgpa);
+        totalCredits = parseFloat(window.allGradesData.total_credits || 80);
+    }
     
     // Calculate new CGPA
     const totalPoints = currentCGPA * totalCredits;
@@ -244,29 +251,25 @@ function calculateGPA() {
     
     // Display result with animation
     const resultElement = document.getElementById('predictedGPA');
-    resultElement.style.transform = 'scale(1.2)';
-    resultElement.style.transition = 'transform 0.3s ease';
-    
-    setTimeout(() => {
-        resultElement.textContent = predictedCGPA;
-        resultElement.style.transform = 'scale(1)';
-    }, 150);
+    if (resultElement) {
+        resultElement.style.transform = 'scale(1.15)';
+        resultElement.style.transition = 'transform 0.3s ease';
+        
+        setTimeout(() => {
+            resultElement.textContent = predictedCGPA;
+            resultElement.style.transform = 'scale(1)';
+        }, 150);
+    }
 }
 
 // Semester Filter for Table
 const semesterSelect = document.getElementById('semesterSelect');
-semesterSelect.addEventListener('change', (e) => {
-    const semester = e.target.value;
-    console.log(`Loading grades for Semester ${semester}`);
-    
-    // In real application, this would:
-    // 1. Make an API call to PHP backend
-    // 2. Fetch grades for selected semester
-    // 3. Update the table dynamically
-    
-    // For now, show alert
-    alert(`Loading Semester ${semester} grades...`);
-});
+if (semesterSelect) {
+    semesterSelect.addEventListener('change', (e) => {
+        const semester = e.target.value;
+        console.log(`Semester select changed to Semester ${semester}`);
+    });
+}
 
 // Export functionality
 const exportBtn = document.querySelector('.btn-outline-primary');

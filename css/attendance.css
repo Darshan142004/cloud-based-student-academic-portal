@@ -1,13 +1,14 @@
-/* Attendance Cards */
+/* Attendance Styles - EduPulse Design System */
 .attendance-card {
-    background: white;
-    padding: 25px;
-    border-radius: 15px;
+    background: #FFFFFF;
+    padding: 24px;
+    border-radius: 16px;
     display: flex;
     align-items: center;
     gap: 20px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.03);
+    border: 1px solid #E2E8F0;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
     position: relative;
     overflow: hidden;
 }
@@ -22,105 +23,115 @@
 }
 
 .attendance-card.green::before {
-    background: linear-gradient(135deg, #0F52BA 0%, #4AB7E0 100%);
+    background: linear-gradient(135deg, #10B981 0%, #0D9488 100%);
 }
 
 .attendance-card.blue::before {
-    background: linear-gradient(135deg, #0F52BA 0%, #2575FC 100%);
+    background: linear-gradient(135deg, #0284C7 0%, #2575FC 100%);
 }
 
 .attendance-card.orange::before {
-    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
 }
 
 .attendance-card.purple::before {
-    background: linear-gradient(135deg, #0F52BA 0%, #4AB7E0 100%);
+    background: linear-gradient(135deg, #6366F1 0%, #7C3AED 100%);
 }
 
 .attendance-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(15, 82, 186, 0.1);
+    border-color: #CBD5E1;
 }
 
 .att-icon {
-    width: 60px;
-    height: 60px;
-    border-radius: 12px;
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     color: white;
+    flex-shrink: 0;
 }
 
 .attendance-card.green .att-icon {
-    background: linear-gradient(135deg, #0F52BA 0%, #4AB7E0 100%);
+    background: linear-gradient(135deg, #10B981 0%, #0D9488 100%);
+    box-shadow: 0 6px 14px rgba(16, 185, 129, 0.3);
 }
 
 .attendance-card.blue .att-icon {
-    background: linear-gradient(135deg, #0F52BA 0%, #2575FC 100%);
+    background: linear-gradient(135deg, #0284C7 0%, #2575FC 100%);
+    box-shadow: 0 6px 14px rgba(2, 132, 199, 0.3);
 }
 
 .attendance-card.orange .att-icon {
-    background: linear-gradient(135deg, #D97706 0%, #F59E0B 100%);
+    background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+    box-shadow: 0 6px 14px rgba(245, 158, 11, 0.3);
 }
 
 .attendance-card.purple .att-icon {
-    background: linear-gradient(135deg, #0F52BA 0%, #3B82F6 100%);
+    background: linear-gradient(135deg, #6366F1 0%, #7C3AED 100%);
+    box-shadow: 0 6px 14px rgba(99, 102, 241, 0.3);
 }
 
 .att-details h2 {
-    font-size: 2.5rem;
-    font-weight: 700;
+    font-size: 2.2rem;
+    font-weight: 800;
     margin: 0;
-    color: #333;
+    color: #0F172A;
+    line-height: 1;
 }
 
 .att-details p {
-    margin: 5px 0 0 0;
-    color: #666;
-    font-size: 0.9rem;
+    margin: 4px 0 0 0;
+    color: #64748B;
+    font-size: 0.88rem;
+    font-weight: 500;
 }
 
 .status-text {
     font-size: 0.75rem;
-    padding: 3px 8px;
-    border-radius: 10px;
-    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-weight: 700;
 }
 
 .status-text.safe {
-    background: #d4edda;
-    color: #155724;
+    background: #ECFDF5;
+    color: #059669;
+    border: 1px solid #A7F3D0;
 }
 
 /* Subject Attendance */
 .subject-attendance {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 16px;
 }
 
 .subject-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px;
-    background: #F5F7FA;
-    border-radius: 10px;
+    padding: 16px 20px;
+    background: #F8FAFC;
+    border-radius: 12px;
     gap: 20px;
+    border: 1px solid #F1F5F9;
 }
 
 .subject-info h6 {
-    margin: 0;
-    color: #333;
-    font-weight: 600;
-    font-size: 1rem;
+    margin: 0 0 2px 0;
+    color: #0F172A;
+    font-weight: 700;
+    font-size: 0.98rem;
 }
 
 .subject-info p {
     margin: 0;
-    color: #666;
+    color: #64748B;
     font-size: 0.85rem;
 }
 
@@ -133,40 +144,44 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     font-size: 0.85rem;
 }
 
 .progress-info span {
-    color: #666;
+    color: #64748B;
+    font-weight: 500;
 }
 
 .percentage {
-    font-weight: 600;
+    font-weight: 700;
     padding: 3px 10px;
     border-radius: 12px;
     font-size: 0.8rem;
 }
 
 .percentage.safe {
-    background: #d4edda;
-    color: #155724;
+    background: #ECFDF5;
+    color: #059669;
+    border: 1px solid #A7F3D0;
 }
 
 .percentage.warning {
-    background: #d1ecf1;
-    color: #0c5460;
+    background: #FEF3C7;
+    color: #D97706;
+    border: 1px solid #FDE68A;
 }
 
 .percentage.danger {
-    background: #f8d7da;
-    color: #721c24;
+    background: #FEF2F2;
+    color: #DC2626;
+    border: 1px solid #FCA5A5;
 }
 
 .progress {
     height: 8px;
     border-radius: 10px;
-    background: #e0e0e0;
+    background: #E2E8F0;
 }
 
 .progress-bar {
@@ -182,7 +197,7 @@
     position: relative;
     width: 200px;
     height: 200px;
-    margin: 0 auto 30px;
+    margin: 0 auto 24px;
 }
 
 .circle-center {
@@ -194,192 +209,7 @@
 
 .circle-center h3 {
     font-size: 2.5rem;
-    font-weight: 700;
+    font-weight: 800;
     margin: 0;
-    color: #333;
-}
-
-.circle-center p {
-    margin: 0;
-    color: #666;
-    font-size: 0.9rem;
-}
-
-.month-details {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.detail-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 0.9rem;
-    color: #666;
-}
-
-.detail-item i {
-    font-size: 0.7rem;
-}
-
-.detail-item.present i {
-    color: #4AB7E0;
-}
-
-.detail-item.absent i {
-    color: #ff6b6b;
-}
-
-.detail-item.holiday i {
-    color: #ffd93d;
-}
-
-/* Calendar */
-.calendar-legend {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-}
-
-.legend-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.85rem;
-    color: #666;
-}
-
-.legend-box {
-    width: 20px;
-    height: 20px;
-    border-radius: 4px;
-}
-
-.legend-box.present {
-    background: #4AB7E0;
-}
-
-.legend-box.absent {
-    background: #ff6b6b;
-}
-
-.legend-box.holiday {
-    background: #ffd93d;
-}
-
-.legend-box.future {
-    background: #e0e0e0;
-}
-
-.calendar-nav {
-    display: flex;
-    align-items: center;
-}
-
-.calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 10px;
-}
-
-.calendar-day {
-    aspect-ratio: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    font-weight: 500;
-    transition: transform 0.2s ease;
-    cursor: pointer;
-}
-
-.calendar-day:hover {
-    transform: scale(1.05);
-}
-
-.calendar-day.header {
-    font-weight: 600;
-    color: #0F52BA;
-    background: none;
-    cursor: default;
-}
-
-.calendar-day.header:hover {
-    transform: none;
-}
-
-.calendar-day.present {
-    background: #0F52BA;
-    color: white;
-}
-
-.calendar-day.absent {
-    background: #ff6b6b;
-    color: white;
-}
-
-.calendar-day.holiday {
-    background: #ffd93d;
-    color: #333;
-}
-
-.calendar-day.future {
-    background: #f0f0f0;
-    color: #999;
-}
-
-.calendar-day .day-number {
-    font-size: 1rem;
-}
-
-.calendar-day .day-status {
-    font-size: 0.7rem;
-    margin-top: 2px;
-}
-
-/* Quick Actions */
-.btn-outline-primary {
-    border-color: #0F52BA;
-    color: #0F52BA;
-}
-
-.btn-outline-primary:hover {
-    background: #0F52BA;
-    border-color: #0F52BA;
-    color: white;
-}
-
-/* Responsive */
-@media (max-width: 991px) {
-    .subject-item {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    
-    .attendance-progress {
-        width: 100%;
-        max-width: 100%;
-    }
-    
-    .calendar-grid {
-        gap: 5px;
-    }
-    
-    .calendar-day {
-        font-size: 0.75rem;
-    }
-}
-
-@media (max-width: 576px) {
-    .calendar-legend {
-        font-size: 0.75rem;
-    }
-    
-    .legend-box {
-        width: 16px;
-        height: 16px;
-    }
+    color: #0F172A;
 }

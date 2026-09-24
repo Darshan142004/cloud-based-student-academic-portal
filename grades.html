@@ -3,8 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grades - EduPulse</title>
+    <title>Academic Grades - EduPulse</title>
     
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
@@ -56,7 +61,7 @@
                     <span>Assignments</span>
                 </a>
             </li>
-              <li>
+            <li>
                 <a href="extracurricular.html">
                     <i class="fas fa-trophy"></i>
                     <span>Activities</span>
@@ -98,104 +103,107 @@
                     <span class="badge">3</span>
                 </div>
                 <div class="profile-dropdown">
-                    <img src="https://ui-avatars.com/api/?name=John+Doe&background=667eea&color=fff" alt="Profile">
-                    <span>John Doe</span>
+                    <img src="https://ui-avatars.com/api/?name=Student&background=2563eb&color=fff" alt="Profile">
+                    <span>Student</span>
                 </div>
             </div>
         </nav>
 
-        <!-- Grades Content -->
+        <!-- Main Dashboard Container -->
         <div class="dashboard-container">
-            <!-- GPA Overview -->
+            
+            <!-- 1. TOP ACADEMIC SUMMARY (4 Summary Cards) -->
             <div class="row g-4 mb-4">
-                <div class="col-lg-3 col-md-6">
-                    <div class="gpa-card purple">
+                <div class="col-12 col-sm-6 col-xl-3">
+                    <div class="gpa-card blue">
                         <div class="gpa-icon">
                             <i class="fas fa-trophy"></i>
                         </div>
                         <div class="gpa-details">
-                            <h2>8.5</h2>
+                            <h2>0.00</h2>
                             <p>Current CGPA</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="gpa-card blue">
+                <div class="col-12 col-sm-6 col-xl-3">
+                    <div class="gpa-card cyan">
                         <div class="gpa-icon">
                             <i class="fas fa-star"></i>
                         </div>
                         <div class="gpa-details">
-                            <h2>8.7</h2>
-                            <p>Semester GPA</p>
+                            <h2>0.00</h2>
+                            <p>Semester SGPA</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-6">
+                <div class="col-12 col-sm-6 col-xl-3">
                     <div class="gpa-card green">
                         <div class="gpa-icon">
                             <i class="fas fa-check-circle"></i>
                         </div>
                         <div class="gpa-details">
-                            <h2>18</h2>
+                            <h2>0</h2>
                             <p>Subjects Cleared</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-6">
+                <div class="col-12 col-sm-6 col-xl-3">
                     <div class="gpa-card orange">
                         <div class="gpa-icon">
                             <i class="fas fa-medal"></i>
                         </div>
                         <div class="gpa-details">
-                            <h2>A+</h2>
+                            <h2>-</h2>
                             <p>Grade Average</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Charts Section -->
-            <div class="row g-4 mb-4">
-                <div class="col-lg-8">
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5><i class="fas fa-chart-line me-2"></i>Semester-wise Performance</h5>
-                            <select class="form-select w-auto" id="chartFilter">
-                                <option value="gpa">GPA Trend</option>
-                                <option value="grades">Grade Distribution</option>
-                            </select>
-                        </div>
-                        <div class="card-body">
-                            <canvas id="performanceChart"></canvas>
-                        </div>
+            <!-- 2. ACADEMIC PERFORMANCE SECTION -->
+            <div class="card mb-4 border-0 shadow-sm rounded-4">
+                <div class="card-header bg-white py-3 px-4 d-flex align-items-center justify-content-between border-bottom">
+                    <div>
+                        <h5 class="m-0 fw-bold text-dark fs-5"><i class="fas fa-chart-line me-2 text-primary"></i>Academic Performance</h5>
+                        <p class="text-muted small mb-0">Semester-wise GPA progression and academic performance</p>
                     </div>
+                    <span class="badge bg-primary-subtle text-primary fw-semibold px-3 py-2 rounded-pill">
+                        <i class="fas fa-chart-line me-1"></i>GPA Trend
+                    </span>
                 </div>
-                <div class="col-lg-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5><i class="fas fa-graduation-cap me-2"></i>GPA Calculator</h5>
+                <div class="card-body p-4">
+                    <div class="row g-4 align-items-center">
+                        <!-- Left / Main Area: Line Chart -->
+                        <div class="col-lg-8">
+                            <div class="chart-wrapper p-2" style="position: relative; height: 290px;">
+                                <canvas id="performanceChart"></canvas>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <div class="gpa-calculator">
-                                <div class="calc-input mb-3">
-                                    <label class="form-label">Enter Expected Grade</label>
-                                    <select class="form-select" id="expectedGrade">
-                                        <option value="10">O (10)</option>
-                                        <option value="9">A+ (9)</option>
-                                        <option value="8">A (8)</option>
-                                        <option value="7">B+ (7)</option>
-                                        <option value="6">B (6)</option>
-                                    </select>
+
+                        <!-- Right / Smaller Area: Academic Summary -->
+                        <div class="col-lg-4">
+                            <div class="academic-summary-panel p-3.5 rounded-3 bg-light border">
+                                <div class="d-flex align-items-center gap-2 mb-3 pb-2 border-bottom">
+                                    <i class="fas fa-sliders text-primary fs-5"></i>
+                                    <h6 class="fw-bold m-0 text-dark">Academic Summary</h6>
                                 </div>
-                                <div class="calc-input mb-3">
-                                    <label class="form-label">Credits</label>
-                                    <input type="number" class="form-control" id="credits" value="4" min="1" max="6">
-                                </div>
-                                <button class="btn btn-primary w-100 mb-3" onclick="calculateGPA()">Calculate Impact</button>
-                                <div class="calc-result">
-                                    <p class="mb-2">Predicted CGPA:</p>
-                                    <h3 id="predictedGPA">8.5</h3>
-                                    <small class="text-muted">Based on current grades</small>
+                                <div class="summary-list d-flex flex-column gap-2">
+                                    <div class="summary-row d-flex justify-content-between align-items-center p-2.5 rounded bg-white border">
+                                        <span class="text-muted small fw-medium"><i class="fas fa-award me-2 text-primary"></i>Current CGPA</span>
+                                        <strong id="summaryCgpa" class="fs-6 text-dark">0.00</strong>
+                                    </div>
+                                    <div class="summary-row d-flex justify-content-between align-items-center p-2.5 rounded bg-white border">
+                                        <span class="text-muted small fw-medium"><i class="fas fa-star me-2 text-info"></i>Latest SGPA</span>
+                                        <strong id="summaryLatestSgpa" class="fs-6 text-primary">0.00</strong>
+                                    </div>
+                                    <div class="summary-row d-flex justify-content-between align-items-center p-2.5 rounded bg-white border">
+                                        <span class="text-muted small fw-medium"><i class="fas fa-trophy me-2 text-warning"></i>Highest SGPA</span>
+                                        <strong id="summaryHighestSgpa" class="fs-6 text-success">0.00</strong>
+                                    </div>
+                                    <div class="summary-row d-flex justify-content-between align-items-center p-2.5 rounded bg-white border">
+                                        <span class="text-muted small fw-medium"><i class="fas fa-graduation-cap me-2 text-success"></i>Current Semester</span>
+                                        <strong id="summarySemester" class="fs-6 text-dark">Sem -</strong>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -203,26 +211,127 @@
                 </div>
             </div>
 
-            <!-- Grades Table -->
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5><i class="fas fa-table me-2"></i>Detailed Grades</h5>
-                    <div class="d-flex gap-2">
-                        <select class="form-select w-auto" id="semesterSelect">
+            <!-- 3 & 4. GRADE OVERVIEW & GPA CALCULATOR ROW -->
+            <div class="row g-4 mb-4">
+                <!-- 3. Grade Overview Section -->
+                <div class="col-lg-6">
+                    <div class="card h-100 border-0 shadow-sm rounded-4">
+                        <div class="card-header bg-white py-3 px-4 border-bottom">
+                            <h5 class="m-0 fw-bold text-dark fs-5"><i class="fas fa-chart-pie me-2 text-primary"></i>Grade Overview</h5>
+                            <p class="text-muted small mb-0">Distribution of your academic grades</p>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="row align-items-center g-3">
+                                <div class="col-12 col-sm-5 text-center">
+                                    <div style="height: 170px; position: relative;">
+                                        <canvas id="gradeDistributionChart"></canvas>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-7">
+                                    <div class="grade-legend-list d-flex flex-column gap-2">
+                                        <div class="d-flex justify-content-between align-items-center p-2.5 rounded-3 bg-white border">
+                                            <span class="small fw-bold text-dark d-flex align-items-center"><span class="badge-dot bg-indigo me-2"></span>A+ / O Grade (&ge; 9.0)</span>
+                                            <div class="d-flex align-items-center">
+                                                <span class="badge bg-indigo-subtle text-indigo border border-indigo-subtle fw-bold fs-6 px-2.5 py-1" id="gradeCountAPlus">0</span>
+                                                <span class="fw-bold text-dark small ms-2" id="gradePctAPlus">(0%)</span>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center p-2.5 rounded-3 bg-white border">
+                                            <span class="small fw-bold text-dark d-flex align-items-center"><span class="badge-dot bg-cyan-custom me-2"></span>A Grade (8.0-8.9)</span>
+                                            <div class="d-flex align-items-center">
+                                                <span class="badge bg-cyan-subtle text-cyan-custom border border-cyan-subtle fw-bold fs-6 px-2.5 py-1" id="gradeCountA">0</span>
+                                                <span class="fw-bold text-dark small ms-2" id="gradePctA">(0%)</span>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center p-2.5 rounded-3 bg-white border">
+                                            <span class="small fw-bold text-dark d-flex align-items-center"><span class="badge-dot bg-success me-2"></span>B+ Grade (7.0-7.9)</span>
+                                            <div class="d-flex align-items-center">
+                                                <span class="badge bg-success-subtle text-success border border-success-subtle fw-bold fs-6 px-2.5 py-1" id="gradeCountBPlus">0</span>
+                                                <span class="fw-bold text-dark small ms-2" id="gradePctBPlus">(0%)</span>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center p-2.5 rounded-3 bg-white border">
+                                            <span class="small fw-bold text-dark d-flex align-items-center"><span class="badge-dot bg-warning me-2"></span>B Grade (&lt; 7.0)</span>
+                                            <div class="d-flex align-items-center">
+                                                <span class="badge bg-warning-subtle text-warning border border-warning-subtle fw-bold fs-6 px-2.5 py-1" id="gradeCountB">0</span>
+                                                <span class="fw-bold text-dark small ms-2" id="gradePctB">(0%)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. GPA Calculator Section -->
+                <div class="col-lg-6">
+                    <div class="card h-100 border-0 shadow-sm rounded-4">
+                        <div class="card-header bg-white py-3 px-4 border-bottom">
+                            <h5 class="m-0 fw-bold text-dark fs-5"><i class="fas fa-calculator me-2 text-primary"></i>GPA Calculator</h5>
+                            <p class="text-muted small mb-0">Predict impact of upcoming course grades on your CGPA</p>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="gpa-calculator h-100 d-flex flex-column justify-content-between">
+                                <div class="row g-3 mb-3">
+                                    <div class="col-12 col-sm-6">
+                                        <div class="calc-input">
+                                            <label class="form-label mb-1">Expected Grade</label>
+                                            <select class="form-select fw-semibold" id="expectedGrade">
+                                                <option value="10">O (10 Points)</option>
+                                                <option value="9" selected>A+ (9 Points)</option>
+                                                <option value="8">A (8 Points)</option>
+                                                <option value="7">B+ (7 Points)</option>
+                                                <option value="6">B (6 Points)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-6">
+                                        <div class="calc-input">
+                                            <label class="form-label mb-1">Course Credits</label>
+                                            <input type="number" class="form-control fw-semibold" id="credits" value="4" min="1" max="6">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <button class="btn btn-primary w-100 py-2.5 mb-3 fw-bold rounded-3" onclick="calculateGPA()">
+                                    <i class="fas fa-calculator me-1"></i>Calculate Impact
+                                </button>
+                                
+                                <div class="calc-result rounded-3 p-3 text-center">
+                                    <p class="mb-1 text-white-50 small fw-medium">Predicted CGPA</p>
+                                    <h3 id="predictedGPA" class="fw-extrabold m-0 text-white">8.50</h3>
+                                    <small class="text-white-50">Based on cumulative performance</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. DETAILED GRADES TABLE SECTION -->
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-header bg-white py-3 px-4 d-flex justify-content-between align-items-center border-bottom flex-wrap gap-2">
+                    <div>
+                        <h5 class="m-0 fw-bold text-dark fs-5"><i class="fas fa-table me-2 text-primary"></i>Detailed Grades</h5>
+                        <p class="text-muted small mb-0">Complete course-wise breakdown of marks and grades</p>
+                    </div>
+                    <div class="d-flex gap-2 align-items-center">
+                        <select class="form-select form-select-sm w-auto fw-semibold border-secondary-subtle" id="semesterSelect">
                             <option value="5">Semester 5</option>
                             <option value="4">Semester 4</option>
                             <option value="3">Semester 3</option>
                             <option value="2">Semester 2</option>
                             <option value="1">Semester 1</option>
                         </select>
-                        <button class="btn btn-outline-primary btn-sm">
+                        <button class="btn btn-outline-primary btn-sm fw-semibold rounded-2 px-3">
                             <i class="fas fa-download me-1"></i>Export
                         </button>
                     </div>
                 </div>
-                <div class="card-body">
+                <div class="card-body p-0">
                     <div class="table-responsive">
-                        <table class="table grades-table">
+                        <table class="table grades-table align-middle m-0">
                             <thead>
                                 <tr>
                                     <th>Course Code</th>
@@ -237,72 +346,15 @@
                             </thead>
                             <tbody id="gradesTableBody">
                                 <tr>
-                                    <td><strong>CS501</strong></td>
-                                    <td>Computer Networks</td>
-                                    <td>4</td>
-                                    <td>38/40</td>
-                                    <td>56/60</td>
-                                    <td>94/100</td>
-                                    <td><span class="grade-badge excellent">A+</span></td>
-                                    <td><span class="status-badge passed"><i class="fas fa-check"></i> Passed</span></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>CS502</strong></td>
-                                    <td>Database Management</td>
-                                    <td>4</td>
-                                    <td>35/40</td>
-                                    <td>52/60</td>
-                                    <td>87/100</td>
-                                    <td><span class="grade-badge excellent">A+</span></td>
-                                    <td><span class="status-badge passed"><i class="fas fa-check"></i> Passed</span></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>CS503</strong></td>
-                                    <td>Web Development</td>
-                                    <td>3</td>
-                                    <td>36/40</td>
-                                    <td>54/60</td>
-                                    <td>90/100</td>
-                                    <td><span class="grade-badge excellent">A+</span></td>
-                                    <td><span class="status-badge passed"><i class="fas fa-check"></i> Passed</span></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>CS504</strong></td>
-                                    <td>Artificial Intelligence</td>
-                                    <td>4</td>
-                                    <td>32/40</td>
-                                    <td>48/60</td>
-                                    <td>80/100</td>
-                                    <td><span class="grade-badge good">A</span></td>
-                                    <td><span class="status-badge passed"><i class="fas fa-check"></i> Passed</span></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>CS505</strong></td>
-                                    <td>Cyber Security</td>
-                                    <td>3</td>
-                                    <td>30/40</td>
-                                    <td>45/60</td>
-                                    <td>75/100</td>
-                                    <td><span class="grade-badge average">B+</span></td>
-                                    <td><span class="status-badge passed"><i class="fas fa-check"></i> Passed</span></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>CS506</strong></td>
-                                    <td>Software Engineering</td>
-                                    <td>4</td>
-                                    <td>34/40</td>
-                                    <td>51/60</td>
-                                    <td>85/100</td>
-                                    <td><span class="grade-badge excellent">A+</span></td>
-                                    <td><span class="status-badge passed"><i class="fas fa-check"></i> Passed</span></td>
+                                    <td colspan="8" class="text-center py-4 text-muted fw-medium">Loading semester grades...</td>
                                 </tr>
                             </tbody>
                             <tfoot>
                                 <tr class="table-summary">
                                     <td colspan="2"><strong>Semester Total</strong></td>
-                                    <td><strong>22</strong></td>
+                                    <td><strong>0</strong></td>
                                     <td colspan="3"></td>
-                                    <td><strong>SGPA: 8.7</strong></td>
+                                    <td><strong>SGPA: 0.00</strong></td>
                                     <td></td>
                                 </tr>
                             </tfoot>
@@ -310,21 +362,22 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
- <!-- Custom JS -->
+    <!-- Custom JS -->
     <script src="js/grades.js"></script>
     
-    <!-- Grades Data Loader -->
+    <!-- Dynamic Grades Data Loader -->
     <script>
     let allGradesData = null;
     
     window.addEventListener('DOMContentLoaded', function() {
-        console.log('Loading grades data...');
+        console.log('Loading grades data from API...');
         
         fetch('./backend/api/get_grades.php')
             .then(response => response.json())
@@ -333,62 +386,105 @@
                 
                 if (data.success) {
                     allGradesData = data.data;
-                    console.log('CGPA from API:', allGradesData.cgpa);
+                    window.allGradesData = data.data; // expose for helper scripts
                     
                     // Update profile name
-                    document.querySelector('.profile-dropdown span').textContent = allGradesData.student_name;
+                    if (allGradesData.student_name) {
+                        const profileNameSpan = document.querySelector('.profile-dropdown span');
+                        if (profileNameSpan) profileNameSpan.textContent = allGradesData.student_name;
+                    }
                     
-                    // Update CGPA card - FIXED
+                    // 1. TOP SUMMARY CARDS
+                    // CGPA (Card 0)
                     const cgpaElement = document.querySelectorAll('.gpa-card h2')[0];
-                    cgpaElement.textContent = parseFloat(allGradesData.cgpa).toFixed(2);
-                    console.log('Updated CGPA element to:', cgpaElement.textContent);
+                    if (cgpaElement) cgpaElement.textContent = parseFloat(allGradesData.cgpa).toFixed(2);
                     
-                    // Update current semester SGPA
-const currentSem = allGradesData.current_semester;
-const currentSemData = allGradesData.grades[currentSem];
-console.log('Current semester:', currentSem);
-console.log('Current semester data:', currentSemData);
-
-// ADD THIS NEW CODE:
-if (currentSemData && currentSemData.sgpa > 0) {
-    // Current semester has SGPA
-    document.querySelectorAll('.gpa-card h2')[1].textContent = parseFloat(currentSemData.sgpa).toFixed(2);
-} else {
-    // Current semester in progress, show previous semester
-    const prevSem = currentSem - 1;
-    const prevSemData = allGradesData.grades[prevSem];
-    
-    if (prevSemData && prevSemData.sgpa > 0) {
-        document.querySelectorAll('.gpa-card h2')[1].textContent = parseFloat(prevSemData.sgpa).toFixed(2);
-        document.querySelectorAll('.gpa-card p')[1].textContent = `Semester ${prevSem} GPA`;
-    } else {
-        document.querySelectorAll('.gpa-card h2')[1].textContent = 'N/A';
-    }
-}
+                    // SGPA (Card 1)
+                    const currentSem = allGradesData.current_semester;
+                    const currentSemData = allGradesData.grades[currentSem];
+                    let latestSgpaDisplay = 'N/A';
+                    let latestSgpaLabel = `Semester ${currentSem} SGPA`;
                     
-                    // Count total subjects cleared
+                    if (currentSemData && parseFloat(currentSemData.sgpa) > 0) {
+                        latestSgpaDisplay = parseFloat(currentSemData.sgpa).toFixed(2);
+                    } else {
+                        const prevSem = currentSem - 1;
+                        const prevSemData = allGradesData.grades[prevSem];
+                        if (prevSemData && parseFloat(prevSemData.sgpa) > 0) {
+                            latestSgpaDisplay = parseFloat(prevSemData.sgpa).toFixed(2);
+                            latestSgpaLabel = `Semester ${prevSem} SGPA`;
+                        }
+                    }
+                    
+                    const sgpaElement = document.querySelectorAll('.gpa-card h2')[1];
+                    if (sgpaElement) sgpaElement.textContent = latestSgpaDisplay;
+                    const sgpaLabel = document.querySelectorAll('.gpa-card p')[1];
+                    if (sgpaLabel) sgpaLabel.textContent = latestSgpaLabel;
+                    
+                    // Subjects Cleared & Grade Breakdown counts (Card 2 & Section 3)
                     let totalSubjects = 0;
-                    Object.values(allGradesData.grades).forEach(sem => {
-                        totalSubjects += sem.courses.filter(c => c.grade_points !== null).length;
-                    });
-                    document.querySelectorAll('.gpa-card h2')[2].textContent = totalSubjects;
+                    let highestSgpa = 0;
+                    let totalGradedCourses = 0;
+                    let counts = { aPlus: 0, a: 0, bPlus: 0, b: 0 };
                     
-                    // Determine grade average
+                    if (allGradesData.grades) {
+                        Object.values(allGradesData.grades).forEach(sem => {
+                            if (sem.sgpa && parseFloat(sem.sgpa) > 0) {
+                                const sgVal = parseFloat(sem.sgpa);
+                                if (sgVal > highestSgpa) highestSgpa = sgVal;
+                            }
+                            if (sem.courses) {
+                                sem.courses.forEach(c => {
+                                    if (c.grade_points !== null && c.grade_points !== undefined) {
+                                        totalSubjects++;
+                                        totalGradedCourses++;
+                                        const gp = parseFloat(c.grade_points);
+                                        if (!isNaN(gp)) {
+                                            if (gp >= 9) counts.aPlus++;
+                                            else if (gp >= 8) counts.a++;
+                                            else if (gp >= 7) counts.bPlus++;
+                                            else counts.b++;
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                    }
+                    
+                    const subjectsElement = document.querySelectorAll('.gpa-card h2')[2];
+                    if (subjectsElement) subjectsElement.textContent = totalSubjects;
+                    
+                    // Grade Average (Card 3)
                     const cgpa = parseFloat(allGradesData.cgpa);
                     let gradeAvg = 'B';
                     if (cgpa >= 9) gradeAvg = 'O';
                     else if (cgpa >= 8) gradeAvg = 'A+';
                     else if (cgpa >= 7) gradeAvg = 'A';
                     else if (cgpa >= 6) gradeAvg = 'B+';
-                    document.querySelectorAll('.gpa-card h2')[3].textContent = gradeAvg;
+                    const avgElement = document.querySelectorAll('.gpa-card h2')[3];
+                    if (avgElement) avgElement.textContent = gradeAvg;
                     
-                    // Populate semester dropdown
+                    // 2. ACADEMIC SUMMARY PANEL
+                    const summaryCgpa = document.getElementById('summaryCgpa');
+                    if (summaryCgpa) summaryCgpa.textContent = parseFloat(allGradesData.cgpa).toFixed(2);
+                    
+                    const summaryLatest = document.getElementById('summaryLatestSgpa');
+                    if (summaryLatest) summaryLatest.textContent = latestSgpaDisplay;
+                    
+                    const summaryHighest = document.getElementById('summaryHighestSgpa');
+                    if (summaryHighest) summaryHighest.textContent = highestSgpa > 0 ? highestSgpa.toFixed(2) : 'N/A';
+                    
+                    const summarySem = document.getElementById('summarySemester');
+                    if (summarySem) summarySem.textContent = `Sem ${currentSem}`;
+                    
+                    // 3. GRADE OVERVIEW SECTION
+                    renderGradeOverview(counts, totalGradedCourses);
+                    
+                    // 5. DETAILED GRADES TABLE
                     populateSemesterDropdown();
-                    
-                    // Load current semester grades by default
                     loadSemesterGrades(currentSem);
                     
-                    console.log('✅ Grades loaded successfully!');
+                    console.log('✅ Grades page dynamically loaded successfully!');
                 } else {
                     alert('Failed to load grades data');
                 }
@@ -399,11 +495,76 @@ if (currentSemData && currentSemData.sgpa > 0) {
             });
     });
     
+    function renderGradeOverview(counts, total) {
+        const getPct = (c) => total > 0 ? Math.round((c / total) * 100) + '%' : '0%';
+        
+        const countAPlus = document.getElementById('gradeCountAPlus');
+        if (countAPlus) countAPlus.textContent = counts.aPlus;
+        const pctAPlus = document.getElementById('gradePctAPlus');
+        if (pctAPlus) pctAPlus.textContent = `(${getPct(counts.aPlus)})`;
+        
+        const countA = document.getElementById('gradeCountA');
+        if (countA) countA.textContent = counts.a;
+        const pctA = document.getElementById('gradePctA');
+        if (pctA) pctA.textContent = `(${getPct(counts.a)})`;
+        
+        const countBPlus = document.getElementById('gradeCountBPlus');
+        if (countBPlus) countBPlus.textContent = counts.bPlus;
+        const pctBPlus = document.getElementById('gradePctBPlus');
+        if (pctBPlus) pctBPlus.textContent = `(${getPct(counts.bPlus)})`;
+        
+        const countB = document.getElementById('gradeCountB');
+        if (countB) countB.textContent = counts.b;
+        const pctB = document.getElementById('gradePctB');
+        if (pctB) pctB.textContent = `(${getPct(counts.b)})`;
+        
+        // Render Doughnut Chart
+        const doughnutCanvas = document.getElementById('gradeDistributionChart');
+        if (doughnutCanvas) {
+            const ctx = doughnutCanvas.getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['A+ / O', 'A Grade', 'B+ Grade', 'B Grade'],
+                    datasets: [{
+                        data: [counts.aPlus, counts.a, counts.bPlus, counts.b],
+                        backgroundColor: ['#2563EB', '#06B6D4', '#10B981', '#F59E0B'],
+                        borderWidth: 2,
+                        borderColor: '#FFFFFF'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                            padding: 10,
+                            displayColors: true
+                        }
+                    },
+                    cutout: '68%'
+                }
+            });
+        }
+    }
+    
     function populateSemesterDropdown() {
         const select = document.getElementById('semesterSelect');
-        select.innerHTML = '';
+        if (!select || !allGradesData) return;
         
-        const semesters = Object.keys(allGradesData.grades).sort((a, b) => b - a);
+        select.innerHTML = '';
+        const semSet = new Set();
+        
+        if (allGradesData.grades) {
+            Object.keys(allGradesData.grades).forEach(s => semSet.add(Number(s)));
+        }
+        if (allGradesData.current_semester) {
+            semSet.add(Number(allGradesData.current_semester));
+        }
+        
+        const semesters = Array.from(semSet).sort((a, b) => b - a);
         
         semesters.forEach(sem => {
             const option = document.createElement('option');
@@ -415,23 +576,37 @@ if (currentSemData && currentSemData.sgpa > 0) {
             select.appendChild(option);
         });
         
-        select.addEventListener('change', function() {
+        select.onchange = function() {
             loadSemesterGrades(this.value);
-        });
+        };
     }
     
     function loadSemesterGrades(semester) {
+        if (!allGradesData || !allGradesData.grades) return;
         const semesterData = allGradesData.grades[semester];
+        const tbody = document.getElementById('gradesTableBody');
+        const tfoot = document.querySelector('.grades-table tfoot');
         
-        if (!semesterData) {
-            document.getElementById('gradesTableBody').innerHTML = 
-                '<tr><td colspan="8" class="text-center">No grades available for this semester</td></tr>';
+        if (!semesterData || !semesterData.courses || semesterData.courses.length === 0) {
+            if (tbody) {
+                tbody.innerHTML = '<tr><td colspan="8" class="text-center py-4 text-muted fw-medium">No grades available for this semester</td></tr>';
+            }
+            if (tfoot) {
+                tfoot.innerHTML = `
+                    <tr class="table-summary">
+                        <td colspan="2"><strong>Semester Total</strong></td>
+                        <td><strong>0</strong></td>
+                        <td colspan="3"></td>
+                        <td><strong>SGPA: N/A</strong></td>
+                        <td></td>
+                    </tr>
+                `;
+            }
             return;
         }
         
-        const tbody = document.getElementById('gradesTableBody');
+        if (!tbody) return;
         tbody.innerHTML = '';
-        
         let totalCredits = 0;
         
         semesterData.courses.forEach(course => {
@@ -440,22 +615,23 @@ if (currentSemData && currentSemData.sgpa > 0) {
             let badgeClass = 'average';
             if (course.grade_points >= 9) badgeClass = 'excellent';
             else if (course.grade_points >= 7) badgeClass = 'good';
+            else if (course.grade_points < 6 && course.grade_points !== null) badgeClass = 'poor';
             
             const isPassed = course.grade_points !== null && course.grade_points >= 5;
             const statusBadge = isPassed ? 
-                '<span class="status-badge passed"><i class="fas fa-check"></i> Passed</span>' :
+                '<span class="status-badge passed"><i class="fas fa-check-circle"></i> Passed</span>' :
                 course.grade_points === null ? 
-                '<span class="status-badge pending">In Progress</span>' :
-                '<span class="status-badge failed"><i class="fas fa-times"></i> Failed</span>';
+                '<span class="status-badge pending"><i class="fas fa-clock"></i> In Progress</span>' :
+                '<span class="status-badge failed"><i class="fas fa-times-circle"></i> Failed</span>';
             
             const row = `
                 <tr>
-                    <td><strong>${course.course_code}</strong></td>
-                    <td>${course.course_name}</td>
-                    <td>${course.credits}</td>
-                    <td>${course.internal_marks ? parseFloat(course.internal_marks).toFixed(0) + '/40' : 'N/A'}</td>
-                    <td>${course.external_marks ? parseFloat(course.external_marks).toFixed(0) + '/60' : 'Pending'}</td>
-                    <td>${course.total_marks ? parseFloat(course.total_marks).toFixed(0) + '/100' : 'Pending'}</td>
+                    <td><strong class="course-code">${course.course_code}</strong></td>
+                    <td class="fw-semibold text-dark">${course.course_name}</td>
+                    <td><span class="badge bg-light text-dark border px-2.5 py-1 fw-semibold">${course.credits}</span></td>
+                    <td>${course.internal_marks ? parseFloat(course.internal_marks).toFixed(0) + '/40' : '<span class="text-muted small">N/A</span>'}</td>
+                    <td>${course.external_marks ? parseFloat(course.external_marks).toFixed(0) + '/60' : '<span class="text-muted small">Pending</span>'}</td>
+                    <td><strong class="text-dark">${course.total_marks ? parseFloat(course.total_marks).toFixed(0) + '/100' : '<span class="text-muted small">Pending</span>'}</strong></td>
                     <td><span class="grade-badge ${badgeClass}">${course.grade || 'IP'}</span></td>
                     <td>${statusBadge}</td>
                 </tr>
@@ -464,32 +640,45 @@ if (currentSemData && currentSemData.sgpa > 0) {
             tbody.innerHTML += row;
         });
         
-        const tfoot = document.querySelector('.grades-table tfoot');
-        tfoot.innerHTML = `
-            <tr class="table-summary">
-                <td colspan="2"><strong>Semester Total</strong></td>
-                <td><strong>${totalCredits}</strong></td>
-                <td colspan="3"></td>
-                <td><strong>SGPA: ${parseFloat(semesterData.sgpa).toFixed(2)}</strong></td>
-                <td></td>
-            </tr>
-        `;
+        if (tfoot) {
+            tfoot.innerHTML = `
+                <tr class="table-summary">
+                    <td colspan="2"><strong>Semester Total</strong></td>
+                    <td><strong>${totalCredits}</strong></td>
+                    <td colspan="3"></td>
+                    <td><strong class="text-primary fs-6">SGPA: ${parseFloat(semesterData.sgpa).toFixed(2)}</strong></td>
+                    <td></td>
+                </tr>
+            `;
+        }
     }
     
     function calculateGPA() {
-        const expectedGrade = parseFloat(document.getElementById('expectedGrade').value);
-        const credits = parseInt(document.getElementById('credits').value);
+        const expectedGradeEl = document.getElementById('expectedGrade');
+        const creditsEl = document.getElementById('credits');
+        if (!expectedGradeEl || !creditsEl || !allGradesData) return;
         
-        if (!allGradesData) return;
+        const expectedGrade = parseFloat(expectedGradeEl.value);
+        const credits = parseInt(creditsEl.value) || 0;
         
-        const currentCGPA = parseFloat(allGradesData.cgpa);
-        const totalCredits = allGradesData.total_credits;
+        const currentCGPA = parseFloat(allGradesData.cgpa) || 0;
+        const totalCredits = parseInt(allGradesData.total_credits) || 0;
+        
+        if (totalCredits + credits === 0) return;
         
         const newTotalPoints = (currentCGPA * totalCredits) + (expectedGrade * credits);
         const newTotalCredits = totalCredits + credits;
         const newCGPA = (newTotalPoints / newTotalCredits).toFixed(2);
         
-        document.getElementById('predictedGPA').textContent = newCGPA;
+        const predictedEl = document.getElementById('predictedGPA');
+        if (predictedEl) {
+            predictedEl.style.transform = 'scale(1.15)';
+            predictedEl.style.transition = 'transform 0.2s ease';
+            setTimeout(() => {
+                predictedEl.textContent = newCGPA;
+                predictedEl.style.transform = 'scale(1)';
+            }, 150);
+        }
     }
     </script>
 </body>

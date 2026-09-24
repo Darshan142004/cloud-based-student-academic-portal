@@ -1,13 +1,16 @@
-/* GPA Cards */
+/* Grades Styles - EduPulse Design System */
+
+/* Top GPA Cards */
 .gpa-card {
-    background: white;
-    padding: 25px;
-    border-radius: 15px;
+    background: #FFFFFF;
+    padding: 22px 24px;
+    border-radius: 16px;
     display: flex;
     align-items: center;
-    gap: 20px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    gap: 18px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.03);
+    border: 1px solid #E2E8F0;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
     position: relative;
     overflow: hidden;
 }
@@ -17,261 +20,247 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 5px;
+    width: 4px;
     height: 100%;
 }
 
-.gpa-card.purple::before {
-    background: linear-gradient(135deg, #0F52BA 0%, #4AB7E0 100%);
+.gpa-card.blue::before {
+    background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
 }
 
-.gpa-card.blue::before {
-    background: linear-gradient(135deg, #0F52BA 0%, #2575FC 100%);
+.gpa-card.cyan::before {
+    background: linear-gradient(135deg, #06B6D4 0%, #0891B2 100%);
 }
 
 .gpa-card.green::before {
-    background: linear-gradient(135deg, #0F52BA 0%, #4AB7E0 100%);
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%);
 }
 
-.gpa-card.orange::before {
-    background: linear-gradient(135deg, #D97706 0%, #F59E0B 100%);
+.gpa-card.orange::before,
+.gpa-card.amber::before {
+    background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
 }
 
 .gpa-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(37, 99, 235, 0.08);
+    border-color: #CBD5E1;
 }
 
 .gpa-icon {
-    width: 60px;
-    height: 60px;
-    border-radius: 12px;
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.8rem;
+    font-size: 1.45rem;
     color: white;
-}
-
-.gpa-card.purple .gpa-icon {
-    background: linear-gradient(135deg, #0F52BA 0%, #4AB7E0 100%);
+    flex-shrink: 0;
 }
 
 .gpa-card.blue .gpa-icon {
-    background: linear-gradient(135deg, #0F52BA 0%, #2575FC 100%);
+    background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+    box-shadow: 0 6px 14px rgba(37, 99, 235, 0.25);
+}
+
+.gpa-card.cyan .gpa-icon {
+    background: linear-gradient(135deg, #06B6D4 0%, #0891B2 100%);
+    box-shadow: 0 6px 14px rgba(6, 182, 212, 0.25);
 }
 
 .gpa-card.green .gpa-icon {
-    background: linear-gradient(135deg, #0F52BA 0%, #4AB7E0 100%);
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+    box-shadow: 0 6px 14px rgba(16, 185, 129, 0.25);
 }
 
-.gpa-card.orange .gpa-icon {
-    background: linear-gradient(135deg, #D97706 0%, #F59E0B 100%);
+.gpa-card.orange .gpa-icon,
+.gpa-card.amber .gpa-icon {
+    background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+    box-shadow: 0 6px 14px rgba(245, 158, 11, 0.25);
 }
 
 .gpa-details h2 {
-    font-size: 2.5rem;
-    font-weight: 700;
+    font-size: 2.1rem;
+    font-weight: 800;
     margin: 0;
-    color: #333;
+    color: #0F172A;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
 }
 
 .gpa-details p {
-    margin: 0;
-    color: #666;
-    font-size: 0.9rem;
+    margin: 3px 0 0 0;
+    color: #64748B;
+    font-size: 0.85rem;
+    font-weight: 600;
 }
 
-/* GPA Calculator */
+/* Custom Helpers & Color Tokens */
+.bg-indigo { background-color: #2563EB !important; }
+.bg-indigo-subtle { background-color: #EFF6FF !important; }
+.text-indigo { color: #2563EB !important; }
+.border-indigo-subtle { border-color: #BFDBFE !important; }
+
+.bg-cyan-custom { background-color: #06B6D4 !important; }
+.bg-cyan-subtle { background-color: #ECFEFF !important; }
+.text-cyan-custom { color: #0891B2 !important; }
+.border-cyan-subtle { border-color: #A5F3FC !important; }
+
+.badge-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+/* GPA Calculator Card */
 .gpa-calculator {
-    padding: 10px;
+    display: flex;
+    flex-direction: column;
 }
 
 .calc-input label {
-    font-weight: 500;
-    color: #333;
-    font-size: 0.9rem;
+    font-weight: 600;
+    color: #334155;
+    font-size: 0.85rem;
 }
 
 .calc-result {
-    background: linear-gradient(135deg, #0F52BA 0%, #4AB7E0 100%);
-    padding: 20px;
-    border-radius: 12px;
-    text-align: center;
-    color: white;
-}
-
-.calc-result p {
-    margin-bottom: 5px;
-    opacity: 0.9;
-    font-size: 0.9rem;
+    background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.22);
 }
 
 .calc-result h3 {
-    font-size: 3rem;
-    font-weight: 700;
-    margin: 10px 0;
+    font-size: 2.4rem;
+    line-height: 1;
 }
 
-.calc-result small {
-    opacity: 0.8;
-    color: white;
-}
-
-/* Grades Table */
+/* Grades Table Styling */
 .grades-table {
     margin: 0;
 }
 
-.grades-table thead {
-    background: linear-gradient(135deg, #F5F7FA 0%, #E4E8F0 100%);
-}
-
 .grades-table thead th {
-    border: none;
-    padding: 15px;
-    font-weight: 600;
-    color: #333;
-    font-size: 0.9rem;
+    background: #F8FAFC;
+    border-bottom: 2px solid #E2E8F0;
+    padding: 14px 16px;
+    font-weight: 700;
+    color: #475569;
+    font-size: 0.82rem;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.05em;
 }
 
 .grades-table tbody tr {
-    border-bottom: 1px solid #f0f0f0;
-    transition: background 0.3s ease;
+    border-bottom: 1px solid #F1F5F9;
+    transition: background 0.2s ease;
 }
 
 .grades-table tbody tr:hover {
-    background: #F5F7FA;
+    background: #F8FAFC;
 }
 
 .grades-table tbody td {
-    padding: 15px;
+    padding: 14px 16px;
     vertical-align: middle;
-    color: #555;
+    color: #334155;
+    font-size: 0.9rem;
 }
 
-.grades-table tbody td strong {
-    color: #333;
+.grades-table tbody td strong.course-code {
+    color: #0F172A;
+    font-weight: 700;
 }
 
 .table-summary {
-    background: #F5F7FA;
-    font-weight: 600;
+    background: #F8FAFC;
+    font-weight: 700;
 }
 
 .table-summary td {
-    padding: 20px 15px !important;
-    color: #333 !important;
+    padding: 16px !important;
+    color: #0F172A !important;
+    border-top: 2px solid #E2E8F0;
 }
 
 /* Grade Badges */
 .grade-badge {
     display: inline-block;
-    padding: 6px 15px;
+    padding: 4px 12px;
     border-radius: 20px;
-    font-weight: 600;
-    font-size: 0.9rem;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-align: center;
+    min-width: 42px;
 }
 
 .grade-badge.excellent {
-    background: #d4edda;
-    color: #155724;
+    background: #ECFDF5;
+    color: #047857;
+    border: 1px solid #A7F3D0;
 }
 
 .grade-badge.good {
-    background: #d1ecf1;
-    color: #0c5460;
+    background: #EFF6FF;
+    color: #1D4ED8;
+    border: 1px solid #BFDBFE;
 }
 
 .grade-badge.average {
-    background: #fff3cd;
-    color: #856404;
+    background: #FEF3C7;
+    color: #B45309;
+    border: 1px solid #FDE68A;
 }
 
 .grade-badge.poor {
-    background: #f8d7da;
-    color: #721c24;
+    background: #FEF2F2;
+    color: #B91C1C;
+    border: 1px solid #FCA5A5;
 }
 
 /* Status Badges */
 .status-badge {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-    padding: 6px 12px;
+    gap: 6px;
+    padding: 5px 12px;
     border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 500;
+    font-size: 0.8rem;
+    font-weight: 600;
 }
 
 .status-badge.passed {
-    background: #d4edda;
-    color: #155724;
-}
-
-.status-badge.failed {
-    background: #f8d7da;
-    color: #721c24;
+    background: #DCFCE7;
+    color: #15803D;
+    border: 1px solid #86EFAC;
 }
 
 .status-badge.pending {
-    background: #fff3cd;
-    color: #856404;
+    background: #FEF3C7;
+    color: #B45309;
+    border: 1px solid #FDE68A;
 }
 
-.status-badge i {
-    font-size: 0.8rem;
+.status-badge.failed {
+    background: #FEE2E2;
+    color: #B91C1C;
+    border: 1px solid #FCA5A5;
 }
 
-/* Responsive Table */
+/* Responsive adjustments */
 @media (max-width: 991px) {
-    .table-responsive {
-        overflow-x: auto;
+    .gpa-card {
+        padding: 18px 20px;
     }
     
-    .grades-table {
-        min-width: 800px;
+    .gpa-details h2 {
+        font-size: 1.8rem;
     }
 }
 
-/* Animation */
-.gpa-card,
-.card {
-    animation: fadeInUp 0.6s ease-out;
-}
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
+@media (max-width: 767px) {
+    .academic-summary-panel {
+        margin-top: 10px;
     }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Chart Styles */
-canvas {
-    max-height: 350px;
-}
-
-/* Form Selects */
-.form-select:focus {
-    border-color: #0F52BA;
-    box-shadow: 0 0 0 0.2rem rgba(15, 82, 186, 0.25);
-}
-
-/* Export Button */
-.btn-outline-primary {
-    border-color: #0F52BA;
-    color: #0F52BA;
-}
-
-.btn-outline-primary:hover {
-    background: #0F52BA;
-    border-color: #0F52BA;
-    color: white;
 }

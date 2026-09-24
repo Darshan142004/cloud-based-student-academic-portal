@@ -1,68 +1,74 @@
-/* Profile Card */
+/* Profile Styles - EduPulse Design System */
 .profile-card {
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-    border-radius: 15px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.03);
+    border-radius: 16px;
+    border: 1px solid #E2E8F0;
+    background: #FFFFFF;
 }
 
 .profile-card .card-body {
-    padding: 30px;
+    padding: 32px;
 }
 
 .profile-image-container {
     position: relative;
-    width: 150px;
-    height: 150px;
+    width: 140px;
+    height: 140px;
     margin: 0 auto 20px;
 }
 
 .profile-image {
-    width: 150px;
-    height: 150px;
+    width: 140px;
+    height: 140px;
     border-radius: 50%;
     object-fit: cover;
-    border: 5px solid #f0f0f0;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border: 4px solid #FFFFFF;
+    box-shadow: 0 8px 24px rgba(15, 82, 186, 0.15);
 }
 
 .edit-profile-btn {
     position: absolute;
-    bottom: 5px;
-    right: 5px;
-    width: 40px;
-    height: 40px;
+    bottom: 4px;
+    right: 4px;
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #0F52BA 0%, #4AB7E0 100%);
-    border: none;
+    background: linear-gradient(135deg, #0F52BA 0%, #2575FC 100%);
+    border: 2px solid #FFFFFF;
     color: white;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.3s ease;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    box-shadow: 0 4px 12px rgba(15, 82, 186, 0.3);
 }
 
 .edit-profile-btn:hover {
     transform: scale(1.1);
+    box-shadow: 0 6px 16px rgba(15, 82, 186, 0.4);
 }
 
 .profile-name {
     font-size: 1.5rem;
-    font-weight: 600;
-    color: #333;
-    margin: 15px 0 5px 0;
+    font-weight: 800;
+    color: #0F172A;
+    margin: 16px 0 4px 0;
+    letter-spacing: -0.01em;
 }
 
 .profile-id {
-    color: #666;
+    color: #64748B;
     font-size: 0.9rem;
+    font-weight: 500;
     margin: 0;
 }
 
 .profile-program {
     color: #0F52BA;
-    font-weight: 500;
-    margin: 5px 0 20px 0;
+    font-weight: 700;
+    margin: 6px 0 20px 0;
+    font-size: 0.95rem;
 }
 
 /* Profile Stats */
@@ -71,8 +77,8 @@
     justify-content: space-around;
     padding: 20px 0;
     margin: 20px 0;
-    border-top: 1px solid #f0f0f0;
-    border-bottom: 1px solid #f0f0f0;
+    border-top: 1px solid #F1F5F9;
+    border-bottom: 1px solid #F1F5F9;
 }
 
 .profile-stats .stat-item {
@@ -80,16 +86,17 @@
 }
 
 .profile-stats .stat-item h5 {
-    font-size: 1.8rem;
-    font-weight: 700;
+    font-size: 1.75rem;
+    font-weight: 800;
     color: #0F52BA;
     margin: 0;
 }
 
 .profile-stats .stat-item p {
-    color: #666;
+    color: #64748B;
     font-size: 0.85rem;
-    margin: 5px 0 0 0;
+    font-weight: 500;
+    margin: 4px 0 0 0;
 }
 
 /* Academic Summary */
@@ -97,8 +104,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 0;
-    border-bottom: 1px solid #f0f0f0;
+    padding: 14px 0;
+    border-bottom: 1px solid #F1F5F9;
 }
 
 .summary-item:last-child {
@@ -108,9 +115,10 @@
 .summary-label {
     display: flex;
     align-items: center;
-    gap: 10px;
-    color: #666;
+    gap: 12px;
+    color: #64748B;
     font-size: 0.9rem;
+    font-weight: 500;
 }
 
 .summary-label i {
@@ -119,36 +127,38 @@
 }
 
 .summary-value {
-    font-weight: 600;
-    color: #333;
+    font-weight: 700;
+    color: #0F172A;
 }
 
 /* Form Styles */
 .form-label {
-    font-weight: 500;
-    color: #333;
+    font-weight: 600;
+    color: #334155;
     margin-bottom: 8px;
     font-size: 0.9rem;
 }
 
 .form-control,
 .form-select {
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    padding: 10px 12px;
-    font-size: 0.9rem;
-    transition: all 0.3s ease;
+    border: 1px solid #E2E8F0;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 0.92rem;
+    color: #1E293B;
+    transition: all 0.2s ease;
 }
 
 .form-control:focus,
 .form-select:focus {
     border-color: #0F52BA;
-    box-shadow: 0 0 0 0.2rem rgba(15, 82, 186, 0.25);
+    box-shadow: 0 0 0 3px rgba(15, 82, 186, 0.12);
 }
 
 .form-control:disabled,
 .form-select:disabled {
-    background-color: #F5F7FA;
+    background-color: #F8FAFC;
+    color: #64748B;
     cursor: not-allowed;
 }
 
@@ -157,8 +167,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 0;
-    border-bottom: 1px solid #f0f0f0;
+    padding: 16px 0;
+    border-bottom: 1px solid #F1F5F9;
 }
 
 .setting-item:last-child {
@@ -166,23 +176,24 @@
 }
 
 .setting-info h6 {
-    margin: 0 0 5px 0;
-    color: #333;
-    font-weight: 600;
-    font-size: 1rem;
+    margin: 0 0 4px 0;
+    color: #0F172A;
+    font-weight: 700;
+    font-size: 0.98rem;
 }
 
 .setting-info p {
     margin: 0;
-    color: #666;
+    color: #64748B;
     font-size: 0.85rem;
 }
 
 /* Toggle Switch */
 .form-check-input {
-    width: 50px;
-    height: 26px;
+    width: 48px;
+    height: 24px;
     cursor: pointer;
+    border-color: #CBD5E1;
 }
 
 .form-check-input:checked {
@@ -191,168 +202,21 @@
 }
 
 .form-check-input:focus {
-    box-shadow: 0 0 0 0.2rem rgba(15, 82, 186, 0.25);
+    box-shadow: 0 0 0 3px rgba(15, 82, 186, 0.12);
 }
 
 /* Buttons */
 .btn-primary {
-    background: linear-gradient(135deg, #0F52BA 0%, #4AB7E0 100%);
+    background: linear-gradient(135deg, #0F52BA 0%, #2575FC 100%);
     border: none;
     padding: 10px 20px;
-    border-radius: 8px;
-    transition: all 0.3s ease;
+    border-radius: 10px;
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(15, 82, 186, 0.25);
+    transition: all 0.25s ease;
 }
 
 .btn-primary:hover {
-    background: linear-gradient(135deg, #003B95 0%, #0F52BA 100%);
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(15, 82, 186, 0.4);
-}
-
-.btn-outline-secondary {
-    border-color: #e0e0e0;
-    color: #666;
-    border-radius: 8px;
-    padding: 10px 20px;
-}
-
-.btn-outline-secondary:hover {
-    background: #F5F7FA;
-    border-color: #d0d0d0;
-}
-
-.btn-outline-primary {
-    border-color: #0F52BA;
-    color: #0F52BA;
-    border-radius: 8px;
-}
-
-.btn-outline-primary:hover {
-    background: #0F52BA;
-    border-color: #0F52BA;
-    color: white;
-}
-
-/* Card Styles */
-.card {
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-    margin-bottom: 0;
-}
-
-.card-header {
-    background: linear-gradient(135deg, #F5F7FA 0%, #E4E8F0 100%);
-    border-bottom: 1px solid #e0e0e0;
-    padding: 15px 20px;
-    border-radius: 15px 15px 0 0 !important;
-}
-
-.card-header h5 {
-    margin: 0;
-    color: #333;
-    font-weight: 600;
-    font-size: 1.1rem;
-}
-
-.card-body {
-    padding: 25px;
-}
-
-/* Modal */
-.modal-content {
-    border-radius: 15px;
-    border: none;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-}
-
-.modal-header {
-    border-bottom: 1px solid #f0f0f0;
-    padding: 20px 25px;
-}
-
-.modal-title {
-    font-weight: 600;
-    color: #333;
-}
-
-.modal-body {
-    padding: 25px;
-}
-
-.modal-footer {
-    border-top: 1px solid #f0f0f0;
-    padding: 15px 25px;
-}
-
-/* Animations */
-.profile-card,
-.card {
-    animation: fadeInUp 0.6s ease-out;
-}
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Form Buttons */
-#formButtons {
-    display: flex;
-    gap: 10px;
-}
-
-#formButtons .btn {
-    padding: 10px 25px;
-}
-
-/* Responsive */
-@media (max-width: 991px) {
-    .profile-stats {
-        flex-direction: column;
-        gap: 15px;
-    }
-    
-    .profile-stats .stat-item {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        padding: 10px 0;
-        border-bottom: 1px solid #f0f0f0;
-    }
-    
-    .profile-stats .stat-item:last-child {
-        border-bottom: none;
-    }
-    
-    .profile-stats .stat-item h5 {
-        order: 2;
-    }
-    
-    .profile-stats .stat-item p {
-        order: 1;
-        text-align: left;
-    }
-}
-
-@media (max-width: 576px) {
-    .setting-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-    }
-    
-    #formButtons {
-        flex-direction: column;
-    }
-    
-    #formButtons .btn {
-        width: 100%;
-    }
+    box-shadow: 0 6px 18px rgba(15, 82, 186, 0.35);
 }

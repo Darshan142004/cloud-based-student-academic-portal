@@ -55,7 +55,7 @@
                     <span>Assignments</span>
                 </a>
             </li>
-              <li>
+            <li>
                 <a href="extracurricular.html">
                     <i class="fas fa-trophy"></i>
                     <span>Activities</span>
@@ -105,11 +105,11 @@
 
         <!-- Dashboard Content -->
         <div class="dashboard-container">
-            <!-- Welcome Section -->
-            <div class="welcome-section">
+            <!-- 1 & 2. Welcome Section / Semester Banner -->
+            <div class="welcome-section mb-4">
                 <div>
                     <h2>Welcome back, John! 👋</h2>
-                    <p>Here's what's happening with your academics today</p>
+                    <p>Here's your real-time academic performance summary and schedule</p>
                 </div>
                 <div class="welcome-stats">
                     <div class="stat-item">
@@ -123,12 +123,12 @@
                 </div>
             </div>
 
-            <!-- Stats Cards -->
+            <!-- 3. Key Academic Statistics Cards -->
             <div class="row g-4 mb-4">
-                <div class="col-md-3">
+                <div class="col-12 col-sm-6 col-xl-3">
                     <div class="stat-card purple">
                         <div class="stat-icon">
-                            <i class="fas fa-medal"></i>
+                            <i class="fas fa-award"></i>
                         </div>
                         <div class="stat-details">
                             <h3>8.5</h3>
@@ -136,10 +136,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-12 col-sm-6 col-xl-3">
                     <div class="stat-card blue">
                         <div class="stat-icon">
-                            <i class="fas fa-check-circle"></i>
+                            <i class="fas fa-calendar-check"></i>
                         </div>
                         <div class="stat-details">
                             <h3>92%</h3>
@@ -147,7 +147,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-12 col-sm-6 col-xl-3">
                     <div class="stat-card green">
                         <div class="stat-icon">
                             <i class="fas fa-book-open"></i>
@@ -158,10 +158,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-12 col-sm-6 col-xl-3">
                     <div class="stat-card orange">
                         <div class="stat-icon">
-                            <i class="fas fa-exclamation-triangle"></i>
+                            <i class="fas fa-tasks"></i>
                         </div>
                         <div class="stat-details">
                             <h3>3</h3>
@@ -171,89 +171,256 @@
                 </div>
             </div>
 
-            <!-- Charts Row -->
-            <div class="row g-4 mb-4">
-                <div class="col-lg-8">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5><i class="fas fa-chart-line me-2"></i>Academic Progress</h5>
-                        </div>
-                        <div class="card-body">
-                            <canvas id="progressChart"></canvas>
-                        </div>
+            <!-- 4. Academic Performance Section -->
+            <div class="card mb-4 border-0 shadow-sm rounded-4">
+                <div class="card-header bg-white py-3 px-4 d-flex align-items-center justify-content-between border-bottom">
+                    <div>
+                        <h5 class="m-0 fw-bold text-dark fs-5"><i class="fas fa-chart-line me-2 text-primary"></i>Academic Performance</h5>
+                        <p class="text-muted small mb-0">Semester-wise GPA progression and credit performance</p>
                     </div>
+                    <span class="badge bg-primary-subtle text-primary fw-semibold px-3 py-2 rounded-pill">SGPA Analytics</span>
                 </div>
-                <div class="col-lg-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5><i class="fas fa-pie-chart me-2"></i>Grade Distribution</h5>
+                <div class="card-body p-4">
+                    <div class="row g-4 align-items-center">
+                        <!-- Left / Large Area: SGPA Line Chart -->
+                        <div class="col-lg-8">
+                            <div class="chart-wrapper p-2" style="position: relative; height: 280px;">
+                                <canvas id="progressChart"></canvas>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <canvas id="gradeChart"></canvas>
+
+                        <!-- Right / Small Area: Academic Summary Panel -->
+                        <div class="col-lg-4">
+                            <div class="academic-summary-panel p-3.5 rounded-3 bg-light border">
+                                <div class="d-flex align-items-center gap-2 mb-3 pb-2 border-bottom">
+                                    <i class="fas fa-sliders text-primary fs-5"></i>
+                                    <h6 class="fw-bold m-0 text-dark">Academic Summary</h6>
+                                </div>
+                                <div class="summary-list d-flex flex-column gap-2">
+                                    <div class="summary-row d-flex justify-content-between align-items-center p-2.5 rounded bg-white border">
+                                        <span class="text-muted small fw-medium"><i class="fas fa-award me-2 text-purple"></i>Current CGPA</span>
+                                        <strong id="summaryCgpa" class="fs-6 text-dark">0.00</strong>
+                                    </div>
+                                    <div class="summary-row d-flex justify-content-between align-items-center p-2.5 rounded bg-white border">
+                                        <span class="text-muted small fw-medium"><i class="fas fa-chart-line me-2 text-primary"></i>Latest SGPA</span>
+                                        <strong id="summaryLatestSgpa" class="fs-6 text-primary">0.00</strong>
+                                    </div>
+                                    <div class="summary-row d-flex justify-content-between align-items-center p-2.5 rounded bg-white border">
+                                        <span class="text-muted small fw-medium"><i class="fas fa-trophy me-2 text-warning"></i>Highest SGPA</span>
+                                        <strong id="summaryHighestSgpa" class="fs-6 text-success">0.00</strong>
+                                    </div>
+                                    <div class="summary-row d-flex justify-content-between align-items-center p-2.5 rounded bg-white border">
+                                        <span class="text-muted small fw-medium"><i class="fas fa-graduation-cap me-2 text-info"></i>Current Semester</span>
+                                        <strong id="summarySemester" class="fs-6 text-dark">Sem -</strong>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Recent Activity & Upcoming -->
-            <div class="row g-4">
+            <!-- 5 & 6. Grade Overview + Attendance Overview Row -->
+            <div class="row g-4 mb-4">
+                <!-- Section 5: Grade Overview -->
                 <div class="col-lg-6">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5><i class="fas fa-clock me-2"></i>Upcoming Deadlines</h5>
+                    <div class="card h-100 border-0 shadow-sm rounded-4">
+                        <div class="card-header bg-white py-3 px-4 border-bottom">
+                            <h5 class="m-0 fw-bold text-dark fs-5"><i class="fas fa-chart-pie me-2 text-primary"></i>Grade Overview</h5>
+                            <p class="text-muted small mb-0">Distribution of your academic grades</p>
                         </div>
-                        <div class="card-body">
-                            <div class="deadline-item">
-                                <div class="deadline-info">
-                                    <h6>Data Structures Assignment</h6>
-                                    <p><i class="fas fa-calendar"></i> Due: Jan 5, 2025</p>
+                        <div class="card-body p-4">
+                            <div class="row align-items-center g-3">
+                                <div class="col-12 col-sm-5 text-center">
+                                    <div style="height: 160px; position: relative;">
+                                        <canvas id="gradeChart"></canvas>
+                                    </div>
                                 </div>
-                                <span class="badge bg-danger">Urgent</span>
-                            </div>
-                            <div class="deadline-item">
-                                <div class="deadline-info">
-                                    <h6>Web Development Project</h6>
-                                    <p><i class="fas fa-calendar"></i> Due: Jan 10, 2025</p>
+                                <div class="col-12 col-sm-7">
+                                    <div class="grade-legend-list d-flex flex-column gap-2">
+                                        <div class="d-flex justify-content-between align-items-center p-2.5 rounded-3 bg-white border">
+                                            <span class="small fw-bold text-dark d-flex align-items-center"><span class="badge-dot bg-indigo me-2"></span>A+ Grade (&ge; 9.0)</span>
+                                            <div class="d-flex align-items-center">
+                                                <span class="badge bg-indigo-subtle text-indigo border border-indigo-subtle fw-bold fs-6 px-2.5 py-1" id="gradeCountAPlus">0</span>
+                                                <span class="fw-bold text-dark small ms-1.5" id="gradePctAPlus">(0%)</span>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center p-2.5 rounded-3 bg-white border">
+                                            <span class="small fw-bold text-dark d-flex align-items-center"><span class="badge-dot bg-cyan me-2"></span>A Grade (8.0-8.9)</span>
+                                            <div class="d-flex align-items-center">
+                                                <span class="badge bg-cyan-subtle text-cyan border border-cyan-subtle fw-bold fs-6 px-2.5 py-1" id="gradeCountA">0</span>
+                                                <span class="fw-bold text-dark small ms-1.5" id="gradePctA">(0%)</span>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center p-2.5 rounded-3 bg-white border">
+                                            <span class="small fw-bold text-dark d-flex align-items-center"><span class="badge-dot bg-blue me-2"></span>B+ Grade (7.0-7.9)</span>
+                                            <div class="d-flex align-items-center">
+                                                <span class="badge bg-blue-subtle text-blue border border-blue-subtle fw-bold fs-6 px-2.5 py-1" id="gradeCountBPlus">0</span>
+                                                <span class="fw-bold text-dark small ms-1.5" id="gradePctBPlus">(0%)</span>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center p-2.5 rounded-3 bg-white border">
+                                            <span class="small fw-bold text-dark d-flex align-items-center"><span class="badge-dot bg-amber me-2"></span>B Grade (&lt; 7.0)</span>
+                                            <div class="d-flex align-items-center">
+                                                <span class="badge bg-amber-subtle text-amber border border-amber-subtle fw-bold fs-6 px-2.5 py-1" id="gradeCountB">0</span>
+                                                <span class="fw-bold text-dark small ms-1.5" id="gradePctB">(0%)</span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <span class="badge bg-warning">Medium</span>
-                            </div>
-                            <div class="deadline-item">
-                                <div class="deadline-info">
-                                    <h6>Database Lab Report</h6>
-                                    <p><i class="fas fa-calendar"></i> Due: Jan 15, 2025</p>
-                                </div>
-                                <span class="badge bg-success">Low</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
+                <!-- Section 6: Attendance Overview -->
                 <div class="col-lg-6">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5><i class="fas fa-star me-2"></i>Recent Grades</h5>
+                    <div class="card h-100 border-0 shadow-sm rounded-4">
+                        <div class="card-header bg-white py-3 px-4 border-bottom">
+                            <h5 class="m-0 fw-bold text-dark fs-5"><i class="fas fa-calendar-check me-2 text-success"></i>Attendance Overview</h5>
+                            <p class="text-muted small mb-0">Track your attendance across courses</p>
                         </div>
-                        <div class="card-body">
-                            <div class="grade-item">
-                                <div class="subject-info">
-                                    <h6>Computer Networks</h6>
-                                    <p>Mid-term Exam</p>
+                        <div class="card-body p-4 d-flex flex-column justify-content-between">
+                            <div class="attendance-hero-box p-3 rounded-3 bg-light border mb-3">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="text-muted small fw-semibold">Overall Attendance Rate</span>
+                                    <span id="overviewAttendanceBadge" class="badge bg-success-subtle text-success border border-success-subtle px-2.5 py-1.5 rounded-pill">
+                                        <i class="fas fa-check-circle me-1"></i>Safe (&ge;85%)
+                                    </span>
                                 </div>
-                                <div class="grade-badge excellent">A+</div>
+                                <div class="d-flex align-items-baseline gap-2 mb-2">
+                                    <h2 class="display-6 fw-bold text-dark m-0" id="overviewAttendanceVal">0%</h2>
+                                    <span class="text-muted small">cumulative class presence</span>
+                                </div>
+                                <div class="progress" style="height: 10px; border-radius: 10px;">
+                                    <div id="overviewAttendanceBar" class="progress-bar bg-success" role="progressbar" style="width: 0%; border-radius: 10px;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
                             </div>
-                            <div class="grade-item">
-                                <div class="subject-info">
-                                    <h6>Operating Systems</h6>
-                                    <p>Assignment 2</p>
+
+                            <div class="attendance-threshold-info p-3 rounded-3 border bg-white">
+                                <h6 class="fw-bold small text-dark mb-2"><i class="fas fa-info-circle text-primary me-1.5"></i>Academic Attendance Policy Thresholds</h6>
+                                <div class="row g-2 text-center small">
+                                    <div class="col-4">
+                                        <div class="p-2 rounded bg-success-subtle border border-success-subtle text-success fw-bold">
+                                            <i class="fas fa-shield-check d-block mb-1 fs-6"></i>&ge; 85% Safe
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="p-2 rounded bg-warning-subtle border border-warning-subtle text-warning-emphasis fw-bold">
+                                            <i class="fas fa-exclamation-triangle d-block mb-1 fs-6"></i>75-84% Warning
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="p-2 rounded bg-danger-subtle border border-danger-subtle text-danger fw-bold">
+                                            <i class="fas fa-triangle-exclamation d-block mb-1 fs-6"></i>&lt; 75% Critical
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="grade-badge good">A</div>
                             </div>
-                            <div class="grade-item">
-                                <div class="subject-info">
-                                    <h6>Software Engineering</h6>
-                                    <p>Quiz 3</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7. Upcoming Deadlines + Recent Grades Row -->
+            <div class="row g-4">
+                <!-- Left: Upcoming Deadlines -->
+                <div class="col-lg-6">
+                    <div class="card h-100 border-0 shadow-sm rounded-4">
+                        <div class="card-header bg-white py-3 px-4 border-bottom d-flex align-items-center justify-content-between">
+                            <div>
+                                <h5 class="m-0 fw-bold text-dark fs-5"><i class="fas fa-clock me-2 text-warning"></i>Upcoming Deadlines</h5>
+                                <p class="text-muted small mb-0">Assignments and assessments due soon</p>
+                            </div>
+                            <span class="badge bg-light text-muted border">3 Pending</span>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="deadline-item p-3 mb-3 rounded-3 border bg-light d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="deadline-icon-box rounded-3 bg-danger-subtle text-danger d-flex align-items-center justify-content-center" style="width: 42px; height: 42px;">
+                                        <i class="fas fa-file-code fs-5"></i>
+                                    </div>
+                                    <div class="deadline-info">
+                                        <h6 class="fw-bold text-dark m-0 mb-1">Data Structures Assignment</h6>
+                                        <p class="text-muted small m-0"><i class="fas fa-calendar-day me-1"></i>Due: Jan 5, 2025</p>
+                                    </div>
                                 </div>
-                                <div class="grade-badge average">B+</div>
+                                <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-2.5 py-1.5 rounded-pill">Urgent</span>
+                            </div>
+                            <div class="deadline-item p-3 mb-3 rounded-3 border bg-light d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="deadline-icon-box rounded-3 bg-warning-subtle text-warning-emphasis d-flex align-items-center justify-content-center" style="width: 42px; height: 42px;">
+                                        <i class="fas fa-laptop-code fs-5"></i>
+                                    </div>
+                                    <div class="deadline-info">
+                                        <h6 class="fw-bold text-dark m-0 mb-1">Web Development Project</h6>
+                                        <p class="text-muted small m-0"><i class="fas fa-calendar-day me-1"></i>Due: Jan 10, 2025</p>
+                                    </div>
+                                </div>
+                                <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-2.5 py-1.5 rounded-pill">Medium</span>
+                            </div>
+                            <div class="deadline-item p-3 rounded-3 border bg-light d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="deadline-icon-box rounded-3 bg-success-subtle text-success d-flex align-items-center justify-content-center" style="width: 42px; height: 42px;">
+                                        <i class="fas fa-database fs-5"></i>
+                                    </div>
+                                    <div class="deadline-info">
+                                        <h6 class="fw-bold text-dark m-0 mb-1">Database Lab Report</h6>
+                                        <p class="text-muted small m-0"><i class="fas fa-calendar-day me-1"></i>Due: Jan 15, 2025</p>
+                                    </div>
+                                </div>
+                                <span class="badge bg-success-subtle text-success border border-success-subtle px-2.5 py-1.5 rounded-pill">Low</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Recent Grades -->
+                <div class="col-lg-6">
+                    <div class="card h-100 border-0 shadow-sm rounded-4">
+                        <div class="card-header bg-white py-3 px-4 border-bottom d-flex align-items-center justify-content-between">
+                            <div>
+                                <h5 class="m-0 fw-bold text-dark fs-5"><i class="fas fa-star me-2 text-warning"></i>Recent Grades</h5>
+                                <p class="text-muted small mb-0">Latest published course evaluations</p>
+                            </div>
+                            <span class="badge bg-light text-muted border">Evaluated</span>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="grade-item p-3 mb-3 rounded-3 border bg-light d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="grade-icon-box rounded-3 bg-indigo-subtle text-indigo d-flex align-items-center justify-content-center" style="width: 42px; height: 42px;">
+                                        <i class="fas fa-network-wired fs-5"></i>
+                                    </div>
+                                    <div class="subject-info">
+                                        <h6 class="fw-bold text-dark m-0 mb-1">Computer Networks</h6>
+                                        <p class="text-muted small m-0">Mid-term Exam</p>
+                                    </div>
+                                </div>
+                                <div class="grade-badge-custom badge-a-plus">A+</div>
+                            </div>
+                            <div class="grade-item p-3 mb-3 rounded-3 border bg-light d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="grade-icon-box rounded-3 bg-cyan-subtle text-cyan d-flex align-items-center justify-content-center" style="width: 42px; height: 42px;">
+                                        <i class="fas fa-microchip fs-5"></i>
+                                    </div>
+                                    <div class="subject-info">
+                                        <h6 class="fw-bold text-dark m-0 mb-1">Operating Systems</h6>
+                                        <p class="text-muted small m-0">Assignment 2</p>
+                                    </div>
+                                </div>
+                                <div class="grade-badge-custom badge-a">A</div>
+                            </div>
+                            <div class="grade-item p-3 rounded-3 border bg-light d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="grade-icon-box rounded-3 bg-blue-subtle text-blue d-flex align-items-center justify-content-center" style="width: 42px; height: 42px;">
+                                        <i class="fas fa-code-branch fs-5"></i>
+                                    </div>
+                                    <div class="subject-info">
+                                        <h6 class="fw-bold text-dark m-0 mb-1">Software Engineering</h6>
+                                        <p class="text-muted small m-0">Quiz 3</p>
+                                    </div>
+                                </div>
+                                <div class="grade-badge-custom badge-b-plus">B+</div>
                             </div>
                         </div>
                     </div>
@@ -264,7 +431,7 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-   <!-- Custom JS -->
+    <!-- Custom JS -->
     <script src="js/dashboard.js"></script>
     
     <!-- Dashboard Data Loader -->
@@ -330,6 +497,34 @@
                 if (coursesH3) {
                     coursesH3.textContent = stats.total_courses;
                 }
+
+                // Populate Academic Summary Panel fields
+                const summaryCgpa = document.getElementById('summaryCgpa');
+                if (summaryCgpa) summaryCgpa.textContent = stats.cgpa;
+                
+                const summarySem = document.getElementById('summarySemester');
+                if (summarySem) summarySem.textContent = `Sem ${student.semester}`;
+
+                // Populate Attendance Overview
+                const attVal = parseFloat(stats.attendance) || 0;
+                const attValElem = document.getElementById('overviewAttendanceVal');
+                const attBarElem = document.getElementById('overviewAttendanceBar');
+                const attBadgeElem = document.getElementById('overviewAttendanceBadge');
+                
+                if (attValElem) attValElem.textContent = attVal + '%';
+                if (attBarElem) attBarElem.style.width = Math.min(100, Math.max(0, attVal)) + '%';
+                if (attBadgeElem) {
+                    if (attVal >= 85) {
+                        attBadgeElem.className = 'badge bg-success-subtle text-success border border-success-subtle px-2.5 py-1.5 rounded-pill';
+                        attBadgeElem.innerHTML = '<i class="fas fa-check-circle me-1"></i>Safe (&ge;85%)';
+                    } else if (attVal >= 75) {
+                        attBadgeElem.className = 'badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-2.5 py-1.5 rounded-pill';
+                        attBadgeElem.innerHTML = '<i class="fas fa-exclamation-triangle me-1"></i>Warning (75-84.9%)';
+                    } else {
+                        attBadgeElem.className = 'badge bg-danger-subtle text-danger border border-danger-subtle px-2.5 py-1.5 rounded-pill';
+                        attBadgeElem.innerHTML = '<i class="fas fa-exclamation-circle me-1"></i>Critical (<75%)';
+                    }
+                }
             }
 
             if (gradesData.success && gradesData.data) {
@@ -338,6 +533,76 @@
                 }
                 if (typeof updateGradeDistributionChart === 'function') {
                     updateGradeDistributionChart(gradesData.data);
+                }
+
+                // Compute Academic Summary Latest SGPA & Highest SGPA from gradesData
+                if (gradesData.data.grades) {
+                    const sgpas = [];
+                    let latestSgpa = null;
+                    const semKeys = Object.keys(gradesData.data.grades).sort((a, b) => Number(a) - Number(b));
+                    
+                    semKeys.forEach(sem => {
+                        const semData = gradesData.data.grades[sem];
+                        if (semData && semData.sgpa > 0) {
+                            const val = parseFloat(semData.sgpa);
+                            sgpas.push(val);
+                            latestSgpa = val;
+                        }
+                    });
+
+                    if (latestSgpa !== null) {
+                        const latestElem = document.getElementById('summaryLatestSgpa');
+                        if (latestElem) latestElem.textContent = latestSgpa.toFixed(2);
+                    }
+                    if (sgpas.length > 0) {
+                        const highestSgpa = Math.max(...sgpas);
+                        const highestElem = document.getElementById('summaryHighestSgpa');
+                        if (highestElem) highestElem.textContent = highestSgpa.toFixed(2);
+                    }
+
+                    // Calculate Grade Breakdown Counts & Percentages for Grade Overview legend
+                    let aPlus = 0, a = 0, bPlus = 0, b = 0;
+                    Object.values(gradesData.data.grades).forEach(sem => {
+                        if (sem.courses) {
+                            sem.courses.forEach(c => {
+                                if (c.grade_points !== null && c.grade_points !== undefined) {
+                                    const gp = parseFloat(c.grade_points);
+                                    if (!isNaN(gp)) {
+                                        if (gp >= 9) aPlus++;
+                                        else if (gp >= 8) a++;
+                                        else if (gp >= 7) bPlus++;
+                                        else b++;
+                                    }
+                                }
+                            });
+                        }
+                    });
+
+                    const totalG = aPlus + a + bPlus + b;
+                    const pctAPlus = totalG > 0 ? Math.round((aPlus / totalG) * 100) : 0;
+                    const pctA = totalG > 0 ? Math.round((a / totalG) * 100) : 0;
+                    const pctBPlus = totalG > 0 ? Math.round((bPlus / totalG) * 100) : 0;
+                    const pctB = totalG > 0 ? Math.round((b / totalG) * 100) : 0;
+
+                    const countAPlus = document.getElementById('gradeCountAPlus');
+                    const countA = document.getElementById('gradeCountA');
+                    const countBPlus = document.getElementById('gradeCountBPlus');
+                    const countB = document.getElementById('gradeCountB');
+
+                    if (countAPlus) countAPlus.textContent = aPlus;
+                    if (countA) countA.textContent = a;
+                    if (countBPlus) countBPlus.textContent = bPlus;
+                    if (countB) countB.textContent = b;
+
+                    const pAPlus = document.getElementById('gradePctAPlus');
+                    const pA = document.getElementById('gradePctA');
+                    const pBPlus = document.getElementById('gradePctBPlus');
+                    const pB = document.getElementById('gradePctB');
+
+                    if (pAPlus) pAPlus.textContent = `(${pctAPlus}%)`;
+                    if (pA) pA.textContent = `(${pctA}%)`;
+                    if (pBPlus) pBPlus.textContent = `(${pctBPlus}%)`;
+                    if (pB) pB.textContent = `(${pctB}%)`;
                 }
             }
             
