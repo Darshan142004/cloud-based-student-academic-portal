@@ -22,11 +22,11 @@
 }
 
 .attendance-card.green::before {
-    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    background: linear-gradient(135deg, #0F52BA 0%, #4AB7E0 100%);
 }
 
 .attendance-card.blue::before {
-    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    background: linear-gradient(135deg, #0F52BA 0%, #2575FC 100%);
 }
 
 .attendance-card.orange::before {
@@ -34,7 +34,7 @@
 }
 
 .attendance-card.purple::before {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #0F52BA 0%, #4AB7E0 100%);
 }
 
 .attendance-card:hover {
@@ -54,19 +54,19 @@
 }
 
 .attendance-card.green .att-icon {
-    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    background: linear-gradient(135deg, #0F52BA 0%, #4AB7E0 100%);
 }
 
 .attendance-card.blue .att-icon {
-    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    background: linear-gradient(135deg, #0F52BA 0%, #2575FC 100%);
 }
 
 .attendance-card.orange .att-icon {
-    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    background: linear-gradient(135deg, #D97706 0%, #F59E0B 100%);
 }
 
 .attendance-card.purple .att-icon {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #0F52BA 0%, #3B82F6 100%);
 }
 
 .att-details h2 {
@@ -106,7 +106,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 15px;
-    background: #f8f9fa;
+    background: #F5F7FA;
     border-radius: 10px;
     gap: 20px;
 }
@@ -224,7 +224,7 @@
 }
 
 .detail-item.present i {
-    color: #43e97b;
+    color: #4AB7E0;
 }
 
 .detail-item.absent i {
@@ -257,7 +257,7 @@
 }
 
 .legend-box.present {
-    background: #43e97b;
+    background: #4AB7E0;
 }
 
 .legend-box.absent {
@@ -302,7 +302,7 @@
 
 .calendar-day.header {
     font-weight: 600;
-    color: #667eea;
+    color: #0F52BA;
     background: none;
     cursor: default;
 }
@@ -312,7 +312,7 @@
 }
 
 .calendar-day.present {
-    background: #43e97b;
+    background: #0F52BA;
     color: white;
 }
 
@@ -342,13 +342,13 @@
 
 /* Quick Actions */
 .btn-outline-primary {
-    border-color: #667eea;
-    color: #667eea;
+    border-color: #0F52BA;
+    color: #0F52BA;
 }
 
 .btn-outline-primary:hover {
-    background: #667eea;
-    border-color: #667eea;
+    background: #0F52BA;
+    border-color: #0F52BA;
     color: white;
 }
 

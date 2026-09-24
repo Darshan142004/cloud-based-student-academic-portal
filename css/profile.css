@@ -31,7 +31,7 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #0F52BA 0%, #4AB7E0 100%);
     border: none;
     color: white;
     cursor: pointer;
@@ -60,7 +60,7 @@
 }
 
 .profile-program {
-    color: #667eea;
+    color: #0F52BA;
     font-weight: 500;
     margin: 5px 0 20px 0;
 }
@@ -82,7 +82,7 @@
 .profile-stats .stat-item h5 {
     font-size: 1.8rem;
     font-weight: 700;
-    color: #667eea;
+    color: #0F52BA;
     margin: 0;
 }
 
@@ -114,7 +114,7 @@
 }
 
 .summary-label i {
-    color: #667eea;
+    color: #0F52BA;
     width: 20px;
 }
 
@@ -142,13 +142,13 @@
 
 .form-control:focus,
 .form-select:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    border-color: #0F52BA;
+    box-shadow: 0 0 0 0.2rem rgba(15, 82, 186, 0.25);
 }
 
 .form-control:disabled,
 .form-select:disabled {
-    background-color: #f8f9fa;
+    background-color: #F5F7FA;
     cursor: not-allowed;
 }
 
@@ -186,17 +186,17 @@
 }
 
 .form-check-input:checked {
-    background-color: #667eea;
-    border-color: #667eea;
+    background-color: #0F52BA;
+    border-color: #0F52BA;
 }
 
 .form-check-input:focus {
-    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    box-shadow: 0 0 0 0.2rem rgba(15, 82, 186, 0.25);
 }
 
 /* Buttons */
 .btn-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #0F52BA 0%, #4AB7E0 100%);
     border: none;
     padding: 10px 20px;
     border-radius: 8px;
@@ -204,9 +204,9 @@
 }
 
 .btn-primary:hover {
-    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    background: linear-gradient(135deg, #003B95 0%, #0F52BA 100%);
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 5px 15px rgba(15, 82, 186, 0.4);
 }
 
 .btn-outline-secondary {
@@ -217,19 +217,19 @@
 }
 
 .btn-outline-secondary:hover {
-    background: #f8f9fa;
+    background: #F5F7FA;
     border-color: #d0d0d0;
 }
 
 .btn-outline-primary {
-    border-color: #667eea;
-    color: #667eea;
+    border-color: #0F52BA;
+    color: #0F52BA;
     border-radius: 8px;
 }
 
 .btn-outline-primary:hover {
-    background: #667eea;
-    border-color: #667eea;
+    background: #0F52BA;
+    border-color: #0F52BA;
     color: white;
 }
 
@@ -242,7 +242,7 @@
 }
 
 .card-header {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    background: linear-gradient(135deg, #F5F7FA 0%, #E4E8F0 100%);
     border-bottom: 1px solid #e0e0e0;
     padding: 15px 20px;
     border-radius: 15px 15px 0 0 !important;

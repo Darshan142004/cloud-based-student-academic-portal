@@ -1,27 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Assignments - EduTrack</title>
-    
+    <title>Assignments - EduPulse</title>
+
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/assignments.css">
 </head>
+
 <body>
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <div class="logo">
-            <h3><i class="fas fa-graduation-cap me-2"></i>EduTrack</h3>
+            <h3><i class="fas fa-graduation-cap me-2"></i>EduPulse</h3>
         </div>
-        
+
         <ul class="nav-menu">
             <li>
                 <a href="dashboard.html">
@@ -53,7 +55,7 @@
                     <span>Assignments</span>
                 </a>
             </li>
-              <li>
+            <li>
                 <a href="extracurricular.html">
                     <i class="fas fa-trophy"></i>
                     <span>Activities</span>
@@ -66,7 +68,7 @@
                 </a>
             </li>
         </ul>
-        
+
         <div class="sidebar-footer">
             <a href="index.html" class="logout-btn">
                 <i class="fas fa-sign-out-alt"></i>
@@ -193,7 +195,8 @@
                         </div>
                         <div class="assignment-body">
                             <p class="description">
-                                Implement Binary Search Tree with insertion, deletion, and traversal operations. Include complete documentation.
+                                Implement Binary Search Tree with insertion, deletion, and traversal operations. Include
+                                complete documentation.
                             </p>
                             <div class="assignment-meta">
                                 <div class="meta-item">
@@ -233,7 +236,8 @@
                         </div>
                         <div class="assignment-body">
                             <p class="description">
-                                Design a complete database schema for an e-commerce platform with ER diagrams and normalized tables.
+                                Design a complete database schema for an e-commerce platform with ER diagrams and
+                                normalized tables.
                             </p>
                             <div class="assignment-meta">
                                 <div class="meta-item">
@@ -273,7 +277,8 @@
                         </div>
                         <div class="assignment-body">
                             <p class="description">
-                                Create a fully responsive portfolio website using HTML, CSS, and JavaScript with modern design principles.
+                                Create a fully responsive portfolio website using HTML, CSS, and JavaScript with modern
+                                design principles.
                             </p>
                             <div class="progress-section">
                                 <div class="progress-header">
@@ -316,13 +321,15 @@
                         <div class="assignment-header">
                             <div class="assignment-title-section">
                                 <h5>Machine Learning Model</h5>
-                                <p class="course-name"><i class="fas fa-book me-1"></i>Artificial Intelligence - CS504</p>
+                                <p class="course-name"><i class="fas fa-book me-1"></i>Artificial Intelligence - CS504
+                                </p>
                             </div>
                             <span class="priority-badge medium">Medium</span>
                         </div>
                         <div class="assignment-body">
                             <p class="description">
-                                Build a classification model using scikit-learn. Train on provided dataset and achieve minimum 85% accuracy.
+                                Build a classification model using scikit-learn. Train on provided dataset and achieve
+                                minimum 85% accuracy.
                             </p>
                             <div class="progress-section">
                                 <div class="progress-header">
@@ -373,7 +380,8 @@
                         </div>
                         <div class="assignment-body">
                             <p class="description">
-                                Analyze network vulnerabilities and propose security measures for a given network infrastructure.
+                                Analyze network vulnerabilities and propose security measures for a given network
+                                infrastructure.
                             </p>
                             <div class="assignment-meta">
                                 <div class="meta-item">
@@ -413,7 +421,8 @@
                         </div>
                         <div class="assignment-body">
                             <p class="description">
-                                Create comprehensive test cases and testing documentation for a given software application.
+                                Create comprehensive test cases and testing documentation for a given software
+                                application.
                             </p>
                             <div class="assignment-meta">
                                 <div class="meta-item">
@@ -446,51 +455,52 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
+
     <!-- Custom JS -->
     <script src="js/assignments.js"></script>
     <!-- Custom JS -->
     <script src="js/assignments.js"></script>
-    
+
     <!-- Get Student Name -->
     <script>
-    window.addEventListener('DOMContentLoaded', function() {
-        // Fetch student info from dashboard API (reusing existing API)
-        fetch('./backend/api/get_dashboard.php')
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    const studentName = data.data.student.name;
-                    
-                    // Update profile dropdown with real name
-                    document.querySelector('.profile-dropdown span').textContent = studentName;
-                    
-                    // Update profile image
-                    document.querySelector('.profile-dropdown img').src = 
-                        `https://ui-avatars.com/api/?name=${encodeURIComponent(studentName)}&background=667eea&color=fff`;
-                    
-                    console.log('✅ Student name loaded:', studentName);
-                } else {
-                    console.error('Failed to load student info');
+        window.addEventListener('DOMContentLoaded', function () {
+            // Fetch student info from dashboard API (reusing existing API)
+            fetch('./backend/api/get_dashboard.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const studentName = data.data.student.name;
+
+                        // Update profile dropdown with real name
+                        document.querySelector('.profile-dropdown span').textContent = studentName;
+
+                        // Update profile image
+                        document.querySelector('.profile-dropdown img').src =
+                            `https://ui-avatars.com/api/?name=${encodeURIComponent(studentName)}&background=667eea&color=fff`;
+
+                        console.log('✅ Student name loaded:', studentName);
+                    } else {
+                        console.error('Failed to load student info');
+                        window.location.href = 'index.html';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
                     window.location.href = 'index.html';
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                window.location.href = 'index.html';
-            });
-    });
-    
-    // Add "Coming Soon" overlay on buttons (optional)
-    document.addEventListener('DOMContentLoaded', function() {
-        const buttons = document.querySelectorAll('.assignment-footer button');
-        buttons.forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.preventDefault();
-                alert('📚 Assignment submission feature is under development.\n\nThis will be available in the next update!');
+                });
+        });
+
+        // Add "Coming Soon" overlay on buttons (optional)
+        document.addEventListener('DOMContentLoaded', function () {
+            const buttons = document.querySelectorAll('.assignment-footer button');
+            buttons.forEach(btn => {
+                btn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    alert('📚 Assignment submission feature is under development.\n\nThis will be available in the next update!');
+                });
             });
         });
-    });
     </script>
 </body>
+
 </html>

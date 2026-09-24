@@ -24,11 +24,11 @@ const progressChart = new Chart(progressCtx, {
         datasets: [{
             label: 'SGPA',
             data: [8.2, 8.5, 8.3, 8.7, 8.5],
-            borderColor: '#667eea',
-            backgroundColor: 'rgba(102, 126, 234, 0.1)',
+            borderColor: '#0F52BA',
+            backgroundColor: 'rgba(15, 82, 186, 0.15)',
             tension: 0.4,
             fill: true,
-            pointBackgroundColor: '#667eea',
+            pointBackgroundColor: '#0F52BA',
             pointBorderColor: '#fff',
             pointBorderWidth: 2,
             pointRadius: 5,
@@ -81,10 +81,10 @@ const gradeChart = new Chart(gradeCtx, {
         datasets: [{
             data: [8, 10, 5, 2],
             backgroundColor: [
-                '#43e97b',
-                '#4facfe',
-                '#fa709a',
-                '#fee140'
+                '#0F52BA',
+                '#4AB7E0',
+                '#3B82F6',
+                '#F59E0B'
             ],
             borderWidth: 0
         }]

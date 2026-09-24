@@ -41,7 +41,7 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`admin_id`, `username`, `password`, `full_name`, `email`, `created_at`) VALUES
-(1, 'admin', '$2y$10$Z5hrRSvFe8Lb1XYgMaOtqe5HP4iKfIAJH1nbQkECZjoFoohI6EE8S', 'System Administrator', 'admin@edutrack.com', '2026-07-08 15:25:08');
+(1, 'admin', '$2y$10$Z5hrRSvFe8Lb1XYgMaOtqe5HP4iKfIAJH1nbQkECZjoFoohI6EE8S', 'System Administrator', 'admin@edupulse.com', '2026-07-08 15:25:08');
 
 -- --------------------------------------------------------
 
@@ -149,24 +149,24 @@ CREATE TABLE `courses` (
 --
 
 INSERT INTO `courses` (`course_id`, `course_code`, `course_name`, `credits`, `semester`, `faculty_name`, `faculty_email`, `description`, `syllabus`, `created_at`) VALUES
-(1, 'CS301', 'Database Management Systems', 3, 5, 'Dr. Sarah Connor', 'sconnor@edutrack.com', 'Introduction to relational databases, SQL language, schema design, normalization, transactions, and indexing.', 'Unit 1: ER Models, Unit 2: Relational Algebra & SQL, Unit 3: Normalization, Unit 4: Transaction & Concurrency control.', '2026-07-08 15:25:08'),
-(2, 'CS302', 'Computer Networks', 4, 5, 'Prof. Charles Xavier', 'cxavier@edutrack.com', 'Study of computer networking concepts, OSI model layers, IP routing, TCP/UDP, and application layer protocols.', 'Unit 1: Physical & Data Link Layers, Unit 2: Network Layer & Routing, Unit 3: Transport Layer (TCP/UDP), Unit 4: Application Layer.', '2026-07-08 15:25:08'),
-(3, 'CS303', 'Operating Systems', 4, 5, 'Dr. Alan Turing', 'aturing@edutrack.com', 'Concepts of OS structure, process management, CPU scheduling, deadlocks, memory management, and file systems.', 'Unit 1: OS Overview & Processes, Unit 2: CPU Scheduling & Synchronization, Unit 3: Memory Management & Virtual Memory, Unit 4: File Systems.', '2026-07-08 15:25:08'),
-(4, 'CS304', 'Software Engineering', 3, 5, 'Prof. Grace Hopper', 'ghopper@edutrack.com', 'Methodologies for software development lifecycle (SDLC), Agile principles, design patterns, testing, and project management.', 'Unit 1: SDLC Models & Agile, Unit 2: Requirements Analysis, Unit 3: Software Design, Unit 4: Software Testing.', '2026-07-08 15:25:08'),
-(5, 'CS305', 'Web Development', 3, 5, 'Mr. Tim Berners-Lee', 'timbl@edutrack.com', 'Frontend and backend web technologies including HTML5, CSS3, JavaScript, PHP, MySQL, and REST APIs.', 'Unit 1: HTML, CSS & JS, Unit 2: Backend Development with PHP, Unit 3: Database Integration, Unit 4: Modern Web APIs.', '2026-07-08 15:25:08'),
-(6, 'CS306', 'Data Structures Lab', 2, 5, 'Dr. Sarah Connor', 'sconnor@edutrack.com', 'Hands-on practical sessions implementing tree, graph, sorting, and search algorithms in C/C++.', 'Lab 1: Stack & Queue, Lab 2: Binary Trees, Lab 3: Graphs (DFS/BFS), Lab 4: Hashing & Sorting.', '2026-07-08 15:25:08'),
-(7, 'CS101', 'Introduction to Programming', 4, 1, 'Prof. Dennis Ritchie', 'dritchie@edutrack.com', NULL, NULL, '2026-07-08 15:25:08'),
-(8, 'CS102', 'Mathematics I', 4, 1, 'Dr. Leonhard Euler', 'leuler@edutrack.com', NULL, NULL, '2026-07-08 15:25:08'),
-(9, 'CS103', 'Physics', 3, 1, 'Dr. Albert Einstein', 'aeinstein@edutrack.com', NULL, NULL, '2026-07-08 15:25:08'),
-(10, 'CS201', 'Data Structures & Algorithms', 4, 2, 'Prof. Donald Knuth', 'dknuth@edutrack.com', NULL, NULL, '2026-07-08 15:25:08'),
-(11, 'CS202', 'Mathematics II', 4, 2, 'Dr. Leonhard Euler', 'leuler@edutrack.com', NULL, NULL, '2026-07-08 15:25:08'),
-(12, 'CS203', 'Chemistry', 3, 2, 'Dr. Marie Curie', 'mcurie@edutrack.com', NULL, NULL, '2026-07-08 15:25:08'),
-(13, 'CS311', 'Discrete Mathematics', 4, 3, 'Prof. George Boole', 'gboole@edutrack.com', NULL, NULL, '2026-07-08 15:25:08'),
-(14, 'CS312', 'Digital Electronics', 4, 3, 'Dr. Claude Shannon', 'cshannon@edutrack.com', NULL, NULL, '2026-07-08 15:25:08'),
-(15, 'CS313', 'Object Oriented Programming', 3, 3, 'Mr. Bjarne Stroustrup', 'bjarne@edutrack.com', NULL, NULL, '2026-07-08 15:25:08'),
-(16, 'CS401', 'Design & Analysis of Algorithms', 4, 4, 'Prof. Donald Knuth', 'dknuth@edutrack.com', NULL, NULL, '2026-07-08 15:25:08'),
-(17, 'CS402', 'Computer Organization', 4, 4, 'Dr. John von Neumann', 'jvonneumann@edutrack.com', NULL, NULL, '2026-07-08 15:25:08'),
-(18, 'CS403', 'Theory of Computation', 3, 4, 'Dr. Alan Turing', 'aturing@edutrack.com', NULL, NULL, '2026-07-08 15:25:08');
+(1, 'CS301', 'Database Management Systems', 3, 5, 'Dr. Sarah Connor', 'sconnor@edupulse.com', 'Introduction to relational databases, SQL language, schema design, normalization, transactions, and indexing.', 'Unit 1: ER Models, Unit 2: Relational Algebra & SQL, Unit 3: Normalization, Unit 4: Transaction & Concurrency control.', '2026-07-08 15:25:08'),
+(2, 'CS302', 'Computer Networks', 4, 5, 'Prof. Charles Xavier', 'cxavier@edupulse.com', 'Study of computer networking concepts, OSI model layers, IP routing, TCP/UDP, and application layer protocols.', 'Unit 1: Physical & Data Link Layers, Unit 2: Network Layer & Routing, Unit 3: Transport Layer (TCP/UDP), Unit 4: Application Layer.', '2026-07-08 15:25:08'),
+(3, 'CS303', 'Operating Systems', 4, 5, 'Dr. Alan Turing', 'aturing@edupulse.com', 'Concepts of OS structure, process management, CPU scheduling, deadlocks, memory management, and file systems.', 'Unit 1: OS Overview & Processes, Unit 2: CPU Scheduling & Synchronization, Unit 3: Memory Management & Virtual Memory, Unit 4: File Systems.', '2026-07-08 15:25:08'),
+(4, 'CS304', 'Software Engineering', 3, 5, 'Prof. Grace Hopper', 'ghopper@edupulse.com', 'Methodologies for software development lifecycle (SDLC), Agile principles, design patterns, testing, and project management.', 'Unit 1: SDLC Models & Agile, Unit 2: Requirements Analysis, Unit 3: Software Design, Unit 4: Software Testing.', '2026-07-08 15:25:08'),
+(5, 'CS305', 'Web Development', 3, 5, 'Mr. Tim Berners-Lee', 'timbl@edupulse.com', 'Frontend and backend web technologies including HTML5, CSS3, JavaScript, PHP, MySQL, and REST APIs.', 'Unit 1: HTML, CSS & JS, Unit 2: Backend Development with PHP, Unit 3: Database Integration, Unit 4: Modern Web APIs.', '2026-07-08 15:25:08'),
+(6, 'CS306', 'Data Structures Lab', 2, 5, 'Dr. Sarah Connor', 'sconnor@edupulse.com', 'Hands-on practical sessions implementing tree, graph, sorting, and search algorithms in C/C++.', 'Lab 1: Stack & Queue, Lab 2: Binary Trees, Lab 3: Graphs (DFS/BFS), Lab 4: Hashing & Sorting.', '2026-07-08 15:25:08'),
+(7, 'CS101', 'Introduction to Programming', 4, 1, 'Prof. Dennis Ritchie', 'dritchie@edupulse.com', NULL, NULL, '2026-07-08 15:25:08'),
+(8, 'CS102', 'Mathematics I', 4, 1, 'Dr. Leonhard Euler', 'leuler@edupulse.com', NULL, NULL, '2026-07-08 15:25:08'),
+(9, 'CS103', 'Physics', 3, 1, 'Dr. Albert Einstein', 'aeinstein@edupulse.com', NULL, NULL, '2026-07-08 15:25:08'),
+(10, 'CS201', 'Data Structures & Algorithms', 4, 2, 'Prof. Donald Knuth', 'dknuth@edupulse.com', NULL, NULL, '2026-07-08 15:25:08'),
+(11, 'CS202', 'Mathematics II', 4, 2, 'Dr. Leonhard Euler', 'leuler@edupulse.com', NULL, NULL, '2026-07-08 15:25:08'),
+(12, 'CS203', 'Chemistry', 3, 2, 'Dr. Marie Curie', 'mcurie@edupulse.com', NULL, NULL, '2026-07-08 15:25:08'),
+(13, 'CS311', 'Discrete Mathematics', 4, 3, 'Prof. George Boole', 'gboole@edupulse.com', NULL, NULL, '2026-07-08 15:25:08'),
+(14, 'CS312', 'Digital Electronics', 4, 3, 'Dr. Claude Shannon', 'cshannon@edupulse.com', NULL, NULL, '2026-07-08 15:25:08'),
+(15, 'CS313', 'Object Oriented Programming', 3, 3, 'Mr. Bjarne Stroustrup', 'bjarne@edupulse.com', NULL, NULL, '2026-07-08 15:25:08'),
+(16, 'CS401', 'Design & Analysis of Algorithms', 4, 4, 'Prof. Donald Knuth', 'dknuth@edupulse.com', NULL, NULL, '2026-07-08 15:25:08'),
+(17, 'CS402', 'Computer Organization', 4, 4, 'Dr. John von Neumann', 'jvonneumann@edupulse.com', NULL, NULL, '2026-07-08 15:25:08'),
+(18, 'CS403', 'Theory of Computation', 3, 4, 'Dr. Alan Turing', 'aturing@edupulse.com', NULL, NULL, '2026-07-08 15:25:08');
 
 -- --------------------------------------------------------
 
@@ -396,12 +396,12 @@ CREATE TABLE `extracurricular_activities` (
 
 INSERT INTO `extracurricular_activities` (`activity_id`, `student_id`, `activity_type`, `activity_name`, `description`, `organization`, `start_date`, `end_date`, `status`, `achievement`, `certificate_url`, `points`, `created_at`) VALUES
 (1, 1, 'Sports', 'Inter-College Basketball Championship', 'Represented the college team as a point guard and won the tournament.', 'Sports Council', '2024-02-10', '2024-02-15', 'Completed', 'Winner', 'cert_basketball.pdf', 50, '2026-07-08 15:25:08'),
-(2, 1, 'Club', 'Coding Club Lead Web Developer', 'Led the technical team of the coding club, organizing hackathons and development bootcamps.', 'EduTrack Coding Club', '2024-08-01', '2024-12-15', 'Completed', 'Appreciation Certificate', 'cert_coding_club.pdf', 80, '2026-07-08 15:25:08'),
+(2, 1, 'Club', 'Coding Club Lead Web Developer', 'Led the technical team of the coding club, organizing hackathons and development bootcamps.', 'EduPulse Coding Club', '2024-08-01', '2024-12-15', 'Completed', 'Appreciation Certificate', 'cert_coding_club.pdf', 80, '2026-07-08 15:25:08'),
 (3, 1, 'Certification', 'AWS Certified Cloud Practitioner', 'Successfully passed the AWS Certified Cloud Practitioner exam.', 'Amazon Web Services', '2024-10-05', '2024-10-05', 'Completed', 'AWS Certified', 'aws_cert_practitioner.pdf', 100, '2026-07-08 15:25:08'),
 (4, 1, 'Competition', 'EduHack Hackathon 2024', 'Built a prototype of a student information system using PHP/MySQL under 24 hours.', 'TechFest committee', '2024-11-20', '2024-11-21', 'Completed', '1st Position', 'cert_hackathon.pdf', 150, '2026-07-08 15:25:08'),
 (5, 1, 'Volunteer', 'Campus Blood Donation Drive', 'Helped in logistics, management, and voter registry during the blood drive.', 'Red Cross Society', '2024-09-12', '2024-09-12', 'Completed', 'Volunteering Certificate', 'cert_volunteer.pdf', 30, '2026-07-08 15:25:08'),
 (6, 1, 'Sports', 'Inter-College Basketball Championship', 'Represented the college team as a point guard and won the tournament.', 'Sports Council', '2024-02-10', '2024-02-15', 'Completed', 'Winner', 'cert_basketball.pdf', 50, '2026-07-08 15:52:19'),
-(7, 1, 'Club', 'Coding Club Lead Web Developer', 'Led the technical team of the coding club, organizing hackathons and development bootcamps.', 'EduTrack Coding Club', '2024-08-01', '2024-12-15', 'Completed', 'Appreciation Certificate', 'cert_coding_club.pdf', 80, '2026-07-08 15:52:19'),
+(7, 1, 'Club', 'Coding Club Lead Web Developer', 'Led the technical team of the coding club, organizing hackathons and development bootcamps.', 'EduPulse Coding Club', '2024-08-01', '2024-12-15', 'Completed', 'Appreciation Certificate', 'cert_coding_club.pdf', 80, '2026-07-08 15:52:19'),
 (8, 1, 'Certification', 'AWS Certified Cloud Practitioner', 'Successfully passed the AWS Certified Cloud Practitioner exam.', 'Amazon Web Services', '2024-10-05', '2024-10-05', 'Completed', 'AWS Certified', 'aws_cert_practitioner.pdf', 100, '2026-07-08 15:52:19'),
 (9, 1, 'Competition', 'EduHack Hackathon 2024', 'Built a prototype of a student information system using PHP/MySQL under 24 hours.', 'TechFest committee', '2024-11-20', '2024-11-21', 'Completed', '1st Position', 'cert_hackathon.pdf', 150, '2026-07-08 15:52:19'),
 (10, 1, 'Volunteer', 'Campus Blood Donation Drive', 'Helped in logistics, management, and voter registry during the blood drive.', 'Red Cross Society', '2024-09-12', '2024-09-12', 'Completed', 'Volunteering Certificate', 'cert_volunteer.pdf', 30, '2026-07-08 15:52:19'),
@@ -598,16 +598,16 @@ CREATE TABLE `students` (
 --
 
 INSERT INTO `students` (`student_id`, `enrollment_id`, `password`, `first_name`, `last_name`, `email`, `phone`, `date_of_birth`, `gender`, `address`, `department`, `program`, `current_semester`, `admission_year`, `profile_photo`, `created_at`) VALUES
-(1, 'STU001', '$2y$10$TQSh8Ye781U3sB/oh5G8POacN9fehuyCF7wp0inXVgVLHIQ/T/G/a', 'John', 'Doe', 'john.doe@edutrack.com', '1234567890', '2003-05-15', 'Male', '123 University Street, Tech City', 'Computer Science & Engineering', 'B.Tech', 5, 2022, 'student_1_1781531269.png', '2026-07-08 15:25:08'),
-(2, 'STU002', '$2y$10$bkDThzBV/sOUaTficf/roev9sNAU2reUXgyKAULZJno2WFanGF/ve', 'Aarav', 'Sharma', 'aarav.sharma@edutrack.com', '9876500002', '2003-04-12', 'Male', 'Bengaluru, Karnataka', 'Computer Applications', 'MCA', 5, 2025, 'student_2_1781529485.png', '2026-07-08 16:44:32'),
-(3, 'STU003', '$2y$10$bkDThzBV/sOUaTficf/roev9sNAU2reUXgyKAULZJno2WFanGF/ve', 'Priya', 'Patel', 'priya.patel@edutrack.com', '9876500003', '2003-07-21', 'Female', 'Mysuru, Karnataka', 'Computer Applications', 'MCA', 5, 2025, 'student_3_1781531323.png', '2026-07-08 16:44:32'),
-(4, 'STU004', '$2y$10$bkDThzBV/sOUaTficf/roev9sNAU2reUXgyKAULZJno2WFanGF/ve', 'Rahul', 'Kumar', 'rahul.kumar@edutrack.com', '9876500004', '2002-11-08', 'Male', 'Bengaluru, Karnataka', 'Computer Applications', 'MCA', 5, 2025, 'student_4_1781530814.png', '2026-07-08 16:44:32'),
-(5, 'STU005', '$2y$10$bkDThzBV/sOUaTficf/roev9sNAU2reUXgyKAULZJno2WFanGF/ve', 'Sneha', 'Reddy', 'sneha.reddy@edutrack.com', '9876500005', '2003-02-17', 'Female', 'Hyderabad, Telangana', 'Computer Applications', 'MCA', 5, 2025, 'student_5_1781530645.png', '2026-07-08 16:44:32'),
-(6, 'STU006', '$2y$10$bkDThzBV/sOUaTficf/roev9sNAU2reUXgyKAULZJno2WFanGF/ve', 'Arjun', 'Rao', 'arjun.rao@edutrack.com', '9876500006', '2002-09-25', 'Male', 'Mangaluru, Karnataka', 'Computer Applications', 'MCA', 5, 2025, 'student_6_1781531360.png', '2026-07-08 16:44:32'),
-(7, 'STU007', '$2y$10$bkDThzBV/sOUaTficf/roev9sNAU2reUXgyKAULZJno2WFanGF/ve', 'Kavya', 'Nair', 'kavya.nair@edutrack.com', '9876500007', '2003-06-14', 'Female', 'Kochi, Kerala', 'Computer Applications', 'MCA', 5, 2025, 'student_7_1781531413.png', '2026-07-08 16:44:32'),
-(8, 'STU008', '$2y$10$bkDThzBV/sOUaTficf/roev9sNAU2reUXgyKAULZJno2WFanGF/ve', 'Rohan', 'Singh', 'rohan.singh@edutrack.com', '9876500008', '2002-12-03', 'Male', 'Pune, Maharashtra', 'Computer Applications', 'MCA', 5, 2025, 'student_8_1781531438.png', '2026-07-08 16:44:32'),
-(9, 'STU009', '$2y$10$bkDThzBV/sOUaTficf/roev9sNAU2reUXgyKAULZJno2WFanGF/ve', 'Ananya', 'Joshi', 'ananya.joshi@edutrack.com', '9876500009', '2003-08-19', 'Female', 'Mumbai, Maharashtra', 'Computer Applications', 'MCA', 5, 2025, 'student_9_1781531612.png', '2026-07-08 16:44:32'),
-(10, 'STU010', '$2y$10$bkDThzBV/sOUaTficf/roev9sNAU2reUXgyKAULZJno2WFanGF/ve', 'Vikram', 'Shetty', 'vikram.shetty@edutrack.com', '9876500010', '2002-05-30', 'Male', 'Bengaluru, Karnataka', 'Computer Applications', 'MCA', 5, 2025, 'student_10_1781531490.png', '2026-07-08 16:44:32');
+(1, 'STU001', '$2y$10$TQSh8Ye781U3sB/oh5G8POacN9fehuyCF7wp0inXVgVLHIQ/T/G/a', 'John', 'Doe', 'john.doe@edupulse.com', '1234567890', '2003-05-15', 'Male', '123 University Street, Tech City', 'Computer Science & Engineering', 'B.Tech', 5, 2022, 'student_1_1781531269.png', '2026-07-08 15:25:08'),
+(2, 'STU002', '$2y$10$bkDThzBV/sOUaTficf/roev9sNAU2reUXgyKAULZJno2WFanGF/ve', 'Aarav', 'Sharma', 'aarav.sharma@edupulse.com', '9876500002', '2003-04-12', 'Male', 'Bengaluru, Karnataka', 'Computer Applications', 'MCA', 5, 2025, 'student_2_1781529485.png', '2026-07-08 16:44:32'),
+(3, 'STU003', '$2y$10$bkDThzBV/sOUaTficf/roev9sNAU2reUXgyKAULZJno2WFanGF/ve', 'Priya', 'Patel', 'priya.patel@edupulse.com', '9876500003', '2003-07-21', 'Female', 'Mysuru, Karnataka', 'Computer Applications', 'MCA', 5, 2025, 'student_3_1781531323.png', '2026-07-08 16:44:32'),
+(4, 'STU004', '$2y$10$bkDThzBV/sOUaTficf/roev9sNAU2reUXgyKAULZJno2WFanGF/ve', 'Rahul', 'Kumar', 'rahul.kumar@edupulse.com', '9876500004', '2002-11-08', 'Male', 'Bengaluru, Karnataka', 'Computer Applications', 'MCA', 5, 2025, 'student_4_1781530814.png', '2026-07-08 16:44:32'),
+(5, 'STU005', '$2y$10$bkDThzBV/sOUaTficf/roev9sNAU2reUXgyKAULZJno2WFanGF/ve', 'Sneha', 'Reddy', 'sneha.reddy@edupulse.com', '9876500005', '2003-02-17', 'Female', 'Hyderabad, Telangana', 'Computer Applications', 'MCA', 5, 2025, 'student_5_1781530645.png', '2026-07-08 16:44:32'),
+(6, 'STU006', '$2y$10$bkDThzBV/sOUaTficf/roev9sNAU2reUXgyKAULZJno2WFanGF/ve', 'Arjun', 'Rao', 'arjun.rao@edupulse.com', '9876500006', '2002-09-25', 'Male', 'Mangaluru, Karnataka', 'Computer Applications', 'MCA', 5, 2025, 'student_6_1781531360.png', '2026-07-08 16:44:32'),
+(7, 'STU007', '$2y$10$bkDThzBV/sOUaTficf/roev9sNAU2reUXgyKAULZJno2WFanGF/ve', 'Kavya', 'Nair', 'kavya.nair@edupulse.com', '9876500007', '2003-06-14', 'Female', 'Kochi, Kerala', 'Computer Applications', 'MCA', 5, 2025, 'student_7_1781531413.png', '2026-07-08 16:44:32'),
+(8, 'STU008', '$2y$10$bkDThzBV/sOUaTficf/roev9sNAU2reUXgyKAULZJno2WFanGF/ve', 'Rohan', 'Singh', 'rohan.singh@edupulse.com', '9876500008', '2002-12-03', 'Male', 'Pune, Maharashtra', 'Computer Applications', 'MCA', 5, 2025, 'student_8_1781531438.png', '2026-07-08 16:44:32'),
+(9, 'STU009', '$2y$10$bkDThzBV/sOUaTficf/roev9sNAU2reUXgyKAULZJno2WFanGF/ve', 'Ananya', 'Joshi', 'ananya.joshi@edupulse.com', '9876500009', '2003-08-19', 'Female', 'Mumbai, Maharashtra', 'Computer Applications', 'MCA', 5, 2025, 'student_9_1781531612.png', '2026-07-08 16:44:32'),
+(10, 'STU010', '$2y$10$bkDThzBV/sOUaTficf/roev9sNAU2reUXgyKAULZJno2WFanGF/ve', 'Vikram', 'Shetty', 'vikram.shetty@edupulse.com', '9876500010', '2002-05-30', 'Male', 'Bengaluru, Karnataka', 'Computer Applications', 'MCA', 5, 2025, 'student_10_1781531490.png', '2026-07-08 16:44:32');
 
 --
 -- Indexes for dumped tables

@@ -17,7 +17,7 @@ body {
 /* Sidebar */
 .admin-sidebar {
     width: 260px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #0F52BA 0%, #2575FC 50%, #4AB7E0 100%);
     color: white;
     padding: 20px;
     position: fixed;
@@ -127,19 +127,19 @@ body {
 }
 
 .stat-icon.blue { 
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+    background: linear-gradient(135deg, #0F52BA 0%, #2575FC 100%); 
 }
 
 .stat-icon.green { 
-    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); 
+    background: linear-gradient(135deg, #0F52BA 0%, #4AB7E0 100%); 
 }
 
 .stat-icon.orange { 
-    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); 
+    background: linear-gradient(135deg, #D97706 0%, #F59E0B 100%); 
 }
 
 .stat-icon.purple { 
-    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); 
+    background: linear-gradient(135deg, #0F52BA 0%, #3B82F6 100%); 
 }
 
 .stat-info h3 {
@@ -176,7 +176,7 @@ body {
 }
 
 .table thead th {
-    background: #f8f9fa;
+    background: #F5F7FA;
     color: #333;
     font-weight: 600;
     border-bottom: 2px solid #dee2e6;
@@ -189,12 +189,12 @@ body {
 }
 
 .table-hover tbody tr:hover {
-    background-color: #f8f9fa;
+    background-color: #F5F7FA;
 }
 
 /* Buttons */
 .btn-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #0F52BA 0%, #4AB7E0 100%);
     color: white;
     border: none;
     padding: 10px 20px;
@@ -207,7 +207,8 @@ body {
 
 .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 5px 15px rgba(15, 82, 186, 0.4);
+    background: linear-gradient(135deg, #003B95 0%, #0F52BA 100%);
 }
 
 .btn-danger {
@@ -241,8 +242,8 @@ body {
 
 .form-control:focus,
 .form-select:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    border-color: #0F52BA;
+    box-shadow: 0 0 0 0.2rem rgba(15, 82, 186, 0.25);
 }
 
 .form-label {
@@ -258,7 +259,7 @@ body {
 }
 
 .modal-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #0F52BA 0%, #4AB7E0 100%);
     color: white;
     border-radius: 12px 12px 0 0;
 }

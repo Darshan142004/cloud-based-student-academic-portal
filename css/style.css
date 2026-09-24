@@ -14,8 +14,8 @@ body {
 
 /* Left Section - Branding */
 .left-section {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    background: linear-gradient(135deg, #0F52BA 0%, #2575FC 50%, #4AB7E0 100%);
+    color: #FFFFFF;
     position: relative;
     overflow: hidden;
 }
@@ -110,17 +110,17 @@ body {
 
 /* Right Section - Login Form */
 .right-section {
-    background: #f8f9fa;
+    background: #F5F7FA;
     padding: 30px;
 }
 
 .login-container {
     width: 100%;
     max-width: 450px;
-    background: white;
+    background: #FFFFFF;
     padding: 40px;
     border-radius: 20px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
     animation: fadeInUp 1s ease-out;
 }
 
@@ -154,9 +154,9 @@ body {
 }
 
 .input-group-text {
-    background: #f8f9fa;
+    background: #F5F7FA;
     border-right: none;
-    color: #667eea;
+    color: #0F52BA;
 }
 
 .form-control {
@@ -167,11 +167,11 @@ body {
 
 .form-control:focus {
     box-shadow: none;
-    border-color: #667eea;
+    border-color: #0F52BA;
 }
 
 .input-group:focus-within .input-group-text {
-    border-color: #667eea;
+    border-color: #0F52BA;
 }
 
 .toggle-password {
@@ -180,33 +180,34 @@ body {
 }
 
 .toggle-password:hover {
-    color: #764ba2;
+    color: #4AB7E0;
 }
 
 .login-btn {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #0F52BA 0%, #4AB7E0 100%);
     border: none;
     padding: 12px;
     font-weight: 500;
     font-size: 1rem;
+    color: #FFFFFF;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .login-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
-    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    box-shadow: 0 10px 25px rgba(15, 82, 186, 0.4);
+    background: linear-gradient(135deg, #003B95 0%, #0F52BA 100%);
 }
 
 .forgot-link {
-    color: #667eea;
+    color: #0F52BA;
     text-decoration: none;
     font-size: 0.9rem;
     transition: color 0.3s ease;
 }
 
 .forgot-link:hover {
-    color: #764ba2;
+    color: #4AB7E0;
 }
 
 .divider {
@@ -238,7 +239,7 @@ body {
 .divider span {
     color: #999;
     font-size: 0.85rem;
-    background: white;
+    background: #FFFFFF;
     padding: 0 10px;
 }
 
@@ -248,14 +249,14 @@ body {
 }
 
 .register-link {
-    color: #667eea;
+    color: #0F52BA;
     text-decoration: none;
     font-weight: 500;
     transition: color 0.3s ease;
 }
 
 .register-link:hover {
-    color: #764ba2;
+    color: #4AB7E0;
 }
 
 /* Responsive */
