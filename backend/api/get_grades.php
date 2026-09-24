@@ -46,7 +46,7 @@ while ($row = mysqli_fetch_assoc($result)) {
     
     $grades_by_semester[$semester]['courses'][] = $row;
     
-    if ($row['grade_points']) {
+    if ($row['grade_points'] !== null) {
         $grades_by_semester[$semester]['total_credits'] += $row['credits'];
         $total_credits += $row['credits'];
         $total_grade_points += ($row['grade_points'] * $row['credits']);
@@ -57,7 +57,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 foreach ($grades_by_semester as $sem => &$data) {
     $sem_grade_points = 0;
     foreach ($data['courses'] as $course) {
-        if ($course['grade_points']) {
+        if ($course['grade_points'] !== null) {
             $sem_grade_points += ($course['grade_points'] * $course['credits']);
         }
     }

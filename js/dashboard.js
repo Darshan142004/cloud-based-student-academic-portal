@@ -20,10 +20,10 @@ const progressCtx = document.getElementById('progressChart').getContext('2d');
 const progressChart = new Chart(progressCtx, {
     type: 'line',
     data: {
-        labels: ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4', 'Sem 5'],
+        labels: [],
         datasets: [{
             label: 'SGPA',
-            data: [8.2, 8.5, 8.3, 8.7, 8.5],
+            data: [],
             borderColor: '#0F52BA',
             backgroundColor: 'rgba(15, 82, 186, 0.15)',
             tension: 0.4,
@@ -54,7 +54,7 @@ const progressChart = new Chart(progressCtx, {
         scales: {
             y: {
                 beginAtZero: false,
-                min: 7,
+                min: 5,
                 max: 10,
                 ticks: {
                     stepSize: 0.5
@@ -79,7 +79,7 @@ const gradeChart = new Chart(gradeCtx, {
     data: {
         labels: ['A+', 'A', 'B+', 'B'],
         datasets: [{
-            data: [8, 10, 5, 2],
+            data: [0, 0, 0, 0],
             backgroundColor: [
                 '#0F52BA',
                 '#4AB7E0',
@@ -110,6 +110,75 @@ const gradeChart = new Chart(gradeCtx, {
         }
     }
 });
+
+// Update Progress Chart with real dynamic SGPA trend data
+function updateProgressChart(gradesData) {
+    if (!progressChart || !gradesData || !gradesData.grades) return;
+    
+    const labels = [];
+    const sgpaValues = [];
+    
+    const semesters = Object.keys(gradesData.grades).sort((a, b) => Number(a) - Number(b));
+    
+    semesters.forEach(sem => {
+        const semData = gradesData.grades[sem];
+        if (semData && semData.sgpa > 0) {
+            labels.push(`Sem ${sem}`);
+            sgpaValues.push(parseFloat(semData.sgpa));
+        }
+    });
+
+    if (labels.length > 0) {
+        progressChart.data.labels = labels;
+        progressChart.data.datasets[0].data = sgpaValues;
+        
+        const minSgpa = Math.max(0, Math.floor(Math.min(...sgpaValues) - 0.5));
+        const maxSgpa = Math.min(10, Math.ceil(Math.max(...sgpaValues) + 0.5));
+        if (progressChart.options.scales && progressChart.options.scales.y) {
+            progressChart.options.scales.y.min = minSgpa;
+            progressChart.options.scales.y.max = maxSgpa;
+        }
+        
+        progressChart.update();
+    }
+}
+
+// Update Grade Distribution Chart dynamically from real grades data
+function updateGradeDistributionChart(gradesData) {
+    if (!gradeChart || !gradesData || !gradesData.grades) return;
+    
+    let aPlus = 0, a = 0, bPlus = 0, b = 0;
+    
+    Object.values(gradesData.grades).forEach(sem => {
+        if (sem.courses) {
+            sem.courses.forEach(course => {
+                if (course.grade_points !== null && course.grade_points !== undefined) {
+                    const gp = parseFloat(course.grade_points);
+                    if (!isNaN(gp)) {
+                        if (gp >= 9) aPlus++;
+                        else if (gp >= 8) a++;
+                        else if (gp >= 7) bPlus++;
+                        else b++;
+                    }
+                }
+            });
+        }
+    });
+    
+    gradeChart.data.datasets[0].data = [aPlus, a, bPlus, b];
+    gradeChart.update();
+}
+
+// Auto-fetch real grades data to update progress and grade distribution charts
+fetch('./backend/api/get_grades.php')
+    .then(response => response.json())
+    .then(res => {
+        if (res.success && res.data) {
+            updateProgressChart(res.data);
+            updateGradeDistributionChart(res.data);
+        }
+    })
+    .catch(err => console.error('Error fetching grades for dashboard charts:', err));
 
 // Add animation on scroll
 const observerOptions = {

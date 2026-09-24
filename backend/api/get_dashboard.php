@@ -33,11 +33,12 @@ mysqli_stmt_execute($stmt_att);
 $result_att = mysqli_stmt_get_result($stmt_att);
 $attendance_data = mysqli_fetch_assoc($result_att);
 
-// Get CGPA
+// Get CGPA (credit-weighted calculation consistent with get_grades.php)
 $sql_cgpa = "SELECT 
-    AVG(grade_points) as cgpa
-    FROM grades 
-    WHERE student_id = ?";
+    SUM(g.grade_points * c.credits) / SUM(c.credits) as cgpa
+    FROM grades g
+    JOIN courses c ON g.course_id = c.course_id
+    WHERE g.student_id = ? AND g.grade_points IS NOT NULL";
 
 $stmt_cgpa = mysqli_prepare($conn, $sql_cgpa);
 mysqli_stmt_bind_param($stmt_cgpa, "i", $student_id);

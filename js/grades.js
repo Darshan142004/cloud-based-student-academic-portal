@@ -17,13 +17,15 @@ document.addEventListener('click', (e) => {
 
 // Performance Chart
 const performanceCtx = document.getElementById('performanceChart').getContext('2d');
+let cachedGradesData = null;
+
 let performanceChart = new Chart(performanceCtx, {
     type: 'line',
     data: {
-        labels: ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4', 'Sem 5'],
+        labels: [],
         datasets: [{
             label: 'GPA',
-            data: [8.2, 8.5, 8.3, 8.7, 8.5],
+            data: [],
             borderColor: '#0F52BA',
             backgroundColor: 'rgba(15, 82, 186, 0.15)',
             tension: 0.4,
@@ -54,7 +56,7 @@ let performanceChart = new Chart(performanceCtx, {
         scales: {
             y: {
                 beginAtZero: false,
-                min: 7,
+                min: 5,
                 max: 10,
                 ticks: {
                     stepSize: 0.5
@@ -72,91 +74,157 @@ let performanceChart = new Chart(performanceCtx, {
     }
 });
 
+function renderPerformanceLineChart(data) {
+    if (!data || !data.grades) return;
+    const labels = [];
+    const sgpaValues = [];
+    const semesters = Object.keys(data.grades).sort((a, b) => Number(a) - Number(b));
+    semesters.forEach(sem => {
+        const semData = data.grades[sem];
+        if (semData && semData.sgpa > 0) {
+            labels.push(`Sem ${sem}`);
+            sgpaValues.push(parseFloat(semData.sgpa));
+        }
+    });
+    if (labels.length > 0) {
+        performanceChart.data.labels = labels;
+        performanceChart.data.datasets[0].data = sgpaValues;
+        const minSgpa = Math.max(0, Math.floor(Math.min(...sgpaValues) - 0.5));
+        const maxSgpa = Math.min(10, Math.ceil(Math.max(...sgpaValues) + 0.5));
+        if (performanceChart.options.scales && performanceChart.options.scales.y) {
+            performanceChart.options.scales.y.min = minSgpa;
+            performanceChart.options.scales.y.max = maxSgpa;
+        }
+        performanceChart.update();
+    }
+}
+
+function renderGradeDistributionBarChart(data) {
+    if (!data || !data.grades) return;
+    let aPlus = 0, a = 0, bPlus = 0, b = 0, others = 0;
+    Object.values(data.grades).forEach(sem => {
+        if (sem.courses) {
+            sem.courses.forEach(course => {
+                if (course.grade_points !== null && course.grade_points !== undefined) {
+                    const gp = parseFloat(course.grade_points);
+                    if (!isNaN(gp)) {
+                        if (gp >= 9) aPlus++;
+                        else if (gp >= 8) a++;
+                        else if (gp >= 7) bPlus++;
+                        else if (gp >= 6) b++;
+                        else others++;
+                    }
+                }
+            });
+        }
+    });
+    performanceChart.data.labels = ['A+', 'A', 'B+', 'B', 'Other'];
+    performanceChart.data.datasets[0].data = [aPlus, a, bPlus, b, others];
+    performanceChart.update();
+}
+
 // Chart Filter
 const chartFilter = document.getElementById('chartFilter');
-chartFilter.addEventListener('change', (e) => {
-    if (e.target.value === 'grades') {
-        // Change to bar chart for grade distribution
-        performanceChart.destroy();
-        performanceChart = new Chart(performanceCtx, {
-            type: 'bar',
-            data: {
-                labels: ['A+', 'A', 'B+', 'B', 'C'],
-                datasets: [{
-                    label: 'Number of Subjects',
-                    data: [8, 6, 3, 1, 0],
-                    backgroundColor: [
-                        '#0F52BA',
-                        '#4AB7E0',
-                        '#3B82F6',
-                        '#F59E0B',
-                        '#ff6b6b'
-                    ],
-                    borderRadius: 8
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
+if (chartFilter) {
+    chartFilter.addEventListener('change', (e) => {
+        if (e.target.value === 'grades') {
+            performanceChart.destroy();
+            performanceChart = new Chart(performanceCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['A+', 'A', 'B+', 'B', 'Other'],
+                    datasets: [{
+                        label: 'Number of Subjects',
+                        data: [0, 0, 0, 0, 0],
+                        backgroundColor: [
+                            '#0F52BA',
+                            '#4AB7E0',
+                            '#3B82F6',
+                            '#F59E0B',
+                            '#ff6b6b'
+                        ],
+                        borderRadius: 8
+                    }]
                 },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            stepSize: 2
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
                         }
                     }
                 }
+            });
+            if (cachedGradesData) {
+                renderGradeDistributionBarChart(cachedGradesData);
             }
-        });
-    } else {
-        // Switch back to line chart
-        performanceChart.destroy();
-        performanceChart = new Chart(performanceCtx, {
-            type: 'line',
-            data: {
-                labels: ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4', 'Sem 5'],
-                datasets: [{
-                    label: 'GPA',
-                    data: [8.2, 8.5, 8.3, 8.7, 8.5],
-                    borderColor: '#0F52BA',
-                    backgroundColor: 'rgba(15, 82, 186, 0.15)',
-                    tension: 0.4,
-                    fill: true,
-                    pointBackgroundColor: '#0F52BA',
-                    pointBorderColor: '#fff',
-                    pointBorderWidth: 2,
-                    pointRadius: 6,
-                    pointHoverRadius: 8
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                plugins: {
-                    legend: {
-                        display: true,
-                        position: 'top',
-                    }
+        } else {
+            performanceChart.destroy();
+            performanceChart = new Chart(performanceCtx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'GPA',
+                        data: [],
+                        borderColor: '#0F52BA',
+                        backgroundColor: 'rgba(15, 82, 186, 0.15)',
+                        tension: 0.4,
+                        fill: true,
+                        pointBackgroundColor: '#0F52BA',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 6,
+                        pointHoverRadius: 8
+                    }]
                 },
-                scales: {
-                    y: {
-                        beginAtZero: false,
-                        min: 7,
-                        max: 10,
-                        ticks: {
-                            stepSize: 0.5
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 5,
+                            max: 10,
+                            ticks: {
+                                stepSize: 0.5
+                            }
                         }
                     }
                 }
+            });
+            if (cachedGradesData) {
+                renderPerformanceLineChart(cachedGradesData);
             }
-        });
-    }
-});
+        }
+    });
+}
+
+// Auto-fetch real grades data for performanceChart
+fetch('./backend/api/get_grades.php')
+    .then(r => r.json())
+    .then(res => {
+        if (res.success && res.data) {
+            cachedGradesData = res.data;
+            renderPerformanceLineChart(cachedGradesData);
+        }
+    })
+    .catch(err => console.error('Error fetching grades for performance chart:', err));
 
 // GPA Calculator
 function calculateGPA() {

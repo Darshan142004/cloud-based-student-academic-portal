@@ -7,7 +7,23 @@ requireLogin();
 header('Content-Type: application/json');
 
 $student_id = getStudentId();
-$current_semester = $_SESSION['semester'] ?? 4;
+
+// Get student details from students table (authoritative source of truth for current_semester)
+$sql_student = "SELECT first_name, last_name, current_semester FROM students WHERE student_id = ?";
+$stmt_student = mysqli_prepare($conn, $sql_student);
+mysqli_stmt_bind_param($stmt_student, "i", $student_id);
+mysqli_stmt_execute($stmt_student);
+$result_student = mysqli_stmt_get_result($stmt_student);
+$student = mysqli_fetch_assoc($result_student);
+
+if (!$student) {
+    sendResponse(false, 'Student record not found');
+}
+
+$current_semester = isset($student['current_semester']) && $student['current_semester'] !== null ? (int)$student['current_semester'] : null;
+if (!$current_semester || $current_semester <= 0) {
+    sendResponse(false, 'Invalid current semester recorded for student');
+}
 
 $sql = "SELECT 
     c.course_code,
@@ -38,13 +54,6 @@ while ($row = mysqli_fetch_assoc($result)) {
 
 $overall_percentage = $total_classes_all > 0 ? 
     round(($total_attended_all / $total_classes_all) * 100, 2) : 0;
-
-$sql_student = "SELECT first_name, last_name FROM students WHERE student_id = ?";
-$stmt_student = mysqli_prepare($conn, $sql_student);
-mysqli_stmt_bind_param($stmt_student, "i", $student_id);
-mysqli_stmt_execute($stmt_student);
-$result_student = mysqli_stmt_get_result($stmt_student);
-$student = mysqli_fetch_assoc($result_student);
 
 $response = [
     'success' => true,

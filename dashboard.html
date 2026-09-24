@@ -271,81 +271,81 @@
     <script>
     // Wait for everything to load
     setTimeout(function() {
-        console.log('Fetching dashboard data...');
+        console.log('Fetching dashboard and grades data...');
         
-        fetch('./backend/api/get_dashboard.php')
-            .then(response => {
-                console.log('Response received');
-                return response.json();
-            })
-            .then(data => {
-                console.log('Data:', data);
+        Promise.all([
+            fetch('./backend/api/get_dashboard.php').then(r => r.json()),
+            fetch('./backend/api/get_grades.php').then(r => r.json())
+        ])
+        .then(([dashData, gradesData]) => {
+            console.log('Dashboard Data:', dashData);
+            console.log('Grades Data:', gradesData);
+            
+            if (dashData.success) {
+                const student = dashData.data.student;
+                const stats = dashData.data.stats;
                 
-                if (data.success) {
-                    const student = data.data.student;
-                    const stats = data.data.stats;
-                    
-                    // Update welcome message
-                    const welcomeH2 = document.querySelector('.welcome-section h2');
-                    if (welcomeH2) {
-                        welcomeH2.textContent = `Welcome back, ${student.name.split(' ')[0]}! 👋`;
-                        console.log('Updated welcome message');
-                    }
-                    
-                    // Update profile dropdown
-                    const profileSpan = document.querySelector('.profile-dropdown span');
-                    if (profileSpan) {
-                        profileSpan.textContent = student.name;
-                        console.log('Updated profile name');
-                    }
-                    
-                    // Update profile dropdown image
-                    const profileImg = document.querySelector('.profile-dropdown img');
-                    if (profileImg) {
-                        if (student.profile_photo && student.profile_photo !== 'default-avatar.png') {
-                            profileImg.src = `uploads/profile_photos/${student.profile_photo}`;
-                        } else {
-                            profileImg.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(student.name)}&background=667eea&color=fff`;
-                        }
-                        console.log('Updated profile image');
-                    }
-                    
-                    // Update semester
-                    const semesterValue = document.querySelectorAll('.stat-value')[0];
-                    if (semesterValue) {
-                        semesterValue.textContent = `${student.semester}th Sem`;
-                        console.log('Updated semester');
-                    }
-                    
-                    // Update CGPA
-                    const cgpaH3 = document.querySelectorAll('.stat-card h3')[0];
-                    if (cgpaH3) {
-                        cgpaH3.textContent = stats.cgpa;
-                        console.log('Updated CGPA');
-                    }
-                    
-                    // Update Attendance
-                    const attendanceH3 = document.querySelectorAll('.stat-card h3')[1];
-                    if (attendanceH3) {
-                        attendanceH3.textContent = stats.attendance + '%';
-                        console.log('Updated attendance');
-                    }
-                    
-                    // Update Courses
-                    const coursesH3 = document.querySelectorAll('.stat-card h3')[2];
-                    if (coursesH3) {
-                        coursesH3.textContent = stats.total_courses;
-                        console.log('Updated courses');
-                    }
-                    
-                    console.log('✅ Dashboard loaded successfully!');
-                } else {
-                    console.error('API returned success: false');
+                // Update welcome message
+                const welcomeH2 = document.querySelector('.welcome-section h2');
+                if (welcomeH2) {
+                    welcomeH2.textContent = `Welcome back, ${student.name.split(' ')[0]}! 👋`;
                 }
-            })
-            .catch(error => {
-                console.error('Fetch Error:', error);
-            });
+                
+                // Update profile dropdown
+                const profileSpan = document.querySelector('.profile-dropdown span');
+                if (profileSpan) {
+                    profileSpan.textContent = student.name;
+                }
+                
+                // Update profile dropdown image
+                const profileImg = document.querySelector('.profile-dropdown img');
+                if (profileImg) {
+                    if (student.profile_photo && student.profile_photo !== 'default-avatar.png') {
+                        profileImg.src = `uploads/profile_photos/${student.profile_photo}`;
+                    } else {
+                        profileImg.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(student.name)}&background=667eea&color=fff`;
+                    }
+                }
+                
+                // Update semester
+                const semesterValue = document.querySelectorAll('.stat-value')[0];
+                if (semesterValue) {
+                    semesterValue.textContent = `${student.semester}th Sem`;
+                }
+                
+                // Update CGPA
+                const cgpaH3 = document.querySelectorAll('.stat-card h3')[0];
+                if (cgpaH3) {
+                    cgpaH3.textContent = stats.cgpa;
+                }
+                
+                // Update Attendance
+                const attendanceH3 = document.querySelectorAll('.stat-card h3')[1];
+                if (attendanceH3) {
+                    attendanceH3.textContent = stats.attendance + '%';
+                }
+                
+                // Update Courses
+                const coursesH3 = document.querySelectorAll('.stat-card h3')[2];
+                if (coursesH3) {
+                    coursesH3.textContent = stats.total_courses;
+                }
+            }
+
+            if (gradesData.success && gradesData.data) {
+                if (typeof updateProgressChart === 'function') {
+                    updateProgressChart(gradesData.data);
+                }
+                if (typeof updateGradeDistributionChart === 'function') {
+                    updateGradeDistributionChart(gradesData.data);
+                }
+            }
+            
+            console.log('✅ Dashboard loaded successfully!');
+        })
+        .catch(error => {
+            console.error('Fetch Error:', error);
+        });
     }, 500); // Wait 500ms for page to fully load
     </script>
 </body>
