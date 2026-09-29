@@ -8,3 +8,7 @@ Thumbs.db
 # IDE settings
 .vscode/
 .idea/
+
+# Environment and specific database backup files
+database/student_portal.sql
+.env

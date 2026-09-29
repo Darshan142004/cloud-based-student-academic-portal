@@ -213,3 +213,222 @@
     margin: 0;
     color: #0F172A;
 }
+
+/* Calendar Grid & Legend Styles */
+.calendar-legend {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #475569;
+}
+
+.legend-box {
+    width: 14px;
+    height: 14px;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.legend-box.present {
+    background-color: #10B981;
+}
+
+.legend-box.absent {
+    background-color: #EF4444;
+}
+
+.legend-box.holiday {
+    background-color: #F59E0B;
+}
+
+.legend-box.future {
+    background-color: #CBD5E1;
+}
+
+/* Calendar Grid Layout */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+    width: 100%;
+}
+
+.calendar-day {
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 12px;
+    min-height: 80px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+/* Calendar Weekday Header Cells */
+.calendar-day.header {
+    background: transparent;
+    border: none;
+    min-height: auto;
+    padding: 8px 4px;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: #64748B;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: none;
+    pointer-events: none;
+}
+
+/* Empty Lead-in Cells */
+.calendar-day:not(.header):not(.present):not(.absent):not(.holiday):not(.future) {
+    background: #F8FAFC;
+    border-color: transparent;
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+/* Active Day Card States */
+.calendar-day.present {
+    background: #ECFDF5;
+    border-color: #A7F3D0;
+}
+
+.calendar-day.present .day-number {
+    color: #065F46;
+    font-weight: 700;
+}
+
+.calendar-day.present .day-status {
+    background: #10B981;
+    color: #FFFFFF;
+}
+
+.calendar-day.absent {
+    background: #FEF2F2;
+    border-color: #FCA5A5;
+}
+
+.calendar-day.absent .day-number {
+    color: #991B1B;
+    font-weight: 700;
+}
+
+.calendar-day.absent .day-status {
+    background: #EF4444;
+    color: #FFFFFF;
+}
+
+.calendar-day.holiday {
+    background: #FFFBEB;
+    border-color: #FDE68A;
+}
+
+.calendar-day.holiday .day-number {
+    color: #92400E;
+    font-weight: 700;
+}
+
+.calendar-day.holiday .day-status {
+    background: #F59E0B;
+    color: #FFFFFF;
+}
+
+.calendar-day.future {
+    background: #F8FAFC;
+    border-color: #E2E8F0;
+    cursor: default;
+}
+
+.calendar-day.future .day-number {
+    color: #94A3B8;
+    font-weight: 500;
+}
+
+.calendar-day.future .day-status {
+    background: #E2E8F0;
+    color: #64748B;
+}
+
+/* Hover effects for interactive calendar days */
+.calendar-day.present:hover,
+.calendar-day.absent:hover,
+.calendar-day.holiday:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    cursor: pointer;
+}
+
+.day-number {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #1E293B;
+    line-height: 1;
+}
+
+.day-status {
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 6px;
+    align-self: flex-end;
+    margin-top: auto;
+    white-space: nowrap;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .calendar-grid {
+        gap: 6px;
+    }
+
+    .calendar-day {
+        min-height: 65px;
+        padding: 6px;
+        border-radius: 8px;
+    }
+
+    .day-number {
+        font-size: 0.85rem;
+    }
+
+    .day-status {
+        font-size: 0.65rem;
+        padding: 2px 5px;
+        border-radius: 4px;
+    }
+}
+
+@media (max-width: 480px) {
+    .calendar-grid {
+        gap: 4px;
+    }
+
+    .calendar-day {
+        min-height: 55px;
+        padding: 4px;
+        border-radius: 6px;
+    }
+
+    .day-number {
+        font-size: 0.75rem;
+    }
+
+    .day-status {
+        font-size: 0.6rem;
+        padding: 1px 4px;
+    }
+}

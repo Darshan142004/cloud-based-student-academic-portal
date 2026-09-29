@@ -1,0 +1,36 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: student-portal-app:latest
+    container_name: student-portal-app
+    ports:
+      - "8080:80"
+    environment:
+      DB_HOST: mysql
+      DB_USER: root
+      DB_PASS: ${DB_PASSWORD}
+      DB_NAME: student_portal
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  mysql:
+    image: mysql:8.0
+    container_name: student-portal-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: student_portal
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database/student_portal.sql:/docker-entrypoint-initdb.d/student_portal.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${DB_PASSWORD}"]
+      timeout: 5s
+      retries: 10
+      interval: 5s
+      start_period: 30s
+
+volumes:
+  mysql_data:
