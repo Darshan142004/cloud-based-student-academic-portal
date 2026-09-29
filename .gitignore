@@ -10,5 +10,5 @@ Thumbs.db
 .idea/
 
 # Environment and specific database backup files
-database/student_portal.sql
+
 .env
