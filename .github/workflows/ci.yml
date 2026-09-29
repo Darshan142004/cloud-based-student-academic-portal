@@ -1,0 +1,53 @@
+name: Student Portal CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  docker-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create environment file
+        run: |
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" > .env
+
+      - name: Build and start containers
+        run: docker compose up -d --build
+
+      - name: Check container status
+        run: docker compose ps
+
+      - name: Wait for MySQL
+        run: |
+          for i in {1..30}; do
+            if docker compose exec -T mysql mysqladmin ping -h localhost -uroot -p"${{ secrets.DB_PASSWORD }}" --silent; then
+              echo "MySQL is ready"
+              exit 0
+            fi
+            echo "Waiting for MySQL..."
+            sleep 5
+          done
+          exit 1
+
+      - name: Check database tables
+        run: |
+          docker compose exec -T mysql \
+            mysql -uroot -p"${{ secrets.DB_PASSWORD }}" \
+            -e "USE student_portal; SHOW TABLES;"
+
+      - name: Test application
+        run: |
+          curl --fail http://localhost:8080
+
+      - name: Stop containers
+        if: always()
+        run: docker compose down -v
