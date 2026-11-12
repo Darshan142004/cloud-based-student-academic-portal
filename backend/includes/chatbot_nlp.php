@@ -174,7 +174,14 @@ function tokenizeAcademicText(string $normalizedText): array {
  * Extract unigram + bigram features from a token sequence.
  */
 function buildNgramFeatures(array $tokens): array {
-    $stop = ['the', 'is', 'are', 'am', 'a', 'an', 'of', 'to', 'in', 'for', 'on', 'my', 'me', 'i', 'do', 'does', 'have', 'has', 'please', 'tell', 'show', 'give', 'get', 'can'];
+    $stop = [
+        'the', 'is', 'are', 'am', 'a', 'an', 'of', 'to', 'in', 'for', 'on', 'my',
+        'me', 'i', 'do', 'does', 'have', 'has', 'please', 'tell', 'show', 'give',
+        'get', 'can', 'what', 'which', 'who', 'how', 'when', 'where', 'why', 'any',
+        'about', 'with', 'from', 'that', 'this', 'there', 'all', 'just', 'will',
+        'would', 'should', 'could', 'and', 'or', 'many', 'much', 'some', 'more',
+        'most', 'very', 'still', 'right', 'now'
+    ];
     $filtered = array_values(array_filter($tokens, fn($t) => !in_array($t, $stop, true)));
     if (empty($filtered)) {
         $filtered = $tokens;
@@ -235,7 +242,7 @@ function getIntentTrainingUtterances(): array {
         ],
         'cgpa_sgpa' => [
             'what is my cgpa',
-            'show my semester wise sgpa trend',
+            'show my semester wise sgpa trend and progression',
             'what was my latest and highest sgpa',
             'if i score 9.5 sgpa next semester what will my cgpa be',
             'how can i improve or predict my cgpa',
@@ -349,6 +356,8 @@ function classifyAcademicIntent(string $normalizedQuery, array $tokens): array {
     $normSq = 0.0;
     foreach ($tf as $term => $cnt) {
         if (!isset($idf[$term])) {
+            // Out-of-vocabulary terms still penalize vector norm so unrelated chatter stays low-confidence
+            $normSq += 1.0;
             continue;
         }
         $w = (1.0 + log($cnt)) * $idf[$term];
@@ -669,7 +678,7 @@ function detectConfidentIntents(array $classification, string $normalizedText): 
             if ($cand !== $topIntent
                 && $candFamily !== $topFamily
                 && !in_array($cand, $excludedSecondaries, true)
-                && $candScore >= 0.30
+                && $candScore >= 0.32
             ) {
                 $selected[] = $cand;
                 break;
