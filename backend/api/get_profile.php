@@ -3,10 +3,8 @@ session_start();
 require_once '../config/database.php';
 require_once '../includes/functions.php';
 
-requireLogin();
+$student_id = requireStudentApi();
 header('Content-Type: application/json');
-
-$student_id = getStudentId();
 
 // Get complete student profile
 $sql = "SELECT 
@@ -34,6 +32,10 @@ $result = mysqli_stmt_get_result($stmt);
 $student = mysqli_fetch_assoc($result);
 
 if ($student) {
+    $student['profile_photo_url'] = epGetStudentAvatarUrl(
+        $student['profile_photo'] ?? null,
+        trim(($student['first_name'] ?? '') . ' ' . ($student['last_name'] ?? ''))
+    );
     $response = [
         'success' => true,
         'data' => $student

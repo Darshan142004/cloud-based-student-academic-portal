@@ -3,10 +3,8 @@ session_start();
 require_once '../config/database.php';
 require_once '../includes/functions.php';
 
-requireLogin();
+$student_id = requireStudentApi();
 header('Content-Type: application/json');
-
-$student_id = getStudentId();
 
 // Get all extracurricular activities
 $sql = "SELECT 
@@ -51,8 +49,8 @@ while ($row = mysqli_fetch_assoc($result)) {
     $activity_counts[$row['activity_type']]++;
 }
 
-// Get student name
-$sql_student = "SELECT first_name, last_name FROM students WHERE student_id = ?";
+// Get student name & photo
+$sql_student = "SELECT first_name, last_name, profile_photo FROM students WHERE student_id = ?";
 $stmt_student = mysqli_prepare($conn, $sql_student);
 mysqli_stmt_bind_param($stmt_student, "i", $student_id);
 mysqli_stmt_execute($stmt_student);
@@ -66,7 +64,12 @@ $response = [
         'total_activities' => count($activities),
         'total_points' => $total_points,
         'activity_counts' => $activity_counts,
-        'student_name' => $student['first_name'] . ' ' . $student['last_name']
+        'student_name' => $student['first_name'] . ' ' . $student['last_name'],
+        'profile_photo' => $student['profile_photo'] ?? null,
+        'profile_photo_url' => epGetStudentAvatarUrl(
+            $student['profile_photo'] ?? null,
+            trim(($student['first_name'] ?? '') . ' ' . ($student['last_name'] ?? ''))
+        ),
     ]
 ];
 

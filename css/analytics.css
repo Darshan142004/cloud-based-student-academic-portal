@@ -1,0 +1,141 @@
+/* EduPulse Explainable Performance Analytics Styles */
+
+.analytics-kpi-card {
+    background: #FFFFFF;
+    border-radius: 16px;
+    padding: 20px 22px;
+    box-shadow: 0 2px 12px rgba(15, 23, 42, 0.05);
+    border: 1px solid #E2E8F0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    height: 100%;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.analytics-kpi-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(15, 82, 186, 0.09);
+}
+
+.analytics-kpi-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.35rem;
+    flex-shrink: 0;
+}
+
+.kpi-indigo .analytics-kpi-icon { background: rgba(15, 82, 186, 0.12); color: #0F52BA; }
+.kpi-cyan .analytics-kpi-icon { background: rgba(6, 182, 212, 0.14); color: #0891B2; }
+.kpi-emerald .analytics-kpi-icon { background: rgba(16, 185, 129, 0.14); color: #059669; }
+.kpi-amber .analytics-kpi-icon { background: rgba(245, 158, 11, 0.15); color: #D97706; }
+
+.analytics-kpi-body h3 {
+    font-size: 1.65rem;
+    font-weight: 800;
+    color: #0F172A;
+    margin: 0;
+    line-height: 1.15;
+}
+
+.analytics-kpi-body p {
+    margin: 2px 0 4px 0;
+    font-size: 0.85rem;
+    color: #64748B;
+    font-weight: 500;
+}
+
+.analytics-kpi-sub {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #475569;
+}
+
+.analytics-card {
+    border: 1px solid #E2E8F0 !important;
+    border-radius: 16px !important;
+    box-shadow: 0 2px 12px rgba(15, 23, 42, 0.04) !important;
+    background: #FFFFFF;
+}
+
+.chart-container-lg {
+    position: relative;
+    height: 310px;
+    width: 100%;
+}
+
+.chart-container-md {
+    position: relative;
+    height: 270px;
+    width: 100%;
+}
+
+.sw-item {
+    border: 1px solid #E2E8F0;
+    border-radius: 12px;
+    padding: 14px 16px;
+    background: #F8FAFC;
+    border-left-width: 4px;
+}
+
+.sw-item.strength {
+    border-left-color: #10B981;
+    background: #F0FDF4;
+}
+
+.sw-item.weakness {
+    border-left-color: #EF4444;
+    background: #FEF2F2;
+}
+
+.sw-item.weakness.medium {
+    border-left-color: #F59E0B;
+    background: #FFFBEB;
+}
+
+.rec-card {
+    border: 1px solid #E2E8F0;
+    border-radius: 14px;
+    padding: 16px 18px;
+    background: #FFFFFF;
+    border-left: 4px solid #0F52BA;
+    transition: box-shadow 0.2s ease;
+}
+
+.rec-card:hover {
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+}
+
+.rec-card.priority-high { border-left-color: #EF4444; }
+.rec-card.priority-medium { border-left-color: #F59E0B; }
+.rec-card.priority-low { border-left-color: #10B981; }
+
+.evidence-pill {
+    display: inline-block;
+    background: #F1F5F9;
+    color: #334155;
+    border: 1px solid #E2E8F0;
+    border-radius: 999px;
+    padding: 4px 10px;
+    font-size: 0.76rem;
+    font-weight: 600;
+}
+
+.empty-analytics-box {
+    border: 1px dashed #CBD5E1;
+    background: #F8FAFC;
+    border-radius: 14px;
+    padding: 28px 20px;
+    text-align: center;
+    color: #475569;
+}
+
+.empty-analytics-box i {
+    font-size: 2rem;
+    color: #64748B;
+    margin-bottom: 10px;
+}

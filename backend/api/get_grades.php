@@ -2,94 +2,88 @@
 session_start();
 require_once '../config/database.php';
 require_once '../includes/functions.php';
+require_once '../includes/analytics_helpers.php';
 
-requireLogin();
+$student_id = requireStudentApi();
 header('Content-Type: application/json');
 
-$student_id = getStudentId();
+$student = epFetchOne(
+    $conn,
+    "SELECT first_name, last_name, current_semester, profile_photo FROM students WHERE student_id = ?",
+    'i',
+    [$student_id]
+);
 
-// Get grades for all semesters
-$sql = "SELECT 
-    g.semester,
-    c.course_code,
-    c.course_name,
-    c.credits,
-    g.internal_marks,
-    g.external_marks,
-    g.total_marks,
-    g.grade,
-    g.grade_points
-FROM grades g
-JOIN courses c ON g.course_id = c.course_id
-WHERE g.student_id = ?
-ORDER BY g.semester, c.course_code";
+if (!$student) {
+    mysqli_close($conn);
+    sendResponse(false, 'Student record not found', null, 404);
+}
 
-$stmt = mysqli_prepare($conn, $sql);
-mysqli_stmt_bind_param($stmt, "i", $student_id);
-mysqli_stmt_execute($stmt);
-$result = mysqli_stmt_get_result($stmt);
+$gradeRows = epFetchAll(
+    $conn,
+    "SELECT
+        g.semester,
+        g.course_id,
+        c.course_code,
+        c.course_name,
+        c.credits,
+        g.internal_marks,
+        g.external_marks,
+        g.total_marks,
+        g.grade,
+        g.grade_points
+     FROM grades g
+     JOIN courses c ON g.course_id = c.course_id
+     WHERE g.student_id = ?
+     ORDER BY g.semester ASC, c.course_code ASC",
+    'i',
+    [$student_id]
+);
 
-$grades_by_semester = [];
-$total_credits = 0;
-$total_grade_points = 0;
+mysqli_close($conn);
 
-while ($row = mysqli_fetch_assoc($result)) {
-    $semester = $row['semester'];
-    
-    if (!isset($grades_by_semester[$semester])) {
-        $grades_by_semester[$semester] = [
+$trends = epComputeSemesterAndCumulativeTrends($gradeRows);
+$gradeDist = epComputeGradeDistribution($gradeRows);
+
+$semMeta = [];
+foreach ($trends['semesters'] as $s) {
+    $semMeta[(int) $s['semester']] = $s;
+}
+
+$gradesBySemester = [];
+foreach ($gradeRows as $row) {
+    $sem = (int) $row['semester'];
+    if (!isset($gradesBySemester[$sem])) {
+        $gradesBySemester[$sem] = [
             'courses' => [],
-            'total_credits' => 0,
-            'sgpa' => 0
+            'total_credits' => $semMeta[$sem]['credits'] ?? 0,
+            'sgpa' => $semMeta[$sem]['sgpa'] ?? 0,
         ];
     }
-    
-    $grades_by_semester[$semester]['courses'][] = $row;
-    
-    if ($row['grade_points'] !== null) {
-        $grades_by_semester[$semester]['total_credits'] += $row['credits'];
-        $total_credits += $row['credits'];
-        $total_grade_points += ($row['grade_points'] * $row['credits']);
-    }
+    $gradesBySemester[$sem]['courses'][] = $row;
 }
 
-// Calculate SGPA for each semester
-foreach ($grades_by_semester as $sem => &$data) {
-    $sem_grade_points = 0;
-    foreach ($data['courses'] as $course) {
-        if ($course['grade_points'] !== null) {
-            $sem_grade_points += ($course['grade_points'] * $course['credits']);
-        }
-    }
-    $data['sgpa'] = $data['total_credits'] > 0 ? 
-        round($sem_grade_points / $data['total_credits'], 2) : 0;
-}
-
-// Calculate overall CGPA
-$cgpa = $total_credits > 0 ? round($total_grade_points / $total_credits, 2) : 0;
-
-// Get student name
-$sql_student = "SELECT first_name, last_name, current_semester FROM students WHERE student_id = ?";
-$stmt_student = mysqli_prepare($conn, $sql_student);
-mysqli_stmt_bind_param($stmt_student, "i", $student_id);
-mysqli_stmt_execute($stmt_student);
-$result_student = mysqli_stmt_get_result($stmt_student);
-$student = mysqli_fetch_assoc($result_student);
-
-$response = [
-    'success' => true,
-    'data' => [
-        'grades' => $grades_by_semester,
-        'cgpa' => $cgpa,
-        'total_credits' => $total_credits,
-        'current_semester' => $student['current_semester'],
-        'student_name' => $student['first_name'] . ' ' . $student['last_name']
-    ]
-];
-
-echo json_encode($response);
-
-mysqli_stmt_close($stmt);
-mysqli_stmt_close($stmt_student);
-mysqli_close($conn);
+sendResponse(true, 'Grades loaded', [
+    'grades' => $gradesBySemester,
+    'sgpa_trend' => $trends['semesters'],
+    'cgpa' => $trends['cgpa'],
+    'latest_sgpa' => $trends['latest_sgpa'],
+    'latest_semester' => $trends['latest_semester'],
+    'highest_sgpa' => $trends['highest_sgpa'],
+    'highest_semester' => $trends['highest_semester'],
+    'total_credits' => $trends['total_graded_credits'],
+    'grade_distribution' => $gradeDist,
+    'marking_scheme' => [
+        'internal_max' => 50,
+        'external_max' => 50,
+        'total_max' => 100,
+    ],
+    'current_semester' => (int) $student['current_semester'],
+    'student_name' => trim($student['first_name'] . ' ' . $student['last_name']),
+    'profile_photo' => $student['profile_photo'],
+    'profile_photo_url' => epGetStudentAvatarUrl(
+        $student['profile_photo'],
+        trim($student['first_name'] . ' ' . $student['last_name'])
+    ),
+]);
 ?>

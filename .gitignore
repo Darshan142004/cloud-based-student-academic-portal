@@ -10,5 +10,8 @@ Thumbs.db
 .idea/
 
 # Environment and specific database backup files
-
 .env
+.env.*
+!.env.azure.example
+*.log
+backups/

@@ -39,13 +39,19 @@
                     </a>
                 </li>
                 <li>
+                    <a href="assignments.html">
+                        <i class="fas fa-tasks"></i>
+                        <span>Manage Assignments</span>
+                    </a>
+                </li>
+                <li>
                     <a href="activities.html">
                         <i class="fas fa-trophy"></i>
                         <span>Manage Activities</span>
                     </a>
                 </li>
                 <li>
-                    <a href="../index.html">
+                    <a href="../backend/api/logout.php">
                         <i class="fas fa-sign-out-alt"></i>
                         <span>Logout</span>
                     </a>
@@ -116,9 +122,12 @@
             <!-- Quick Actions -->
             <div class="content-card mb-4">
                 <h3><i class="fas fa-bolt me-2"></i>Quick Actions</h3>
-                <div class="d-flex gap-3">
+                <div class="d-flex flex-wrap gap-3">
                     <button class="btn btn-primary" onclick="window.location.href='students.html?action=add'">
                         <i class="fas fa-user-plus me-2"></i>Add New Student
+                    </button>
+                    <button class="btn btn-primary" onclick="window.location.href='assignments.html?action=add'">
+                        <i class="fas fa-tasks me-2"></i>Create Assignment
                     </button>
                     <button class="btn btn-primary" onclick="window.location.href='activities.html?action=add'">
                         <i class="fas fa-plus me-2"></i>Add Activity

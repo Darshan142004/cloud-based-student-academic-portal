@@ -196,6 +196,7 @@
             color: white;
         }
     </style>
+    <link rel="stylesheet" href="css/chatbot.css">
 </head>
 <body>
     <!-- Sidebar -->
@@ -209,6 +210,12 @@
                 <a href="dashboard.html">
                     <i class="fas fa-home"></i>
                     <span>Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="analytics.html">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Analytics</span>
                 </a>
             </li>
             <li>
@@ -250,7 +257,7 @@
         </ul>
         
         <div class="sidebar-footer">
-            <a href="index.html" class="logout-btn">
+            <a href="backend/api/logout.php" class="logout-btn">
                 <i class="fas fa-sign-out-alt"></i>
                 <span>Logout</span>
             </a>
@@ -272,13 +279,9 @@
                     <i class="fas fa-search"></i>
                     <input type="text" placeholder="Search activities..." id="searchActivity">
                 </div>
-                <div class="notification">
-                    <i class="fas fa-bell"></i>
-                    <span class="badge">3</span>
-                </div>
                 <div class="profile-dropdown">
-                    <img src="https://ui-avatars.com/api/?name=John+Doe&background=667eea&color=fff" alt="Profile">
-                    <span>John Doe</span>
+                    <img id="headerAvatar" src="https://ui-avatars.com/api/?name=Student&background=0F52BA&color=fff" alt="Profile">
+                    <span id="headerStudentName">Student</span>
                 </div>
             </div>
         </nav>
@@ -427,16 +430,28 @@
     });
     
     function loadActivities() {
-        fetch('./backend/api/get_activities.php')
-            .then(response => response.json())
+        fetch('./backend/api/get_activities.php', { credentials: 'same-origin' })
+            .then(async response => {
+                if (response.status === 401) {
+                    window.location.href = 'index.html';
+                    return null;
+                }
+                return response.json();
+            })
             .then(data => {
-                console.log('Activities data:', data);
-                
+                if (!data) return;
+
                 if (data.success) {
                     allActivities = data.data.activities;
                     
-                    // Update profile name
-                    document.querySelector('.profile-dropdown span').textContent = data.data.student_name;
+                    // Update profile name & avatar
+                    const sName = data.data.student_name || 'Student';
+                    document.getElementById('headerStudentName').textContent = sName;
+                    const photo = data.data.profile_photo;
+                    document.getElementById('headerAvatar').src = data.data.profile_photo_url
+                        || ((photo && photo !== 'default-avatar.png')
+                            ? 'backend/api/download_document.php?type=profile'
+                            : `https://ui-avatars.com/api/?name=${encodeURIComponent(sName)}&background=0F52BA&color=fff`);
                     
                     // Update stats
                     document.getElementById('totalActivities').textContent = data.data.total_activities;
@@ -554,5 +569,6 @@
         });
     }
     </script>
+    <script src="js/chatbot.js"></script>
 </body>
 </html>

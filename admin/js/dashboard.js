@@ -7,8 +7,15 @@ window.addEventListener('DOMContentLoaded', function() {
 // Load Summary Stats & Recent Students
 function loadDashboardData() {
     fetch('../backend/api/admin/get_dashboard_stats.php')
-        .then(response => response.json())
+        .then(response => {
+            if (response.status === 401) {
+                window.location.href = '../index.html';
+                return null;
+            }
+            return response.json();
+        })
         .then(data => {
+            if (!data) return;
             if (data.success) {
                 document.getElementById('totalStudents').textContent = data.data.total_students;
                 document.getElementById('totalActivities').textContent = data.data.total_activities;

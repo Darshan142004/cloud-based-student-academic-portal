@@ -3,9 +3,7 @@ session_start();
 require_once '../../config/database.php';
 require_once '../../includes/functions.php';
 
-if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] !== 'admin') {
-    sendResponse(false, 'Unauthorized access');
-}
+$admin_id = requireAdminApi();
 
 header('Content-Type: application/json');
 

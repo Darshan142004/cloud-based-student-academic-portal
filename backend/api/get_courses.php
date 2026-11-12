@@ -3,30 +3,43 @@ session_start();
 require_once '../config/database.php';
 require_once '../includes/functions.php';
 
-requireLogin();
+$student_id = requireStudentApi();
 header('Content-Type: application/json');
 
-$student_id = getStudentId();
-
-// Get student details from students table (authoritative source of truth for current_semester)
-$sql_student = "SELECT first_name, last_name, current_semester FROM students WHERE student_id = ?";
-$stmt_student = mysqli_prepare($conn, $sql_student);
-mysqli_stmt_bind_param($stmt_student, "i", $student_id);
-mysqli_stmt_execute($stmt_student);
-$result_student = mysqli_stmt_get_result($stmt_student);
-$student = mysqli_fetch_assoc($result_student);
+$student = epFetchOne(
+    $conn,
+    "SELECT first_name, last_name, current_semester, profile_photo FROM students WHERE student_id = ?",
+    'i',
+    [$student_id]
+);
 
 if (!$student) {
-    sendResponse(false, 'Student record not found');
+    mysqli_close($conn);
+    sendResponse(false, 'Student record not found', null, 404);
 }
 
-$current_semester = isset($student['current_semester']) && $student['current_semester'] !== null ? (int)$student['current_semester'] : null;
-if (!$current_semester || $current_semester <= 0) {
-    sendResponse(false, 'Invalid current semester recorded for student');
+$current_semester = isset($student['current_semester']) ? (int) $student['current_semester'] : 0;
+if ($current_semester <= 0) {
+    mysqli_close($conn);
+    sendResponse(false, 'Invalid current semester recorded for student', null, 400);
 }
 
-// Get enrolled courses with attendance
-$sql = "SELECT 
+$semRows = epFetchAll(
+    $conn,
+    "SELECT DISTINCT semester FROM enrollments WHERE student_id = ? ORDER BY semester DESC",
+    'i',
+    [$student_id]
+);
+$availableSemesters = array_map(fn($r) => (int) $r['semester'], $semRows);
+if (!in_array($current_semester, $availableSemesters, true)) {
+    array_unshift($availableSemesters, $current_semester);
+    rsort($availableSemesters);
+}
+
+$semParam = isset($_GET['semester']) ? trim((string) $_GET['semester']) : (string) $current_semester;
+$selectedSemester = strtolower($semParam) === 'all' ? 'all' : max(1, (int) $semParam);
+
+$sql = "SELECT
     c.course_id,
     c.course_code,
     c.course_name,
@@ -38,37 +51,43 @@ $sql = "SELECT
     c.syllabus,
     a.total_classes,
     a.classes_attended,
-    a.attendance_percentage
+    CASE
+        WHEN a.total_classes > 0 THEN ROUND((a.classes_attended / a.total_classes) * 100, 2)
+        ELSE a.attendance_percentage
+    END AS attendance_percentage
 FROM enrollments e
 JOIN courses c ON e.course_id = c.course_id
-LEFT JOIN attendance a ON a.course_id = c.course_id AND a.student_id = e.student_id AND a.semester = e.semester
-WHERE e.student_id = ? AND e.semester = ?
-ORDER BY c.course_code";
+LEFT JOIN attendance a
+  ON a.course_id = c.course_id
+ AND a.student_id = e.student_id
+ AND a.semester = e.semester
+WHERE e.student_id = ?";
 
-$stmt = mysqli_prepare($conn, $sql);
-mysqli_stmt_bind_param($stmt, "ii", $student_id, $current_semester);
-mysqli_stmt_execute($stmt);
-$result = mysqli_stmt_get_result($stmt);
+$types = 'i';
+$params = [$student_id];
 
-$courses = [];
-while ($row = mysqli_fetch_assoc($result)) {
-    $courses[] = $row;
+if ($selectedSemester !== 'all') {
+    $sql .= " AND e.semester = ?";
+    $types .= 'i';
+    $params[] = $selectedSemester;
 }
+$sql .= " ORDER BY e.semester DESC, c.course_code ASC";
 
-$response = [
-    'success' => true,
-    'data' => [
-        'courses' => $courses,
-        'semester' => $current_semester,
-        'total_courses' => count($courses),
-        'total_credits' => array_sum(array_column($courses, 'credits')),
-        'student_name' => $student['first_name'] . ' ' . $student['last_name']
-    ]
-];
-
-echo json_encode($response);
-
-mysqli_stmt_close($stmt);
-mysqli_stmt_close($stmt_student);
+$courses = epFetchAll($conn, $sql, $types, $params);
 mysqli_close($conn);
+
+sendResponse(true, 'Courses loaded', [
+    'courses' => $courses,
+    'semester' => $current_semester,
+    'selected_semester' => $selectedSemester,
+    'available_semesters' => $availableSemesters,
+    'total_courses' => count($courses),
+    'total_credits' => array_sum(array_map(fn($c) => (int) ($c['credits'] ?? 0), $courses)),
+    'student_name' => trim($student['first_name'] . ' ' . $student['last_name']),
+    'profile_photo' => $student['profile_photo'],
+    'profile_photo_url' => epGetStudentAvatarUrl(
+        $student['profile_photo'],
+        trim($student['first_name'] . ' ' . $student['last_name'])
+    ),
+]);
 ?>

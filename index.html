@@ -140,7 +140,12 @@
                     console.log('Login response:', data);
 
                     if (data.success) {
-                        alert('✅ ' + data.message);
+                        const rememberMe = document.getElementById('rememberMe')?.checked;
+                        if (rememberMe) {
+                            localStorage.setItem('studentId', enrollmentId);
+                        } else {
+                            localStorage.removeItem('studentId');
+                        }
 
                         // Redirect based on user type
                         if (data.data.user_type === 'admin') {

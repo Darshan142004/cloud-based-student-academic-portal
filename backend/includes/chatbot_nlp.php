@@ -92,7 +92,22 @@ function getAcademicSynonymMap(): array {
         'topics' => 'syllabus',
         'percentage' => 'percent',
         'pct' => 'percent',
-        'gpa' => 'cgpa'
+        'gpa' => 'cgpa',
+        'strengths' => 'strength',
+        'weaknesses' => 'weakness',
+        'weak' => 'weakness',
+        'strong' => 'strength',
+        'recommendations' => 'recommendation',
+        'recommend' => 'recommendation',
+        'insights' => 'insight',
+        'analyze' => 'analytics',
+        'analysis' => 'analytics',
+        'compare' => 'benchmark',
+        'class' => 'cohort',
+        'peer' => 'cohort',
+        'peers' => 'cohort',
+        'overdue' => 'deadline',
+        'timeliness' => 'submission'
     ];
 }
 
@@ -114,7 +129,9 @@ function getAcademicVocabulary(): array {
         'department', 'program', 'semester', 'admission', 'assignment', 'deadline',
         'submission', 'homework', 'database', 'networks', 'operating', 'software',
         'programming', 'physics', 'chemistry', 'mathematics', 'discrete', 'electronics',
-        'algorithms', 'computation', 'structures', 'development', 'organization'
+        'algorithms', 'computation', 'structures', 'development', 'organization',
+        'strength', 'weakness', 'recommendation', 'insight', 'analytics', 'correlation',
+        'benchmark', 'cohort', 'average', 'improve', 'focus'
     ];
     $vocab = array_values(array_unique(array_merge($base, array_keys(getAcademicSynonymMap()))));
     return $vocab;
@@ -218,7 +235,9 @@ function getIntentTrainingUtterances(): array {
             'do i have any homework due',
             'show pending assignment deadlines',
             'when is my next submission due',
-            'any pending tasks or assignments'
+            'any pending tasks or assignments',
+            'show my assignment marks and feedback',
+            'which assignments are graded or overdue'
         ],
         'attendance_eligibility' => [
             'am i eligible for exams with my attendance',
@@ -271,6 +290,14 @@ function getIntentTrainingUtterances(): array {
             'give me my academic summary snapshot',
             'overall status of my studies and performance',
             'overview of my semester progress'
+        ],
+        'analytics_insights' => [
+            'what are my academic strengths and weaknesses',
+            'give me explainable performance recommendations and insights',
+            'how do i compare to cohort average and program benchmark',
+            'which subjects am i weak or strong in',
+            'show my performance analytics and attendance grade correlation',
+            'what should i focus on to improve my academic performance'
         ],
         'extracurricular' => [
             'show my extracurricular activities',

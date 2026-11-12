@@ -4,9 +4,7 @@ require_once '../../config/database.php';
 require_once '../../includes/functions.php';
 
 // Check if admin is logged in
-if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] !== 'admin') {
-    sendResponse(false, 'Unauthorized access');
-}
+$admin_id = requireAdminApi();
 
 header('Content-Type: application/json');
 
@@ -25,10 +23,18 @@ $sql_courses = "SELECT COUNT(*) as total FROM courses";
 $result_courses = mysqli_query($conn, $sql_courses);
 $total_courses = mysqli_fetch_assoc($result_courses)['total'];
 
-// Get average attendance
-$sql_attendance = "SELECT AVG(attendance_percentage) as avg_attendance FROM attendance";
+// Get total assignments
+$sql_assignments = "SELECT COUNT(*) as total FROM assignments";
+$result_assignments = mysqli_query($conn, $sql_assignments);
+$total_assignments = $result_assignments ? (int) mysqli_fetch_assoc($result_assignments)['total'] : 0;
+
+// Get weighted average attendance across all recorded classes
+$sql_attendance = "SELECT SUM(classes_attended) AS attended, SUM(total_classes) AS total FROM attendance";
 $result_attendance = mysqli_query($conn, $sql_attendance);
-$avg_attendance = mysqli_fetch_assoc($result_attendance)['avg_attendance'];
+$att_row = mysqli_fetch_assoc($result_attendance);
+$avg_attendance = ((int) ($att_row['total'] ?? 0) > 0)
+    ? round(((int) $att_row['attended'] / (int) $att_row['total']) * 100, 1)
+    : 0;
 
 // Get recent students (last 5)
 $sql_recent = "SELECT student_id, enrollment_id, first_name, last_name, email, current_semester, program 
@@ -50,7 +56,8 @@ $response = [
         'total_students' => $total_students,
         'total_activities' => $total_activities,
         'total_courses' => $total_courses,
-        'avg_attendance' => round($avg_attendance ?? 0, 1),
+        'total_assignments' => $total_assignments,
+        'avg_attendance' => $avg_attendance,
         'recent_students' => $recent_students,
         'admin_name' => $admin_name
     ]

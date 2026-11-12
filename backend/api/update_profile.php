@@ -3,14 +3,12 @@ session_start();
 require_once '../config/database.php';
 require_once '../includes/functions.php';
 
-requireLogin();
+$student_id = requireStudentApi();
 header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     sendResponse(false, 'Invalid request method');
 }
-
-$student_id = getStudentId();
 
 // Get form data
 $phone = sanitize($_POST['phone'] ?? '');

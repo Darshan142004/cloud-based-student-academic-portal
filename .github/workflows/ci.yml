@@ -1,53 +1,124 @@
-name: Student Portal CI
+name: EduPulse CI/CD Pipeline
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main, master ]
   pull_request:
-    branches:
-      - main
+    branches: [ main, master ]
+
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
-  docker-test:
+  lint-and-security:
+    name: Static Lint & Secret Hygiene
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Create environment file
-        run: |
-          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" > .env
+      - name: Setup PHP 8.2
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: none
 
-      - name: Build and start containers
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Lint all PHP files
+        run: |
+          find . -name "*.php" -not -path "./.git/*" -print0 | xargs -0 -n1 php -l
+
+      - name: Syntax-check all JS files
+        run: |
+          find . -name "*.js" -not -path "./.git/*" -print0 | xargs -0 -n1 node --check
+
+      - name: Verify no hardcoded cloud secrets or connection strings
+        run: |
+          if grep -rnE "AccountKey=[A-Za-z0-9+/=]{20,}|InstrumentationKey=[0-9a-fA-F-]{36}" --exclude-dir=.git --exclude="*.md" --exclude="*.example" .; then
+            echo "ERROR: Potential hardcoded Azure secret detected."
+            exit 1
+          fi
+
+  docker-integration-test:
+    name: Docker Build, Migration & Health Check
+    needs: lint-and-security
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build and start Docker Compose stack
         run: docker compose up -d --build
 
-      - name: Check container status
-        run: docker compose ps
-
-      - name: Wait for MySQL
+      - name: Wait for MySQL and verify schema
         run: |
-          for i in {1..30}; do
-            if docker compose exec -T mysql mysqladmin ping -h localhost -uroot -p"${{ secrets.DB_PASSWORD }}" --silent; then
-              echo "MySQL is ready"
-              exit 0
+          for i in $(seq 1 30); do
+            if docker exec student-portal-mysql mysqladmin ping -h localhost -u root -padmin123 --silent; then
+              break
             fi
-            echo "Waiting for MySQL..."
-            sleep 5
+            sleep 2
           done
-          exit 1
+          docker exec student-portal-mysql mysql -u root -padmin123 -e "SHOW DATABASES; USE student_portal; SHOW TABLES;"
 
-      - name: Check database tables
+      - name: Apply idempotent SQL migrations
         run: |
-          docker compose exec -T mysql \
-            mysql -uroot -p"${{ secrets.DB_PASSWORD }}" \
-            -e "USE student_portal; SHOW TABLES;"
+          for f in database/migrations/*.sql; do
+            echo "Applying $f"
+            docker exec -i student-portal-mysql mysql -u root -padmin123 student_portal < "$f"
+          done
 
-      - name: Test application
+      - name: Wait for Web Container and verify endpoints
         run: |
-          curl --fail http://localhost:8080
+          sleep 4
+          curl --fail --silent --show-error http://localhost:8080/ >/dev/null
+          curl --fail --silent --show-error http://localhost:8080/backend/api/health.php | tee /tmp/health.json
+          grep -q '"status":"healthy"' /tmp/health.json
 
-      - name: Stop containers
+      - name: Verify RBAC protection on authenticated endpoints
+        run: |
+          test "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:8080/backend/api/get_performance_analytics.php)" = "401"
+          test "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:8080/backend/api/get_documents.php)" = "401"
+          test "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:8080/backend/api/admin/manage_assignments.php)" = "401"
+
+      - name: Cleanup containers
         if: always()
         run: docker compose down -v
+
+  deploy-azure:
+    name: Build & Deploy to Azure Container Apps
+    needs: docker-integration-test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.AZURE_DEPLOY_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Azure Login via OIDC
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Login to Azure Container Registry
+        run: az acr login --name "${{ vars.ACR_NAME }}"
+
+      - name: Build and push container image to ACR
+        run: |
+          IMAGE="${{ vars.ACR_NAME }}.azurecr.io/edupulse-app:${{ github.sha }}"
+          LATEST="${{ vars.ACR_NAME }}.azurecr.io/edupulse-app:latest"
+          docker build -t "$IMAGE" -t "$LATEST" .
+          docker push "$IMAGE"
+          docker push "$LATEST"
+
+      - name: Update Azure Container App revision
+        run: |
+          az containerapp update \
+            --name "${{ vars.AZURE_CONTAINER_APP_NAME }}" \
+            --resource-group "${{ vars.AZURE_RESOURCE_GROUP }}" \
+            --image "${{ vars.ACR_NAME }}.azurecr.io/edupulse-app:${{ github.sha }}"

@@ -2,6 +2,7 @@
 require_once '../config/database.php';
 require_once '../includes/functions.php';
 require_once '../includes/chatbot_nlp.php';
+require_once '../includes/analytics_helpers.php';
 
 header('Content-Type: application/json');
 
@@ -10,12 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     sendResponse(false, 'Invalid request method');
 }
 
-if (!isLoggedIn() || (($_SESSION['user_type'] ?? '') !== 'student')) {
-    http_response_code(401);
-    sendResponse(false, 'Unauthorized: Please log in as a student.');
-}
-
-$student_id = (int) getStudentId();
+$student_id = requireStudentApi();
 
 $rawInput = file_get_contents('php://input');
 $payload = json_decode($rawInput, true);
@@ -152,6 +148,45 @@ function loadStudentAcademicContext(mysqli $conn, int $studentId): ?array {
         [$studentId]
     );
 
+    $attendanceAll = fetchAllRows(
+        $conn,
+        "SELECT a.semester, a.course_id, c.course_code, c.course_name, c.credits,
+                a.total_classes, a.classes_attended, a.attendance_percentage
+         FROM attendance a
+         JOIN courses c ON a.course_id = c.course_id
+         WHERE a.student_id = ?
+         ORDER BY a.semester ASC, c.course_code ASC",
+        'i',
+        [$studentId]
+    );
+
+    $assignmentRows = fetchAllRows(
+        $conn,
+        "SELECT a.assignment_id, a.course_id, a.semester, a.title, a.description,
+                a.due_date, a.max_marks, a.priority,
+                c.course_code, c.course_name,
+                COALESCE(s.status, 'pending') AS submission_status,
+                COALESCE(s.progress_pct, 0) AS progress_pct,
+                s.submitted_at, s.marks_obtained, s.feedback, s.submission_text, s.file_path
+         FROM assignments a
+         JOIN courses c ON a.course_id = c.course_id
+         JOIN enrollments e ON e.course_id = a.course_id AND e.semester = a.semester AND e.student_id = ?
+         LEFT JOIN assignment_submissions s ON s.assignment_id = a.assignment_id AND s.student_id = ?
+         ORDER BY a.due_date ASC",
+        'ii',
+        [$studentId, $studentId]
+    );
+
+    $benchmarks = epLoadCohortBenchmarks(
+        $conn,
+        $studentId,
+        $student['program'] ?? null,
+        $student['department'] ?? null
+    );
+    $cohortCourseBenchmarks = $benchmarks['course_benchmarks'];
+    $cohortSemBenchmarks = $benchmarks['semester_benchmarks'];
+    $cohortAttBenchmarks = $benchmarks['attendance_benchmarks'];
+
     $activities = fetchAllRows(
         $conn,
         "SELECT activity_id, activity_type, activity_name, description, organization,
@@ -230,6 +265,23 @@ function loadStudentAcademicContext(mysqli $conn, int $studentId): ?array {
     $cgpa = $totalCredits > 0 ? round($totalWeightedPoints / $totalCredits, 2) : 0.0;
     $totalActivityPoints = array_sum(array_map(fn($a) => (int) ($a['points'] ?? 0), $activities));
 
+    $trends = epComputeSemesterAndCumulativeTrends($grades, $cohortSemBenchmarks);
+    $currentAttRows = array_values(array_filter($attendanceAll, fn($r) => (int) $r['semester'] === $currentSem));
+    $courseAnalysis = epAnalyzeCoursePerformance($grades, $cohortCourseBenchmarks, $currentAttRows, $cohortAttBenchmarks);
+    $correlation = epAnalyzeAttendanceGradeCorrelation($grades, $attendanceAll);
+    $assignmentAnalysis = epAnalyzeAssignments($assignmentRows);
+    $strengthsWeaknesses = epIdentifyStrengthsAndWeaknesses(
+        $courseAnalysis['graded_courses'],
+        $courseAnalysis['attendance_courses'],
+        $assignmentAnalysis
+    );
+    $recommendations = epGenerateExplainableRecommendations([
+        'trends' => $trends,
+        'graded_courses' => $courseAnalysis['graded_courses'],
+        'attendance_courses' => $courseAnalysis['attendance_courses'],
+        'assignments' => $assignmentAnalysis,
+    ]);
+
     return [
         'student' => $student,
         'full_name' => trim($student['first_name'] . ' ' . $student['last_name']),
@@ -253,7 +305,16 @@ function loadStudentAcademicContext(mysqli $conn, int $studentId): ?array {
         'highest_sgpa' => $highestSgpa,
         'highest_sgpa_sem' => $highestSgpaSem,
         'activities' => $activities,
-        'total_activity_points' => $totalActivityPoints
+        'total_activity_points' => $totalActivityPoints,
+        'analytics' => [
+            'trends' => $trends,
+            'cohort_scope' => $benchmarks['scope'],
+            'correlation' => $correlation,
+            'graded_courses' => $courseAnalysis['graded_courses'],
+            'assignments' => $assignmentAnalysis,
+            'strengths_weaknesses' => $strengthsWeaknesses,
+            'recommendations' => $recommendations,
+        ]
     ];
 }
 
@@ -323,7 +384,9 @@ function buildPersonalizedSuggestions(array $ctx, string $intent, ?array $active
         $suggestions[] = 'Show my current courses';
     }
 
-    if ($intent !== 'academic_performance') {
+    if ($intent !== 'analytics_insights') {
+        $suggestions[] = 'Show my strengths & recommendations';
+    } elseif ($intent !== 'academic_performance') {
         $suggestions[] = 'Give me my academic summary';
     }
 
@@ -382,6 +445,19 @@ function buildCourseDetailReply(array $course, array $ctx, array $entities, stri
         if ((int) $g['course_id'] === $courseId && (int) $g['semester'] === $sem) {
             $lines[] = "• **Grade:** **{$g['grade']}** ({$g['grade_points']} GP) — Total **{$g['total_marks']}/100** (Internal: {$g['internal_marks']}, External: {$g['external_marks']})";
             break;
+        }
+    }
+
+    $courseAssignments = array_values(array_filter(
+        $ctx['analytics']['assignments']['items'] ?? [],
+        fn($a) => (int) $a['course_id'] === $courseId && (int) $a['semester'] === $sem
+    ));
+    if (!empty($courseAssignments)) {
+        $lines[] = "• **Assignments (" . count($courseAssignments) . "):**";
+        foreach (array_slice($courseAssignments, 0, 3) as $ca) {
+            $dueLabel = date('M j, Y', strtotime($ca['due_date']));
+            $scorePart = $ca['marks_obtained'] !== null ? " — Score: **{$ca['marks_obtained']}/{$ca['max_marks']}**" : '';
+            $lines[] = "  - **{$ca['title']}** (" . ucfirst(str_replace('_', ' ', $ca['status'])) . ", Due: {$dueLabel}){$scorePart}";
         }
     }
 
@@ -713,6 +789,129 @@ function buildSummaryReply(array $ctx): array {
 }
 
 /**
+ * Build explainable strengths, weaknesses, peer benchmark, and recommendations reply.
+ */
+function buildAnalyticsInsightsReply(array $ctx): array {
+    $an = $ctx['analytics'] ?? [];
+    $sw = $an['strengths_weaknesses'] ?? ['strengths' => [], 'weaknesses' => []];
+    $recs = $an['recommendations'] ?? [];
+    $trend = $an['trends']['trend'] ?? [];
+    $scope = $an['cohort_scope'] ?? [];
+    $corr = $an['correlation'] ?? [];
+
+    $lines = ['**Explainable Performance Insights**'];
+    if (!empty($trend['label'])) {
+        $deltaStr = isset($trend['delta_latest']) && $trend['delta_latest'] !== null
+            ? sprintf(' (Latest ΔSGPA: %+.2f)', $trend['delta_latest'])
+            : '';
+        $lines[] = "• **Academic Trajectory:** **{$trend['label']}**{$deltaStr} — Band: **{$trend['performance_band']}**";
+    }
+
+    // Cohort benchmark summary (strictly program-scoped, minimum 3 peers)
+    $semList = $an['trends']['semesters'] ?? [];
+    $benchSems = array_values(array_filter($semList, fn($s) => !empty($s['benchmark_available'])));
+    if (!empty($benchSems)) {
+        $latestB = $benchSems[count($benchSems) - 1];
+        $diffStr = $latestB['sgpa_vs_class'] !== null ? sprintf('%+.2f', $latestB['sgpa_vs_class']) : '0.00';
+        $lines[] = "• **Cohort Comparison ({$scope['label']}, n={$latestB['cohort_size']} peers):** Sem {$latestB['semester']} SGPA **{$latestB['sgpa']}** vs. cohort avg **{$latestB['class_avg_sgpa']}** ({$diffStr})";
+    } elseif (!empty($scope['label'])) {
+        $lines[] = "• **Cohort Comparison ({$scope['label']}):** Unavailable — at least 3 other students in your program are required for anonymized cohort averages (found " . (int) ($scope['eligible_peer_count'] ?? 0) . ").";
+    }
+
+    if (!empty($corr['status'])) {
+        $lines[] = "• **Attendance–Grade Correlation:** " . ($corr['status'] === 'ok'
+            ? "r = {$corr['pearson_r']} ({$corr['strength']} {$corr['direction']}, n={$corr['paired_count']})"
+            : ($corr['note'] ?? 'Insufficient overlapping course-semester records.'));
+    }
+
+    if (!empty($sw['strengths'])) {
+        $lines[] = "\n**Academic Strengths:**";
+        foreach (array_slice($sw['strengths'], 0, 3) as $s) {
+            $lines[] = "  - **{$s['title']}:** {$s['evidence']}";
+        }
+    }
+
+    if (!empty($sw['weaknesses'])) {
+        $lines[] = "\n**Focus Areas / Weaknesses:**";
+        foreach (array_slice($sw['weaknesses'], 0, 3) as $w) {
+            $lines[] = "  - **{$w['title']}:** {$w['evidence']}";
+        }
+    } else {
+        $lines[] = "\n**Focus Areas:** No critical academic or attendance weaknesses flagged right now.";
+    }
+
+    if (!empty($recs)) {
+        $lines[] = "\n**Top Recommendations:**";
+        foreach (array_slice($recs, 0, 2) as $r) {
+            $lines[] = "  - **[" . strtoupper($r['priority']) . "] {$r['title']}:** {$r['summary']}";
+        }
+    }
+
+    $lines[] = "\n_Open **Performance Analytics** (`analytics.html`) for charts, peer benchmarks, and full explanations._";
+
+    return [
+        'intent' => 'analytics_insights',
+        'reply' => implode("\n", $lines),
+        'active_semester' => $ctx['current_semester']
+    ];
+}
+
+/**
+ * Build real assignments and timeliness reply from database records.
+ */
+function buildAssignmentsReply(array $ctx): array {
+    $assign = $ctx['analytics']['assignments'] ?? ['has_data' => false];
+    if (empty($assign['has_data'])) {
+        return [
+            'intent' => 'assignments_gap',
+            'reply' => "You currently have **no assignments** recorded in the EduPulse database for your enrolled courses. Once instructors publish assignments, your deadlines and timeliness insights will appear here and on `assignments.html`."
+        ];
+    }
+
+    $sum = $assign['summary'];
+    $tl = $assign['timeliness'];
+    $lines = [
+        "**Assignments & Timeliness Overview**",
+        "• **Total:** {$sum['total_assigned']} | **Pending:** {$sum['pending_count']} | **In Progress:** {$sum['in_progress_count']} | **Completed:** {$sum['completed_count']} | **Overdue:** {$sum['overdue_count']}"
+    ];
+    if (!empty($tl['has_submissions'])) {
+        $lines[] = "• **Timeliness:** **{$tl['on_time_rate']}%** on-time ({$tl['on_time_count']} on-time, {$tl['late_count']} late)";
+    }
+
+    $upcoming = array_values(array_filter(
+        $assign['items'],
+        fn($i) => !in_array($i['status'], ['submitted', 'graded'], true)
+    ));
+    if (!empty($upcoming)) {
+        $lines[] = "\n**Active Tasks:**";
+        foreach (array_slice($upcoming, 0, 4) as $u) {
+            $dueLabel = date('M j, Y', strtotime($u['due_date']));
+            $flag = $u['is_overdue'] ? ' _(Overdue)_' : '';
+            $lines[] = "  - **{$u['course_code']} — {$u['title']}** (Due: {$dueLabel}){$flag}";
+        }
+    }
+
+    $graded = array_values(array_filter(
+        $assign['items'],
+        fn($i) => $i['status'] === 'graded'
+    ));
+    if (!empty($graded)) {
+        $lines[] = "\n**Graded Results:**";
+        foreach (array_slice($graded, 0, 3) as $g) {
+            $fb = !empty($g['feedback']) ? " — _\"{$g['feedback']}\"_" : '';
+            $lines[] = "  - **{$g['course_code']} — {$g['title']}:** **{$g['marks_obtained']}/{$g['max_marks']}**{$fb}";
+        }
+    }
+
+    $lines[] = "\n_Manage progress or submit work on the **Assignments** page (`assignments.html`)._";
+
+    return [
+        'intent' => 'assignments_gap',
+        'reply' => implode("\n", $lines)
+    ];
+}
+
+/**
  * Dispatch a single classified academic intent to its response builder.
  */
 function dispatchSingleIntent(string $intent, array $ctx, array $entities, string $normalized, string $firstName): array {
@@ -725,13 +924,11 @@ function dispatchSingleIntent(string $intent, array $ctx, array $entities, strin
         'extracurricular' => buildActivitiesReply($ctx, $normalized),
         'profile_semester' => buildProfileReply($ctx),
         'academic_performance' => buildSummaryReply($ctx),
-        'assignments_gap' => [
-            'intent' => 'assignments_gap',
-            'reply' => "Assignment deadlines and submissions are not stored in the EduPulse database yet — the **Assignments** page (`assignments.html`) currently displays static preview items."
-        ],
+        'analytics_insights' => buildAnalyticsInsightsReply($ctx),
+        'assignments_gap' => buildAssignmentsReply($ctx),
         default => [
             'intent' => 'unknown',
-            'reply' => "I'm not sure I understood that question, {$firstName}. Could you clarify? You can ask about your **attendance**, **CGPA/grades**, **courses & faculty**, or **extracurricular activities**."
+            'reply' => "I'm not sure I understood that question, {$firstName}. Could you clarify? You can ask about your **attendance**, **CGPA/grades**, **strengths & recommendations**, **courses & faculty**, **assignments**, or **extracurricular activities**."
         ]
     };
 }
@@ -742,6 +939,28 @@ function dispatchSingleIntent(string $intent, array $ctx, array $entities, strin
 function routeAcademicQuery(string $message, array $ctx): array {
     $studentId = (int) $ctx['student']['student_id'];
     $firstName = $ctx['student']['first_name'];
+    $ownEnrollment = strtoupper((string) ($ctx['student']['enrollment_id'] ?? ''));
+
+    // Privacy guard: block requests asking about another student's ID or private records
+    if (preg_match('/\b(stu\d{3,})\b/i', $message, $mId)) {
+        $reqId = strtoupper($mId[1]);
+        if ($reqId !== $ownEnrollment) {
+            return [
+                'intent' => 'privacy_guard',
+                'intents' => ['privacy_guard'],
+                'reply' => "For student privacy, I can only access **your own** academic records (`{$ownEnrollment}`). I cannot view or share individual grades, attendance, or submissions for `{$reqId}`.",
+                'suggestions' => buildPersonalizedSuggestions($ctx, 'analytics_insights')
+            ];
+        }
+    }
+    if (preg_match('/\b(other\s+student|another\s+student|classmate|friend|someone\s+else)(?:\'?s)?\s+(?:grade|grades|marks|cgpa|sgpa|attendance|submission|profile)/i', $message)) {
+        return [
+            'intent' => 'privacy_guard',
+            'intents' => ['privacy_guard'],
+            'reply' => "For privacy protection, I cannot share individual academic records of other students. You can ask **\"How do I compare to the cohort average?\"** to view anonymized program cohort averages when at least 3 peers are available.",
+            'suggestions' => buildPersonalizedSuggestions($ctx, 'analytics_insights')
+        ];
+    }
 
     $normalized = normalizeAcademicText($message);
     $tokens = tokenizeAcademicText($normalized);
@@ -757,7 +976,7 @@ function routeAcademicQuery(string $message, array $ctx): array {
     $resolvedCourse = $entities['course'];
     if ($resolvedCourse === null && !$isPluralOrSemQuery && $entities['is_follow_up'] && !empty($sessionCtx['last_course_id'])) {
         $prevCourse = $ctx['courses_by_id'][(int) $sessionCtx['last_course_id']] ?? null;
-        if ($prevCourse !== null && in_array($intent, ['attendance_overview', 'attendance_eligibility', 'courses_faculty', 'grades_marks', 'unknown'], true)) {
+        if ($prevCourse !== null && in_array($intent, ['attendance_overview', 'attendance_eligibility', 'courses_faculty', 'grades_marks', 'assignments_gap', 'unknown'], true)) {
             $resolvedCourse = $prevCourse;
         }
     }
@@ -775,7 +994,7 @@ function routeAcademicQuery(string $message, array $ctx): array {
         return [
             'intent' => 'greeting',
             'intents' => ['greeting'],
-            'reply' => "Hi **{$firstName}**! I'm **Ask EduPulse**, your academic assistant for Semester {$ctx['current_semester']}.\n\nAsk me naturally about:\n• **Attendance & Eligibility:** overall status, risky subjects, safe absences, what-if math\n• **CGPA, SGPA & Grades:** semester marks, GPA trends, target projections\n• **Courses & Faculty:** enrolled subjects, instructors, email, syllabus\n• **Activities & Profile:** points, ongoing clubs, academic snapshot",
+            'reply' => "Hi **{$firstName}**! I'm **Ask EduPulse**, your academic assistant for Semester {$ctx['current_semester']}.\n\nAsk me naturally about:\n• **Attendance & Eligibility:** overall status, risky subjects, safe absences, what-if math\n• **CGPA, SGPA & Grades:** semester marks, GPA trends, target projections\n• **Analytics & Recommendations:** strengths, weaknesses, cohort averages\n• **Assignments & Deadlines:** pending tasks, overdue status, graded feedback\n• **Courses, Faculty & Activities:** enrolled subjects, instructors, points",
             'suggestions' => buildPersonalizedSuggestions($ctx, 'greeting')
         ];
     }
@@ -811,9 +1030,6 @@ function routeAcademicQuery(string $message, array $ctx): array {
 
     if (count($confidentIntents) === 1) {
         $res = dispatchSingleIntent($confidentIntents[0], $ctx, $entities, $normalized, $firstName);
-        if ($res['intent'] === 'assignments_gap') {
-            $res['reply'] .= "\n\nMeanwhile, I can help with your live **courses**, **attendance**, **CGPA/grades**, or **extracurricular activities**!";
-        }
         saveChatSessionContext(
             $studentId,
             $res['intent'],

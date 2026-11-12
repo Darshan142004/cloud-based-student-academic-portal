@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Assignments - Admin Panel</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/admin-style.css">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="admin-logo">
+                <h2><i class="fas fa-graduation-cap me-2"></i>Admin Panel</h2>
+            </div>
+
+            <ul class="admin-menu">
+                <li>
+                    <a href="dashboard.html">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="students.html">
+                        <i class="fas fa-users"></i>
+                        <span>Manage Students</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="assignments.html" class="active">
+                        <i class="fas fa-tasks"></i>
+                        <span>Manage Assignments</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="activities.html">
+                        <i class="fas fa-trophy"></i>
+                        <span>Manage Activities</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="../backend/api/logout.php">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <div class="admin-header">
+                <div>
+                    <h1>Manage Assignments</h1>
+                    <p class="text-muted mb-0">Create assignments, track student submissions, and award grades &amp; feedback</p>
+                </div>
+                <button class="btn btn-primary" id="openCreateAssignmentBtn">
+                    <i class="fas fa-plus me-2"></i>Create Assignment
+                </button>
+            </div>
+
+            <div id="adminAssignAlert" class="d-none mb-3"></div>
+
+            <!-- Filters -->
+            <div class="content-card mb-4">
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-5">
+                        <label for="adminSearchAssign" class="form-label small fw-semibold text-muted">Search</label>
+                        <input type="text" id="adminSearchAssign" class="form-control" placeholder="Search by title, course code, or description...">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="adminFilterCourse" class="form-label small fw-semibold text-muted">Course</label>
+                        <select id="adminFilterCourse" class="form-select">
+                            <option value="all">All Courses</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="adminFilterSem" class="form-label small fw-semibold text-muted">Semester</label>
+                        <select id="adminFilterSem" class="form-select">
+                            <option value="all">All Semesters</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Assignments Table -->
+            <div class="content-card">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h3 class="m-0"><i class="fas fa-clipboard-list me-2 text-primary"></i>Published Assignments</h3>
+                    <span class="badge bg-light text-dark border" id="assignmentCountBadge">0 assignments</span>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Course</th>
+                                <th>Title</th>
+                                <th>Sem</th>
+                                <th>Due Date</th>
+                                <th>Max Marks</th>
+                                <th>Priority</th>
+                                <th>Submissions</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminAssignmentsBody">
+                            <tr><td colspan="8" class="text-center py-4 text-muted">Loading assignments...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Create / Edit Assignment Modal -->
+    <div class="modal fade" id="assignmentFormModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content rounded-4 border-0 shadow">
+                <div class="modal-header border-bottom">
+                    <h5 class="modal-title fw-bold" id="assignmentModalTitle">Create Assignment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="assignmentForm">
+                    <div class="modal-body p-4">
+                        <input type="hidden" id="formAssignmentId">
+                        <div class="row g-3">
+                            <div class="col-md-8">
+                                <label for="formCourseId" class="form-label fw-semibold">Course *</label>
+                                <select class="form-select" id="formCourseId" required></select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="formPriority" class="form-label fw-semibold">Priority</label>
+                                <select class="form-select" id="formPriority">
+                                    <option value="low">Low</option>
+                                    <option value="medium" selected>Medium</option>
+                                    <option value="high">High</option>
+                                    <option value="urgent">Urgent</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label for="formTitle" class="form-label fw-semibold">Assignment Title *</label>
+                                <input type="text" class="form-control" id="formTitle" maxlength="150" required placeholder="e.g., B-Tree Index Implementation">
+                            </div>
+                            <div class="col-12">
+                                <label for="formDescription" class="form-label fw-semibold">Description &amp; Instructions</label>
+                                <textarea class="form-control" id="formDescription" rows="3" placeholder="Provide clear deliverables, rubric, and formatting expectations..."></textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="formDueDate" class="form-label fw-semibold">Due Date &amp; Time *</label>
+                                <input type="datetime-local" class="form-control" id="formDueDate" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="formMaxMarks" class="form-label fw-semibold">Maximum Marks *</label>
+                                <input type="number" class="form-control" id="formMaxMarks" min="1" max="1000" step="0.5" value="20" required>
+                            </div>
+                        </div>
+                        <div id="assignmentFormError" class="alert alert-danger py-2 small mt-3 d-none"></div>
+                    </div>
+                    <div class="modal-footer border-top">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary" id="saveAssignmentBtn">
+                            <i class="fas fa-save me-1"></i>Save Assignment
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- View & Grade Submissions Modal -->
+    <div class="modal fade" id="submissionsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content rounded-4 border-0 shadow">
+                <div class="modal-header border-bottom">
+                    <div>
+                        <h5 class="modal-title fw-bold" id="subsModalTitle">Student Submissions</h5>
+                        <p class="text-muted small mb-0" id="subsModalSubtitle"></p>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div id="subsAlert" class="d-none mb-3"></div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Student</th>
+                                    <th>Status &amp; Progress</th>
+                                    <th>Submission Notes / File</th>
+                                    <th>Marks &amp; Feedback</th>
+                                    <th>Save</th>
+                                </tr>
+                            </thead>
+                            <tbody id="submissionsTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer border-top">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/assignments.js"></script>
+</body>
+</html>
+

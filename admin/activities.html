@@ -54,13 +54,19 @@
                     </a>
                 </li>
                 <li>
+                    <a href="assignments.html">
+                        <i class="fas fa-tasks"></i>
+                        <span>Manage Assignments</span>
+                    </a>
+                </li>
+                <li>
                     <a href="activities.html" class="active">
                         <i class="fas fa-trophy"></i>
                         <span>Manage Activities</span>
                     </a>
                 </li>
                 <li>
-                    <a href="../index.html">
+                    <a href="../backend/api/logout.php">
                         <i class="fas fa-sign-out-alt"></i>
                         <span>Logout</span>
                     </a>
@@ -297,10 +303,16 @@
     });
 
     function loadActivities() {
-        fetch('../backend/api/admin/get_all_activities.php')
-            .then(response => response.json())
+        fetch('../backend/api/admin/get_all_activities.php', { credentials: 'same-origin' })
+            .then(response => {
+                if (response.status === 401) {
+                    window.location.href = '../index.html';
+                    return null;
+                }
+                return response.json();
+            })
             .then(data => {
-                console.log('Activities:', data);
+                if (!data) return;
                 
                 if (data.success) {
                     allActivities = data.data;

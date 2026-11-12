@@ -1,0 +1,79 @@
+# Declarative Azure Container Apps specification for EduPulse
+# Replace placeholders (<...>) via CI/CD or `az containerapp create/update --yaml`.
+properties:
+  managedEnvironmentId: /subscriptions/<SUBSCRIPTION_ID>/resourceGroups/<RESOURCE_GROUP>/providers/Microsoft.App/managedEnvironments/<ACA_ENVIRONMENT>
+  configuration:
+    activeRevisionsMode: Single
+    ingress:
+      external: true
+      targetPort: 80
+      transport: auto
+      allowInsecure: false # Enforce HTTPS redirect at Azure ingress edge
+    registries:
+      - server: <ACR_NAME>.azurecr.io
+        identity: system
+    secrets:
+      - name: db-password
+        value: <SECRET_DB_PASSWORD>
+      - name: storage-conn-str
+        value: <SECRET_AZURE_STORAGE_CONNECTION_STRING>
+      - name: appinsights-conn-str
+        value: <SECRET_APPINSIGHTS_CONNECTION_STRING>
+  template:
+    scale:
+      minReplicas: 1
+      maxReplicas: 3
+      rules:
+        - name: http-scaling
+          http:
+            metadata:
+              concurrentRequests: "50"
+    containers:
+      - name: edupulse-app
+        image: <ACR_NAME>.azurecr.io/edupulse-app:<IMAGE_TAG>
+        resources:
+          cpu: 0.5
+          memory: 1.0Gi
+        env:
+          - name: APP_ENV
+            value: production
+          - name: APP_SERVICE_NAME
+            value: edupulse-web
+          - name: DB_HOST
+            value: <AZURE_MYSQL_HOST>
+          - name: DB_PORT
+            value: "3306"
+          - name: DB_NAME
+            value: student_portal
+          - name: DB_USER
+            value: <AZURE_MYSQL_USER>
+          - name: DB_PASS
+            secretRef: db-password
+          - name: DB_SSL_MODE
+            value: verify_ca
+          - name: DB_SSL_CA
+            value: /etc/ssl/certs/ca-certificates.crt
+          - name: STORAGE_DRIVER
+            value: azure
+          - name: AZURE_STORAGE_CONTAINER
+            value: edupulse-files
+          - name: AZURE_STORAGE_CONNECTION_STRING
+            secretRef: storage-conn-str
+          - name: APPINSIGHTS_CONNECTION_STRING
+            secretRef: appinsights-conn-str
+        probes:
+          - type: Liveness
+            httpGet:
+              path: /backend/api/health.php
+              port: 80
+            initialDelaySeconds: 15
+            periodSeconds: 30
+            timeoutSeconds: 5
+          - type: Readiness
+            httpGet:
+              path: /backend/api/health.php
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 5
+

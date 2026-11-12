@@ -610,6 +610,49 @@ INSERT INTO `students` (`student_id`, `enrollment_id`, `password`, `first_name`,
 (10, 'STU010', '$2y$10$bkDThzBV/sOUaTficf/roev9sNAU2reUXgyKAULZJno2WFanGF/ve', 'Vikram', 'Shetty', 'vikram.shetty@edutrack.com', '9876500010', '2002-05-30', 'Male', 'Bengaluru, Karnataka', 'Computer Applications', 'MCA', 5, 2025, 'student_10_1781531490.png', '2026-07-08 16:44:32');
 
 --
+-- Table structure for table `assignments`
+--
+
+CREATE TABLE `assignments` (
+  `assignment_id` int NOT NULL,
+  `course_id` int NOT NULL,
+  `semester` int NOT NULL,
+  `title` varchar(150) NOT NULL,
+  `description` text,
+  `due_date` datetime NOT NULL,
+  `max_marks` decimal(6,2) NOT NULL DEFAULT '20.00',
+  `priority` enum('low','medium','high','urgent') NOT NULL DEFAULT 'medium',
+  `created_by_admin_id` int DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `assignment_submissions`
+--
+
+CREATE TABLE `assignment_submissions` (
+  `submission_id` int NOT NULL,
+  `assignment_id` int NOT NULL,
+  `student_id` int NOT NULL,
+  `status` enum('pending','in_progress','submitted','graded') NOT NULL DEFAULT 'pending',
+  `progress_pct` tinyint unsigned NOT NULL DEFAULT '0',
+  `submission_text` text,
+  `file_path` varchar(255) DEFAULT NULL,
+  `submitted_at` datetime DEFAULT NULL,
+  `marks_obtained` decimal(6,2) DEFAULT NULL,
+  `feedback` text,
+  `graded_by_admin_id` int DEFAULT NULL,
+  `graded_at` datetime DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- --------------------------------------------------------
+
+--
 -- Indexes for dumped tables
 --
 
@@ -622,12 +665,32 @@ ALTER TABLE `admin`
   ADD UNIQUE KEY `email` (`email`);
 
 --
+-- Indexes for table `assignments`
+--
+ALTER TABLE `assignments`
+  ADD PRIMARY KEY (`assignment_id`),
+  ADD KEY `idx_assignments_course_sem` (`course_id`,`semester`),
+  ADD KEY `idx_assignments_due_date` (`due_date`),
+  ADD KEY `created_by_admin_id` (`created_by_admin_id`);
+
+--
+-- Indexes for table `assignment_submissions`
+--
+ALTER TABLE `assignment_submissions`
+  ADD PRIMARY KEY (`submission_id`),
+  ADD UNIQUE KEY `uniq_assignment_student` (`assignment_id`,`student_id`),
+  ADD KEY `idx_submissions_student_status` (`student_id`,`status`),
+  ADD KEY `idx_submissions_submitted_at` (`submitted_at`),
+  ADD KEY `graded_by_admin_id` (`graded_by_admin_id`);
+
+--
 -- Indexes for table `attendance`
 --
 ALTER TABLE `attendance`
   ADD PRIMARY KEY (`attendance_id`),
   ADD UNIQUE KEY `student_course_attendance` (`student_id`,`course_id`,`semester`),
-  ADD KEY `course_id` (`course_id`);
+  ADD KEY `course_id` (`course_id`),
+  ADD KEY `idx_attendance_course_sem` (`course_id`,`semester`);
 
 --
 -- Indexes for table `courses`
@@ -657,7 +720,8 @@ ALTER TABLE `extracurricular_activities`
 ALTER TABLE `grades`
   ADD PRIMARY KEY (`grade_id`),
   ADD UNIQUE KEY `student_course_grade` (`student_id`,`course_id`,`semester`),
-  ADD KEY `course_id` (`course_id`);
+  ADD KEY `course_id` (`course_id`),
+  ADD KEY `idx_grades_course_sem` (`course_id`,`semester`);
 
 --
 -- Indexes for table `students`
@@ -676,6 +740,18 @@ ALTER TABLE `students`
 --
 ALTER TABLE `admin`
   MODIFY `admin_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `assignments`
+--
+ALTER TABLE `assignments`
+  MODIFY `assignment_id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `assignment_submissions`
+--
+ALTER TABLE `assignment_submissions`
+  MODIFY `submission_id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `attendance`
@@ -716,6 +792,21 @@ ALTER TABLE `students`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `assignments`
+--
+ALTER TABLE `assignments`
+  ADD CONSTRAINT `assignments_ibfk_admin` FOREIGN KEY (`created_by_admin_id`) REFERENCES `admin` (`admin_id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `assignments_ibfk_course` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `assignment_submissions`
+--
+ALTER TABLE `assignment_submissions`
+  ADD CONSTRAINT `submissions_ibfk_admin` FOREIGN KEY (`graded_by_admin_id`) REFERENCES `admin` (`admin_id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `submissions_ibfk_assignment` FOREIGN KEY (`assignment_id`) REFERENCES `assignments` (`assignment_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `submissions_ibfk_student` FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `attendance`

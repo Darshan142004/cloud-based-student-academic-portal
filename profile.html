@@ -14,6 +14,7 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/profile.css">
+    <link rel="stylesheet" href="css/chatbot.css">
 </head>
 <body>
     <!-- Sidebar -->
@@ -27,6 +28,12 @@
                 <a href="dashboard.html">
                     <i class="fas fa-home"></i>
                     <span>Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="analytics.html">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Analytics</span>
                 </a>
             </li>
             <li>
@@ -68,7 +75,7 @@
         </ul>
         
         <div class="sidebar-footer">
-            <a href="index.html" class="logout-btn">
+            <a href="backend/api/logout.php" class="logout-btn">
                 <i class="fas fa-sign-out-alt"></i>
                 <span>Logout</span>
             </a>
@@ -86,17 +93,9 @@
                 <h4 class="page-title">My Profile</h4>
             </div>
             <div class="nav-right">
-                <div class="search-box">
-                    <i class="fas fa-search"></i>
-                    <input type="text" placeholder="Search...">
-                </div>
-                <div class="notification">
-                    <i class="fas fa-bell"></i>
-                    <span class="badge">3</span>
-                </div>
                 <div class="profile-dropdown">
-                    <img src="https://ui-avatars.com/api/?name=John+Doe&background=667eea&color=fff" alt="Profile">
-                    <span>John Doe</span>
+                    <img src="https://ui-avatars.com/api/?name=Student&background=0F52BA&color=fff" alt="Profile">
+                    <span>Student</span>
                 </div>
             </div>
         </nav>
@@ -124,21 +123,21 @@
                                     <i class="fas fa-times me-1"></i> Cancel
                                 </button>
                             </div>
-                            <h4 class="profile-name">John Doe</h4>
-                            <p class="profile-id">Student ID: STU2024001</p>
-                            <p class="profile-program">B.Tech Computer Science</p>
+                            <h4 class="profile-name">Student</h4>
+                            <p class="profile-id">Student ID: --</p>
+                            <p class="profile-program">--</p>
                             
                             <div class="profile-stats">
                                 <div class="stat-item">
-                                    <h5>8.5</h5>
+                                    <h5>--</h5>
                                     <p>CGPA</p>
                                 </div>
                                 <div class="stat-item">
-                                    <h5>5th</h5>
+                                    <h5>--</h5>
                                     <p>Semester</p>
                                 </div>
                                 <div class="stat-item">
-                                    <h5>92%</h5>
+                                    <h5>--</h5>
                                     <p>Attendance</p>
                                 </div>
                             </div>
@@ -163,28 +162,28 @@
                                     <i class="fas fa-calendar-alt"></i>
                                     <span>Year of Joining</span>
                                 </div>
-                                <div class="summary-value">2022</div>
+                                <div class="summary-value" id="summaryAdmissionYear">--</div>
                             </div>
                             <div class="summary-item">
                                 <div class="summary-label">
                                     <i class="fas fa-book"></i>
-                                    <span>Total Credits</span>
+                                    <span>Graded Credits</span>
                                 </div>
-                                <div class="summary-value">102</div>
+                                <div class="summary-value" id="summaryTotalCredits">--</div>
                             </div>
                             <div class="summary-item">
                                 <div class="summary-label">
-                                    <i class="fas fa-trophy"></i>
-                                    <span>Rank in Class</span>
+                                    <i class="fas fa-chalkboard-teacher"></i>
+                                    <span>Current Sem Courses</span>
                                 </div>
-                                <div class="summary-value">5th</div>
+                                <div class="summary-value" id="summaryCurrentCourses">--</div>
                             </div>
                             <div class="summary-item">
                                 <div class="summary-label">
                                     <i class="fas fa-calendar-check"></i>
                                     <span>Expected Graduation</span>
                                 </div>
-                                <div class="summary-value">2026</div>
+                                <div class="summary-value" id="summaryExpectedGrad">--</div>
                             </div>
                         </div>
                     </div>
@@ -202,11 +201,11 @@
                                 <div class="row g-3">
                                     <div class="col-md-6">
                                         <label class="form-label">Full Name</label>
-                                        <input type="text" class="form-control" value="John Doe" disabled id="fullName">
+                                        <input type="text" class="form-control" value="" disabled id="fullName">
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">Date of Birth</label>
-                                        <input type="date" class="form-control" value="2004-05-15" disabled id="dob">
+                                        <input type="date" class="form-control" value="" disabled id="dob">
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">Gender</label>
@@ -217,20 +216,16 @@
                                         </select>
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="form-label">Blood Group</label>
-                                        <input type="text" class="form-control" value="O+" disabled id="bloodGroup">
-                                    </div>
-                                    <div class="col-md-6">
                                         <label class="form-label">Email Address</label>
-                                        <input type="email" class="form-control" value="john.doe@student.edu" disabled id="email">
+                                        <input type="email" class="form-control" value="" disabled id="email">
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">Phone Number</label>
-                                        <input type="tel" class="form-control" value="+1 234 567 8900" disabled id="phone">
+                                        <input type="tel" class="form-control" value="" disabled id="phone">
                                     </div>
                                     <div class="col-12">
                                         <label class="form-label">Address</label>
-                                        <textarea class="form-control" rows="2" disabled id="address">123 Main Street, City, State - 12345</textarea>
+                                        <textarea class="form-control" rows="2" disabled id="address"></textarea>
                                     </div>
                                 </div>
                                 <div class="mt-3" id="formButtons" style="display: none;">
@@ -245,63 +240,42 @@
                         </div>
                     </div>
 
-                    <!-- Emergency Contact -->
-                    <div class="card mt-4">
-                        <div class="card-header">
-                            <h5><i class="fas fa-phone-alt me-2"></i>Emergency Contact</h5>
+                    <!-- Academic Documents Vault -->
+                    <div class="card mt-4" id="academicDocumentsCard">
+                        <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <h5 class="m-0"><i class="fas fa-folder-open me-2"></i>Academic Documents</h5>
+                            <span class="badge bg-light text-dark border" id="storageBackendBadge">Storage: checking...</span>
                         </div>
                         <div class="card-body">
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <label class="form-label">Contact Name</label>
-                                    <input type="text" class="form-control" value="Jane Doe" disabled>
+                            <form id="uploadDocumentForm" class="row g-2 align-items-end mb-3 pb-3 border-bottom">
+                                <div class="col-md-4">
+                                    <label class="form-label small fw-semibold mb-1" for="docTitleInput">Document Title</label>
+                                    <input type="text" class="form-control form-control-sm" id="docTitleInput" name="title" placeholder="e.g. Sem 4 Marksheet" maxlength="200" required>
                                 </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Relationship</label>
-                                    <input type="text" class="form-control" value="Mother" disabled>
+                                <div class="col-md-3">
+                                    <label class="form-label small fw-semibold mb-1" for="docTypeSelect">Category</label>
+                                    <select class="form-select form-select-sm" id="docTypeSelect" name="doc_type">
+                                        <option value="transcript">Transcript</option>
+                                        <option value="marksheet">Marksheet</option>
+                                        <option value="certificate">Certificate</option>
+                                        <option value="project_report">Project Report</option>
+                                        <option value="id_proof">ID Proof</option>
+                                        <option value="other" selected>Other</option>
+                                    </select>
                                 </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Contact Number</label>
-                                    <input type="tel" class="form-control" value="+1 234 567 8901" disabled>
+                                <div class="col-md-3">
+                                    <label class="form-label small fw-semibold mb-1" for="docFileInput">File (PDF, DOC, JPG, PNG, &le;10MB)</label>
+                                    <input type="file" class="form-control form-control-sm" id="docFileInput" name="document" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" required>
                                 </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Email</label>
-                                    <input type="email" class="form-control" value="jane.doe@email.com" disabled>
+                                <div class="col-md-2 d-grid">
+                                    <button type="submit" class="btn btn-sm btn-primary" id="uploadDocBtn">
+                                        <i class="fas fa-cloud-upload-alt me-1"></i>Upload
+                                    </button>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Account Settings -->
-                    <div class="card mt-4">
-                        <div class="card-header">
-                            <h5><i class="fas fa-cog me-2"></i>Account Settings</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="setting-item">
-                                <div class="setting-info">
-                                    <h6>Email Notifications</h6>
-                                    <p>Receive email updates about assignments and grades</p>
-                                </div>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="emailNotif" checked>
-                                </div>
-                            </div>
-                            <div class="setting-item">
-                                <div class="setting-info">
-                                    <h6>SMS Notifications</h6>
-                                    <p>Get text messages for important updates</p>
-                                </div>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="smsNotif">
-                                </div>
-                            </div>
-                            <div class="setting-item">
-                                <div class="setting-info">
-                                    <h6>Two-Factor Authentication</h6>
-                                    <p>Add an extra layer of security to your account</p>
-                                </div>
-                                <button class="btn btn-sm btn-outline-primary">Enable</button>
+                            </form>
+                            <div id="documentsAlert" class="d-none"></div>
+                            <div id="academicDocumentsList">
+                                <div class="text-muted small py-2">Loading academic documents...</div>
                             </div>
                         </div>
                     </div>
@@ -345,26 +319,37 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
-    <!-- Custom JS -->
-    <!-- Custom JS -->
-    <script src="js/profile.js"></script>
-    
     <!-- Profile Data Loader -->
     <script>
+    (function initSidebar() {
+        const toggleBtn = document.getElementById('toggleSidebar');
+        const sidebar = document.getElementById('sidebar');
+        if (toggleBtn && sidebar) {
+            toggleBtn.addEventListener('click', () => sidebar.classList.toggle('active'));
+        }
+    })();
+
     let profileData = null;
     let isEditMode = false;
     
     window.addEventListener('DOMContentLoaded', function() {
         console.log('Loading profile data...');
         loadProfile();
+        loadDocuments();
         setupEventListeners();
     });
     
     function loadProfile() {
-        fetch('./backend/api/get_profile.php')
-            .then(response => response.json())
+        fetch('./backend/api/get_profile.php', { credentials: 'same-origin' })
+            .then(async response => {
+                if (response.status === 401) {
+                    window.location.href = 'index.html';
+                    return null;
+                }
+                return response.json();
+            })
             .then(data => {
-                console.log('Profile data:', data);
+                if (!data) return;
                 
                 if (data.success) {
                     profileData = data.data;
@@ -372,16 +357,12 @@
                     
                     // Also load dashboard stats
                     loadDashboardStats();
-                    
-                    console.log('✅ Profile loaded successfully!');
                 } else {
-                    alert('Failed to load profile');
                     window.location.href = 'index.html';
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('Error loading profile. Please login again.');
                 window.location.href = 'index.html';
             });
     }
@@ -392,10 +373,12 @@
             `${profile.first_name} ${profile.last_name}`;
         
         let profileImgUrl;
-        if (profile.profile_photo && profile.profile_photo !== 'default-avatar.png') {
-            profileImgUrl = `uploads/profile_photos/${profile.profile_photo}`;
+        if (profile.profile_photo_url) {
+            profileImgUrl = profile.profile_photo_url;
+        } else if (profile.profile_photo && profile.profile_photo !== 'default-avatar.png') {
+            profileImgUrl = 'backend/api/download_document.php?type=profile';
         } else {
-            profileImgUrl = `https://ui-avatars.com/api/?name=${profile.first_name}+${profile.last_name}&background=667eea&color=fff&size=150`;
+            profileImgUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent((profile.first_name || '') + ' ' + (profile.last_name || ''))}&background=667eea&color=fff&size=150`;
         }
         
         // Update profile card
@@ -422,21 +405,24 @@
         document.getElementById('address').value = profile.address || '';
         
         // Update academic summary
-        const summaryValues = document.querySelectorAll('.summary-value');
-        summaryValues[0].textContent = profile.admission_year;
-        summaryValues[3].textContent = parseInt(profile.admission_year) + 4;
+        const admYear = parseInt(profile.admission_year, 10);
+        const duration = String(profile.program || '').toUpperCase() === 'MCA' ? 2 : 4;
+        document.getElementById('summaryAdmissionYear').textContent = admYear || '--';
+        document.getElementById('summaryExpectedGrad').textContent = admYear ? (admYear + duration) : '--';
     }
     
     function loadDashboardStats() {
-        fetch('./backend/api/get_dashboard.php')
+        fetch('./backend/api/get_dashboard.php', { credentials: 'same-origin' })
             .then(response => response.json())
             .then(data => {
-                if (data.success) {
-                    // Update stats
-                    document.querySelectorAll('.profile-stats .stat-item h5')[0].textContent = 
-                        data.data.stats.cgpa;
-                    document.querySelectorAll('.profile-stats .stat-item h5')[2].textContent = 
-                        data.data.stats.attendance + '%';
+                if (data.success && data.data && data.data.stats) {
+                    const stats = data.data.stats;
+                    document.querySelectorAll('.profile-stats .stat-item h5')[0].textContent =
+                        stats.cgpa !== null && stats.cgpa !== undefined ? Number(stats.cgpa).toFixed(2) : '--';
+                    document.querySelectorAll('.profile-stats .stat-item h5')[2].textContent =
+                        stats.attendance !== null && stats.attendance !== undefined ? stats.attendance + '%' : '--';
+                    document.getElementById('summaryTotalCredits').textContent = stats.total_graded_credits ?? '--';
+                    document.getElementById('summaryCurrentCourses').textContent = stats.total_courses ?? '--';
                 }
             })
             .catch(error => console.error('Error loading stats:', error));
@@ -561,7 +547,7 @@
                     alert('✅ Profile photo uploaded successfully!');
                     
                     // Path to updated profile image
-                    const newPhotoUrl = `uploads/profile_photos/${data.data.profile_photo}`;
+                    const newPhotoUrl = data.data.photo_url || `uploads/profile_photos/${data.data.profile_photo}`;
                     
                     // Update views
                     document.querySelector('.profile-image').src = newPhotoUrl;
@@ -689,9 +675,9 @@
         });
     }
     function changePassword() {
-    const currentPassword = document.querySelector('#passwordForm input[type="password"]:nth-child(1)').value;
-    const newPassword = document.querySelector('#passwordForm input[type="password"]:nth-child(2)').value;
-    const confirmPassword = document.querySelector('#passwordForm input[type="password"]:nth-child(3)').value;
+    const currentPassword = document.querySelector('#passwordForm input[name="current_password"]').value;
+    const newPassword = document.querySelector('#passwordForm input[name="new_password"]').value;
+    const confirmPassword = document.querySelector('#passwordForm input[name="confirm_password"]').value;
     
     // Client-side validation
     if (!currentPassword || !newPassword || !confirmPassword) {
@@ -749,6 +735,127 @@
         saveBtn.disabled = false;
     });
 }
+
+    function escDocHtml(str) {
+        return String(str ?? '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    function showDocAlert(type, msg) {
+        const box = document.getElementById('documentsAlert');
+        if (!box) return;
+        box.className = `alert alert-${type} alert-dismissible fade show py-2 small`;
+        box.innerHTML = `${escDocHtml(msg)}<button type="button" class="btn-close btn-sm" data-bs-dismiss="alert"></button>`;
+    }
+
+    function loadDocuments() {
+        fetch('./backend/api/get_documents.php', { credentials: 'same-origin' })
+            .then(r => r.json())
+            .then(payload => {
+                const badge = document.getElementById('storageBackendBadge');
+                const listEl = document.getElementById('academicDocumentsList');
+                if (!payload || !payload.success || !payload.data) {
+                    if (listEl) listEl.innerHTML = '<div class="text-muted small">Unable to load documents.</div>';
+                    return;
+                }
+                const st = payload.data.storage || {};
+                if (badge) {
+                    badge.textContent = st.driver === 'azure' ? 'Storage: Azure Blob' : 'Storage: Local Disk';
+                }
+                const docs = payload.data.documents || [];
+                if (!listEl) return;
+                if (!docs.length) {
+                    listEl.innerHTML = '<div class="text-muted small py-2">No academic documents uploaded yet.</div>';
+                    return;
+                }
+                listEl.innerHTML = `<div class="list-group list-group-flush">${docs.map(d => {
+                    const kb = (Number(d.file_size || 0) / 1024).toFixed(1);
+                    return `
+                        <div class="list-group-item px-0 d-flex justify-content-between align-items-center gap-2 flex-wrap">
+                            <div>
+                                <div class="fw-semibold text-dark small">${escDocHtml(d.title)}</div>
+                                <div class="text-muted" style="font-size: 0.78rem;">
+                                    <span class="badge bg-light text-dark border me-1">${escDocHtml(d.doc_type)}</span>
+                                    ${escDocHtml(d.file_name)} &bull; ${kb} KB &bull; ${escDocHtml(d.storage_provider)}
+                                </div>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <a href="${escDocHtml(d.download_url)}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-primary py-0 px-2">
+                                    <i class="fas fa-download me-1"></i>View
+                                </a>
+                                <button type="button" class="btn btn-sm btn-outline-danger py-0 px-2 delete-doc-btn" data-doc-id="${Number(d.document_id)}">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }).join('')}</div>`;
+            })
+            .catch(err => console.error('Documents load error:', err));
+    }
+
+    (function setupDocumentHandlers() {
+        const form = document.getElementById('uploadDocumentForm');
+        const listEl = document.getElementById('academicDocumentsList');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const btn = document.getElementById('uploadDocBtn');
+                const orig = btn.innerHTML;
+                btn.disabled = true;
+                btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
+                fetch('./backend/api/upload_document.php', {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    body: new FormData(form)
+                })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success) {
+                        showDocAlert('success', data.message || 'Document uploaded.');
+                        form.reset();
+                        loadDocuments();
+                    } else {
+                        showDocAlert('danger', data.message || 'Upload failed.');
+                    }
+                })
+                .catch(() => showDocAlert('danger', 'Network error uploading document.'))
+                .finally(() => {
+                    btn.disabled = false;
+                    btn.innerHTML = orig;
+                });
+            });
+        }
+        if (listEl) {
+            listEl.addEventListener('click', function(e) {
+                const delBtn = e.target.closest('.delete-doc-btn');
+                if (!delBtn) return;
+                const docId = Number(delBtn.getAttribute('data-doc-id'));
+                if (!docId || !confirm('Delete this uploaded document?')) return;
+                fetch('./backend/api/delete_document.php', {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ document_id: docId })
+                })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success) {
+                        showDocAlert('info', 'Document deleted.');
+                        loadDocuments();
+                    } else {
+                        showDocAlert('danger', data.message || 'Delete failed.');
+                    }
+                })
+                .catch(() => showDocAlert('danger', 'Network error deleting document.'));
+            });
+        }
+    })();
     </script>
+    <script src="js/chatbot.js"></script>
 </body>
 </html>
