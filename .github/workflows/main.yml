@@ -1,5 +1,5 @@
 
-name: EduPulse CI Pipeline
+name: EduPulse CI/CD Pipeline
 
 on:
   push:
@@ -130,3 +130,55 @@ jobs:
       - name: Cleanup containers
         if: always()
         run: docker compose down
+
+  deploy-azure:
+    name: Build, Push and Deploy to Azure
+    needs: [lint-and-security, docker-integration-test]
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
+
+    env:
+      AZURE_RESOURCE_GROUP: ${{ vars.AZURE_RESOURCE_GROUP }}
+      AZURE_CONTAINER_APP: ${{ vars.AZURE_CONTAINER_APP }}
+      AZURE_ACR_NAME: ${{ vars.AZURE_ACR_NAME }}
+      AZURE_ACR_LOGIN_SERVER: ${{ vars.AZURE_ACR_LOGIN_SERVER }}
+      AZURE_IMAGE_NAME: ${{ vars.AZURE_IMAGE_NAME }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Azure CLI
+        run: |
+          curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+
+      - name: Login to Azure using GitHub OIDC
+        uses: azure/login@v2
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Build and push Docker image to ACR
+        run: |
+          IMAGE="$AZURE_ACR_LOGIN_SERVER/$AZURE_IMAGE_NAME:$GITHUB_SHA"
+
+          az acr login --name "$AZURE_ACR_NAME"
+
+          docker build -t "$IMAGE" .
+          docker push "$IMAGE"
+
+          echo "IMAGE=$IMAGE" >> "$GITHUB_ENV"
+
+      - name: Deploy image to Azure Container Apps
+        run: |
+          az containerapp update \
+            --name "$AZURE_CONTAINER_APP" \
+            --resource-group "$AZURE_RESOURCE_GROUP" \
+            --image "$IMAGE"
+
+          echo "EduPulse deployment command completed."
