@@ -1,3 +1,4 @@
+
 services:
   app:
     build:
@@ -9,14 +10,24 @@ services:
       - "8080:80"
     volumes:
       - ./uploads:/var/www/html/uploads
+      - ./certs:/var/www/html/certs:ro
     environment:
-      DB_HOST: mysql
-      DB_USER: root
-      DB_PASS: ${DB_PASSWORD}
-      DB_NAME: student_portal
+      DB_HOST: ${DB_HOST:-mysql}
+      DB_PORT: ${DB_PORT:-3306}
+      DB_USER: ${DB_USER:-root}
+      DB_PASS: ${DB_PASS:-${DB_PASSWORD}}
+      DB_NAME: ${DB_NAME:-student_portal}
+      DB_SSL_MODE: ${DB_SSL_MODE:-disabled}
+      DB_SSL_CA: ${DB_SSL_CA:-}
+      STORAGE_DRIVER: ${STORAGE_DRIVER:-local}
+      AZURE_STORAGE_CONNECTION_STRING: ${AZURE_STORAGE_CONNECTION_STRING:-}
+      AZURE_STORAGE_CONTAINER: ${AZURE_STORAGE_CONTAINER:-}
+      APPINSIGHTS_CONNECTION_STRING: ${APPINSIGHTS_CONNECTION_STRING:-}
+      APP_TELEMETRY_LOG: ${APP_TELEMETRY_LOG:-}
     depends_on:
       mysql:
         condition: service_healthy
+        required: false
 
   mysql:
     image: mysql:8.0
